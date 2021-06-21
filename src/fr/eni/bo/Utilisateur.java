@@ -1,5 +1,7 @@
 package fr.eni.bo;
 
+import java.util.List;
+
 public class Utilisateur {
     private int noUtilisateur;
     private String pseudo;
@@ -13,8 +15,7 @@ public class Utilisateur {
     private String motDePasse;
     private int credit;
     private boolean administrateur;
-
-    //TODO relation avec article : un utilisateur a une liste d'articles ?
+    private List<Article> listeArticles;
 
     public Utilisateur() {
     }

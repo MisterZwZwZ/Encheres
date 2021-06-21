@@ -1,5 +1,6 @@
 package fr.eni.bo;
 
+import javax.swing.*;
 import java.time.LocalDate;
 
 public class Article {
@@ -11,10 +12,8 @@ public class Article {
     private int prixInitial;
     private int prixVente;
     private Categorie categorie;
-    private Retrait retrait;
     private Utilisateur vendeur;
-
-    //TODO relations avec utilisateur : 1 article à 1 vendeur
+    private Retrait retrait; // TODO modifier la structure de la bdd avec adresse ?
 
     public Article() {
     }

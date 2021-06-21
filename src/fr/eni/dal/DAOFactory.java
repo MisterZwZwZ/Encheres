@@ -8,16 +8,16 @@ public abstract class DAOFactory {
     }
 
     public static CategoriesDAO getCategorieDAO() {
-        return new CategoriesDAOJdbcImpl();
+        return new CategorieDAOJdbcImpl();
     }
 
     public static ArticleDAO getArticleVenduDAO() {
         return new ArticleDAOJdbcImpl();
     }
 
-    public static EncheresDAO getEncheresDAO() {
+    public static EnchereDAO getEncheresDAO() {
 
-        return new EncheresDAOJdbcImpl();
+        return new EnchereDAOJdbcImpl();
     }
 
     public static RetraitDAO getRetraitDAO() {

@@ -1,4 +1,16 @@
 package fr.eni.servlets;
 
-public class Accueil {
+import org.eclipse.jdt.internal.compiler.env.ISourceType;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class Accueil extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("coucou");
+    }
 }

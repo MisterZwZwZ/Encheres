@@ -4,7 +4,7 @@
             name="jdbc/bdd"
             driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
             type="javax.sql.DataSource"
-            url="jdbc:sqlserver://localhost:1433;databaseName=BDD_DEMO"
+            url="jdbc:sqlserver://localhost:1433;databaseName=BDD_ENCHERES"
             username="sa"
             password="Pa$$w0rd"
             maxTotal="100"

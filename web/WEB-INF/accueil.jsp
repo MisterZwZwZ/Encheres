@@ -6,7 +6,8 @@
 <body>
 <header>
     <h1>ENI-Encheres</h1>
-    <a href="<%=request.getContextPath()%>/login">S'inscrire - Se connecter</a>
+    <a href="<%=request.getContextPath()%>/profil">S'inscrire</a>
+    <a href="<%=request.getContextPath()%>/login">Se connecter</a>
 </header>
 
 <p>Filtres</p>

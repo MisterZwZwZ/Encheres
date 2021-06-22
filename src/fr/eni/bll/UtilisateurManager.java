@@ -4,7 +4,7 @@ import fr.eni.BusinessException;
 import fr.eni.bo.Utilisateur;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
-import java.util.regex.*;
+
 import java.util.List;
 
 public class UtilisateurManager {
@@ -119,11 +119,14 @@ public class UtilisateurManager {
 
 
     /**
-     * //TODO Javadoc à écrire
+     * Retourne un objet Utilisateur correspondant au mot de passe passé en argument
+     * @param email
+     * @return Utilisateur
+     * @throws BusinessException
      */
     public Utilisateur retournerUtilisateur(String email) throws BusinessException {
         Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(email);
-
+        // TODO ajout de contrôles métiers pour valider le formatage de l'adresse mail
         return  utilisateurTrouve;
     }
 

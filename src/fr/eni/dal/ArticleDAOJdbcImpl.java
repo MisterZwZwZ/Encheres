@@ -2,6 +2,7 @@ package fr.eni.dal;
 
 import fr.eni.bo.Article;
 import fr.eni.bo.Enchere;
+import fr.eni.bo.Utilisateur;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,9 +13,9 @@ import java.util.List;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 
-    String SELECT_ARTICLES_ENCHERISSABLES = ("SELECT (no_article, nom_article, description, date_debut_vente, date_de_fin_vente prix_initial, prix_vente) FROM ARTICLES WHERE date_debut_vente >= CURDATE()");
+    String SELECT_ARTICLES_ENCHERISSABLES = ("SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE()");
 
-    //Select de tous les articles pouvant être encherris
+    //Select de tous les articles pouvant être encherris lié à leur vendeur
     @Override
     public List<Article> selectArticlesEncherissables() {
         List<Article> listeArticlesEncherissables = new ArrayList<>();
@@ -34,6 +35,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     articleEncherissable.setPrixVente(rs.getInt("prix_vente"));
                     listeArticlesEncherissables.add(articleEncherissable);
                 }
+                Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
+                    articleEncherissable.setVendeur(utilisateur);
                 rs.close();
             }
         } catch (SQLException e) {

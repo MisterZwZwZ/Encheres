@@ -96,11 +96,14 @@ public class UtilisateurManager {
     }
 
     /**
-     * //TODO Javadoc à écrire
+     * Retourne un objet Utilisateur correspondant au mot de passe passé en argument
+     * @param email
+     * @return Utilisateur
+     * @throws BusinessException
      */
     public Utilisateur retournerUtilisateur(String email) throws BusinessException {
         Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(email);
-
+        // TODO ajout de contrôles métiers pour valider le formatage de l'adresse mail
         return  utilisateurTrouve;
     }
 

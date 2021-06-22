@@ -9,15 +9,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/accueil")
+@WebServlet(urlPatterns = {
+                            "/accueil",
+                            "/deconnexion"
+                        })
 public class AccueilServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("coucou");
+        //si on arrive sur la servlet via le bouton deconnexion, supression de la session en cours avant l'affichage
+        if(request.getServletPath().equals("/deconnexion")) {
+            HttpSession session = request.getSession();
+            session.invalidate();
+        }
+
 //        affichage de la liste des articles encherissables
         ArticleManager articleManager = new ArticleManager();
         try{

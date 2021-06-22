@@ -15,7 +15,9 @@
         <a href="<%=request.getContextPath()%>/encheres">Enchères</a>
         <a href="<%=request.getContextPath()%>/vendre">Vendre un article</a>
         <a href="<%=request.getContextPath()%>/monprofil">Mon profil</a>
-        <a href="<%=request.getContextPath()%>/accueil">Se déconnecter</a>
+        <a href="<%=request.getContextPath()%>/deconnexion">Se déconnecter</a>
+        <p>Bonjour ${sessionScope.utilisateur.pseudo}</p>
+        <p>Votre Crédit : ${sessionScope.utilisateur.credit} points</p>
     </c:when>
     <c:when test ="${empty(sessionScope.utilisateur)}">
         <a href="<%=request.getContextPath()%>/inscription">S'inscrire</a>

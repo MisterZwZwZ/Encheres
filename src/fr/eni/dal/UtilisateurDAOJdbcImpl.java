@@ -117,6 +117,12 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
         }
     }
 
+    /**
+     * Retourne un objet Utilisateur correspondant au mot de passe passé en argument
+     * @param email
+     * @return Utilisateur
+     * @throws BusinessException
+     */
     @Override
     public Utilisateur selectUserByEmail(String email) throws BusinessException {
         Utilisateur utilisateur = new Utilisateur();

@@ -15,6 +15,9 @@ public class UtilisateurManager {
         this.userDAO = DAOFactory.getUtilisateurDAO();
     }
 
+    /**
+     * Insere un utilisateur en base de données une fois les contrôles effectués sur les différents champs.
+     */
     public void insererUtilisateur(String pseudo, String nom, String prenom, String email, String telephone,
                                    String rue, String codePostal, String ville, String motDePasse) throws BusinessException {
         //TODO les erreurs au niveau de la BLL ne sont pas remontées jusqu'à l'ihm
@@ -34,6 +37,9 @@ public class UtilisateurManager {
         }
     }
 
+    /**
+     * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
+     */
     private void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
 
         if(  pseudo==null || pseudo.trim().length()>30  )
@@ -51,6 +57,7 @@ public class UtilisateurManager {
             }
         }
 
+        //TODO : vérifier que le pseudo ne contient que des caractères alphanumériques
         if( nom==null || nom.trim().length()>30){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_NOM_ERREUR);
         }
@@ -88,9 +95,17 @@ public class UtilisateurManager {
         }
     }
 
-    public Utilisateur retournerUtilisateur(String identifiant) throws BusinessException {
-        Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(identifiant);
+    /**
+     * //TODO Javadoc à écrire
+     */
+    public Utilisateur retournerUtilisateur(String email) throws BusinessException {
+        Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(email);
 
         return  utilisateurTrouve;
+    }
+
+    //TODO : relier cette méthode à l'IHM
+    public void supprimerUtilisateur(int id) throws BusinessException {
+        userDAO.deleteUser(id);
     }
 }

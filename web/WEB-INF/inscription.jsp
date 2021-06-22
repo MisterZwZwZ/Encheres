@@ -18,21 +18,21 @@
     <label for="prenom">Prénom :</label>
         <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${prenom}">
     <label for="nom">Nom :</label>
-        <input type="text" name="nom" id="nom" placeholder="nom">
+        <input type="text" name="nom" id="nom" placeholder="nom" value="${nom}">
     <label for="email">Email :</label>
-        <input type="email" name="email" id="email" placeholder="email">
+        <input type="email" name="email" id="email" placeholder="email" value="${email}">
     <label for="telephone">Téléphone :</label>
-        <input type="tel" name="telephone" id="telephone" placeholder="telephone">
+        <input type="tel" name="telephone" id="telephone" placeholder="telephone" value="${telephone}">
     <label for="rue">Rue :</label>
-        <input type="text" name="rue" id="rue" placeholder="rue">
+        <input type="text" name="rue" id="rue" placeholder="rue" value="${rue}">
     <label for="codepostal">Code postal :</label>
-        <input type="text" name="cp" id="codepostal" placeholder="code postal">
+        <input type="text" name="cp" id="codepostal" placeholder="code postal" value="${cp}">
     <label for="ville">Ville :</label>
-        <input type="text" name="ville" id="ville" placeholder="ville">
+        <input type="text" name="ville" id="ville" placeholder="ville" value="${ville}">
     <label for="pass">Mot de passe :</label>
         <input type="password" name="password" id="pass" placeholder="mot de passe">
     <label for="confpass">Confirmation  :</label>
-        <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passer">
+        <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passe">
 
     <input type="submit" value="Créer">
     <input type="submit" value="Annuler">

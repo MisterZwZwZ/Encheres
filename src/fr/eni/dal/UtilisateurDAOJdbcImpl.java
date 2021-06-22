@@ -3,10 +3,7 @@ package fr.eni.dal;
 import fr.eni.BusinessException;
 import fr.eni.bo.Utilisateur;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +13,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String SELECT_USER_BY_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email=?";
     private static final String SELECT_ALL_PSEUDO = "SELECT pseudo FROM UTILISATEURS";
     private static final String SELECT_ALL_EMAIL = "SELECT email FROM UTILISATEURS";
+    private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE ID=?";
 
     @Override
     public void insertUser(Utilisateur utilisateur) throws BusinessException {
@@ -103,6 +101,20 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             throw businessException;
         }
         return listeDesEmail;
+    }
+
+    @Override
+    public void deleteUser(int id) throws BusinessException {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(DELETE_USER);
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.SUPPRESSION_UTILISATEUR_ERREUR);
+            throw businessException;
+        }
     }
 
     @Override

@@ -20,6 +20,25 @@
         <option value="Sports&Loisirs">Sports & Loisirs</option>
     </select>
 </form>
-
+<div>
+    <c:choose>
+        <c:when test="${ArticlesEncherissables.size()>0}">
+            <table>
+                <c:forEach items="${ArticlesEncherissables}" var="article">
+                    <tbody>
+                        <tr><c:out value="${article.nomArticle}"/></tr>
+                        <tr><c:out value="${article.description}"/></tr>
+                        <tr><c:out value="Prix de vente : ${article.prixInitial} points"/></tr>
+                        <tr><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></tr>
+                        <tr><c:out value="Vendeur : ${article.vendeur.pseudo}"/></tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+        </c:when>
+        <c:otherwise>
+            <p>Pas d'article encherissable actuellement</p>
+        </c:otherwise>
+    </c:choose>
+</div>
 </body>
 </html>

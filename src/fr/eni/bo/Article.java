@@ -111,4 +111,20 @@ public class Article {
     public void setVendeur(Utilisateur vendeur) {
         this.vendeur = vendeur;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Article{");
+        sb.append("noArticle=").append(noArticle);
+        sb.append(", nomArticle='").append(nomArticle).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", dateDebutEnchere=").append(dateDebutEnchere);
+        sb.append(", dateFinEnchere=").append(dateFinEnchere);
+        sb.append(", prixInitial=").append(prixInitial);
+        sb.append(", prixVente=").append(prixVente);
+        sb.append(", categorie=").append(categorie);
+        sb.append(", vendeur=").append(vendeur);
+        sb.append('}');
+        return sb.toString();
+    }
 }

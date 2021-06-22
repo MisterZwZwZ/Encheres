@@ -4,7 +4,7 @@ import fr.eni.BusinessException;
 import fr.eni.bo.Utilisateur;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
-
+import java.util.regex.*;
 import java.util.List;
 
 public class UtilisateurManager {
@@ -90,10 +90,33 @@ public class UtilisateurManager {
         if(  ville==null || ville.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
         }
+
         if(  motDePasse==null || motDePasse.trim().length()>100 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
+        }
+        //vérification du mot de passe
+        Boolean result = passwordValidation(motDePasse);
+        if (!result) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
     }
+
+    /**
+     * On impose des règles sur le mot de passe
+     * (?=.*[0-9]) un chiffre doit apparaître au moins une fois
+     * (?=.*[a-z]) une lettre minuscule doit apparaître au moins une fois
+     * (?=.*[A-Z]) une lettre majuscule doit apparaître au moins une fois
+     * (?=.*[@#$%^&+=]) un caractère spécial doit apparaître au moins une fois
+     * (?=\\S+$) aucun espace n'est autorisé dans toute la chaîne
+     * .{8,} au moins 8 caractères
+     * @param motDePasse
+     */
+    public boolean passwordValidation(String motDePasse) {
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        Boolean result =  motDePasse.matches(pattern);
+        return result;
+        }
+
 
     /**
      * //TODO Javadoc à écrire

@@ -22,7 +22,7 @@ public class InscriptionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.setCharacterEncoding("UTF-8");
         List<Integer> listeCodesErreur=new ArrayList<>();
         UtilisateurManager um = new UtilisateurManager();
 
@@ -101,7 +101,6 @@ public class InscriptionServlet extends HttpServlet {
         if(listeCodesErreur.size()>0)
         {
             req.setAttribute("listeCodesErreur",listeCodesErreur);
-            System.out.println(listeCodesErreur);
             RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/inscription.jsp");
             rd.forward(req, resp);
         }
@@ -114,7 +113,7 @@ public class InscriptionServlet extends HttpServlet {
             }
         }
 
-        RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/accueil.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/inscription.jsp");
         rd.forward(req, resp);
     }
 }

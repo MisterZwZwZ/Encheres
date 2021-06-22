@@ -54,9 +54,15 @@ public abstract class CodesErreurBll {
     public static final int REGLE_USER_EMAIL_ERREUR = 20011;
 
     /**
-     * Echec le mot de passe ne respecte pas les règles définies
+     * Echec le mot de passe ne respecte pas les règles définies (longueur max)
      */
-    public static final int REGLE_USER_MDP_ERREUR = 20012;
+    public static final int REGLE_USER_LONGUEUR_MDP_ERREUR = 20012;
+
+    /**
+     * Echec le mot de passe ne respecte pas les règles définies (complexité)
+     */
+    public static final int REGLE_USER_MDP_ERREUR = 20013;
+
 
 
     /**

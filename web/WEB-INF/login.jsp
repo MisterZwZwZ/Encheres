@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="fr.eni.messages.LecteurErreur"  %>
+<% request.setCharacterEncoding("UTF-8"); %>
 
 <html>
 <head>
@@ -10,13 +12,23 @@
 
 <form action="${pageContext.request.contextPath}/login" method="POST">
     <label for="identifiant">Identifiant :</label>
-    <input type="text" id="identifiant" name="identifiant" value="<c:out value="${utilisateur.email}"/>">
+    <input type="email" id="identifiant" name="email">
     <label for="password">Mot de passe :</label>
-    <input type="password" id="password" name="motDePasse" value="<c:out value="${utilisateur.motDePasse}"/>">
-    <input type="checkbox" id="rememberMe">
+    <input type="password" id="password" name="motDePasse">
     <label for="rememberMe">Se souvenir de moi</label>
-    <input type="submit" value="Login">
-</form>
+    <input type="checkbox" id="rememberMe">
 
+    <button>Se connecter</button>
+</form>
+<c:if test="${!empty listeCodesErreur}">
+
+        <strong>Erreur!</strong>
+        <ul>
+            <c:forEach var="code" items="${listeCodesErreur}">
+                <li>${LecteurErreur.getMessageErreur(code)}</li>
+            </c:forEach>
+        </ul>
+
+</c:if>
 </body>
 </html>

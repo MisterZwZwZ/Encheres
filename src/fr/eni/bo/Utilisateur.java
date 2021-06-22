@@ -16,7 +16,6 @@ public class Utilisateur {
     private String motDePasse;
     private int credit;
     private boolean administrateur;
-    private List<Article> listeArticles;
 
     public Utilisateur() {
     }
@@ -33,10 +32,9 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
         this.credit = credit;
         this.administrateur = administrateur;
-        this.listeArticles = new ArrayList<>(); // une liste d'raticles est créée lors de la création d'un utilisateur.
     }
 
-    public Utilisateur(int noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur, List<Article> listeArticles) {
+    public Utilisateur(int noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur) {
         this.noUtilisateur = noUtilisateur;
         this.pseudo = pseudo;
         this.nom = nom;
@@ -49,7 +47,6 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
         this.credit = credit;
         this.administrateur = administrateur;
-        this.listeArticles = listeArticles;
     }
 
     public int getNoUtilisateur() {
@@ -148,11 +145,4 @@ public class Utilisateur {
         this.administrateur = administrateur;
     }
 
-    public List<Article> getListeArticles() {
-        return listeArticles;
-    }
-
-    public void setListeArticles(List<Article> listeArticles) {
-        this.listeArticles = listeArticles;
-    }
 }

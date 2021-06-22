@@ -12,7 +12,7 @@ public class UtilisateurManager {
 
     private final UtilisateurDAO userDAO;
 
-    public UtilisateurManager(UtilisateurDAO userDAO) {
+    public UtilisateurManager() {
         this.userDAO = DAOFactory.getUtilisateurDAO();;
     }
 

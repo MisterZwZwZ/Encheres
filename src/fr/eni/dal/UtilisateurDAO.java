@@ -1,10 +1,14 @@
 package fr.eni.dal;
 
+import fr.eni.BusinessException;
 import fr.eni.bo.Utilisateur;
+
+import java.util.List;
 
 public interface UtilisateurDAO {
 
     void insertUser(Utilisateur utilisateur) throws BusinessException;
-    void insertUser(Utilisateur utilisateur) throws DalException;
-    Utilisateur selectUserByEmail(String email) throws BusinessException, BusinessException;
+    List<String> selectAllPseudo() throws BusinessException;
+    List<String> selectAllEmail() throws BusinessException;
+    Utilisateur selectUserByEmail(String email) throws BusinessException;
 }

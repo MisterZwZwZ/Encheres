@@ -6,11 +6,16 @@ import fr.eni.bo.Utilisateur;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
     private static final String INSERT_USER = "insert into UTILISATEURS(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, administrateur) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_USER_BY_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email=?";
+    private static final String SELECT_ALL_PSEUDO = "SELECT pseudo FROM UTILISATEURS";
+    private static final String SELECT_ALL_EMAIL = "SELECT email FROM UTILISATEURS";
 
     @Override
     public void insertUser(Utilisateur utilisateur) throws BusinessException {
@@ -62,6 +67,42 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_ECHEC);
             throw businessException;
         }
+    }
+
+    @Override
+    public List<String> selectAllPseudo() throws BusinessException {
+        List<String> listeDesPseudos = new ArrayList<>();
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            Statement pstmt = cnx.createStatement();
+            ResultSet rs = pstmt.executeQuery(SELECT_ALL_PSEUDO);
+            while (rs.next()) {
+                listeDesPseudos.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_UTILISATEUR_ECHEC);
+            throw businessException;
+        }
+        return listeDesPseudos;
+    }
+
+    @Override
+    public List<String> selectAllEmail() throws BusinessException {
+        List<String> listeDesEmail = new ArrayList<>();
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            Statement pstmt = cnx.createStatement();
+            ResultSet rs = pstmt.executeQuery(SELECT_ALL_EMAIL);
+            while (rs.next()) {
+                listeDesEmail.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_UTILISATEUR_ECHEC);
+            throw businessException;
+        }
+        return listeDesEmail;
     }
 
     @Override

@@ -14,9 +14,9 @@
 
 <form action="${pageContext.request.contextPath}/inscription" method="post">
     <label for="pseudo">Pseudo :</label>
-        <input type="text" name="pseudo" id="pseudo" placeholder="pseudo">
+        <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" value="${pseudo}">
     <label for="prenom">Prénom :</label>
-        <input type="text" name="prenom" id="prenom" placeholder="prenom">
+        <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${prenom}">
     <label for="nom">Nom :</label>
         <input type="text" name="nom" id="nom" placeholder="nom">
     <label for="email">Email :</label>

@@ -47,11 +47,16 @@ public abstract class CodesErreurBll {
     /**
      * Echec le statut de l'utilisateur ne respecte pas les règles définies
      */
-    public static final int REGLE_USER_IDUNIQUE_ERREUR = 20010;
+    public static final int REGLE_USER_PSEUDOUNIQUE_ERREUR = 20010;
     /**
      * Echec le mot de passe ne respecte pas les règles définies
      */
-    public static final int REGLE_USER_MDP_ERREUR = 20011;
+    public static final int REGLE_USER_EMAIL_ERREUR = 20011;
+
+    /**
+     * Echec le mot de passe ne respecte pas les règles définies
+     */
+    public static final int REGLE_USER_MDP_ERREUR = 20012;
 
 
     /**

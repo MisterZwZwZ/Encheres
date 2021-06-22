@@ -1,14 +1,10 @@
 package fr.eni.bll;
 
 import fr.eni.BusinessException;
-import fr.eni.bo.Article;
 import fr.eni.bo.Utilisateur;
 import fr.eni.dal.DAOFactory;
-import fr.eni.dal.DalException;
 import fr.eni.dal.UtilisateurDAO;
 
-import java.rmi.UnexpectedException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UtilisateurManager {
@@ -19,10 +15,9 @@ public class UtilisateurManager {
         this.userDAO = DAOFactory.getUtilisateurDAO();
     }
 
-
     public void insererUtilisateur(String pseudo, String nom, String prenom, String email, String telephone,
                                    String rue, String codePostal, String ville, String motDePasse) throws BusinessException {
-
+        //TODO les erreurs au niveau de la BLL ne sont pas remontées jusqu'à l'ihm
         BusinessException businessException = new BusinessException();
         this.validerDonneesUtilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse,
                 businessException);
@@ -39,15 +34,22 @@ public class UtilisateurManager {
         }
     }
 
-    private void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) {
+    private void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
 
-        // TODO Personnaliser les constantes erreurs pour chaque cas
         if(  pseudo==null || pseudo.trim().length()>30  )
         {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
         }
-
-        //TODO vérifier que le pseudo n'est pas déjà présent en BDD
+        //Vérifier si le pseudo n'existe pas déjà en bdd
+        List<String> listeDesPseudosEnBase = userDAO.selectAllPseudo();
+        if (listeDesPseudosEnBase != null) {
+            for (String p :listeDesPseudosEnBase
+                 ) {
+                if (p.equals(pseudo)){
+                    businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDOUNIQUE_ERREUR);
+                }
+            }
+        }
 
         if( nom==null || nom.trim().length()>30){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_NOM_ERREUR);
@@ -55,10 +57,24 @@ public class UtilisateurManager {
         if( prenom==null || prenom.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PRENOM_ERREUR);
         }
-        if(  email==null || pseudo.trim().length()>60 ){
+        if(  email==null || email.trim().length()>60 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
-        if(  rue==null || email.trim().length()>30 ){
+        //Vérifier si l'email n'existe pas déjà en bdd
+        List<String> listeDesEmailEnBase = userDAO.selectAllEmail();
+        if (listeDesEmailEnBase != null) {
+            for (String e :listeDesEmailEnBase
+            ) {
+                if (e.equals(email)){
+                    businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
+                }
+            }
+        }
+        //TODO : vérifier que le téléphone ne contient que des chiffres
+        if(  telephone.trim().length()>15 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        }
+        if(  rue==null || rue.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
         }
         if(  codePostal==null || codePostal.trim().length()>10 ){

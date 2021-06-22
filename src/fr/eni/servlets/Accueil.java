@@ -12,8 +12,8 @@ import java.io.IOException;
 @WebServlet("/accueil")
 public class Accueil extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("coucou");
-        req.getRequestDispatcher("WEB-INF/accueil.jsp").forward(req, resp);
+        request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
     }
 }

@@ -8,7 +8,7 @@
 
 <h2>Mon profil</h2>
 
-<form action="" method="">
+<form action="<%=request.getContextPath()%>/inscription" method="POST">
     <label for="pseudo">Pseudo :</label>
         <input type="text" id="pseudo" value="pseudo">
     <label for="prenom">Prénom :</label>
@@ -25,10 +25,10 @@
         <input type="text" id="codepostal" value="codepostal">
     <label for="ville">Ville :</label>
         <input type="text" id="ville" value="ville">
-    <label for="motdepasse">Mot de passe :</label>
-        <input type="password" id="motdepasse" value="motdepasse">
-    <label for="confmotdepasse">Confirmation  :</label>
-        <input type="password" id="confmotdepasse" value="confmotdepasse">
+    <label for="pass">Mot de passe :</label>
+        <input type="password" id="pass" value="pass">
+    <label for="confpass">Confirmation  :</label>
+        <input type="password" id="confpass" value="confpass">
 
     <input type="submit" value="Créer">
     <input type="submit" value="Annuler">

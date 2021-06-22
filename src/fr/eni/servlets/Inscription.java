@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/profil")
-public class Profil extends HttpServlet {
+@WebServlet("/inscription")
+public class Inscription extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getRequestDispatcher("WEB-INF/profil.jsp").forward(request,response);
+    request.getRequestDispatcher("WEB-INF/inscription.jsp").forward(request,response);
     }
 
     @Override

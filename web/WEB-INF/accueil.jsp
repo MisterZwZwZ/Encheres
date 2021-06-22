@@ -11,7 +11,7 @@
 </header>
 
 <p>Filtres</p>
-<form action="" method="">
+<form action="" method="POST">
     <input type="search" id="recherche-article" name="recherche" placeholder="Vous cherchez ?">
     <button>Rechercher</button>
     <select name="categories" id="categories">

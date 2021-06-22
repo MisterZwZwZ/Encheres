@@ -5,7 +5,7 @@ package fr.eni.servlets;
 public abstract class CodesErreurServlet {
 
     /**
-     * Format id liste course incorrect
+     * Format id incorrect
      */
     public static final int FORMAT_ID_ARTICLE_ERREUR=30000;
 
@@ -32,5 +32,13 @@ public abstract class CodesErreurServlet {
     public static final Integer DATE_FIN_ARTICLE_ERREUR = 30034;
     public static final Integer PRIX_INITIAL_ARTICLE_ERREUR = 30035;
     public static final Integer PRIX_VENTE_ARTICLE_ERREUR = 30036;
+
+    /**
+     * Mot de passe connexion saisis incorrect
+     */
+    public static final Integer MDP_INCORRECT = 30012;
+    public static final Integer UTILISATEUR_INEXISTANT = 30013;
+
+    //
 
 }

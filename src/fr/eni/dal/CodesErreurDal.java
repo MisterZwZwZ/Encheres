@@ -20,22 +20,34 @@ public abstract class CodesErreurDal {
         /**
          * Echec de la lecture des articles
          */
-        public static final int LECTURE_ARTICLES_ECHEC = 10002;
+        public static final int LECTURE_ARTICLES_ECHEC = 10032;
         /**
          * Echec de la lecture des articles par filtres
          */
-        public static final int LECTURE_ARTICLES_FILTRES_ECHEC = 10003;
+        public static final int LECTURE_ARTICLES_FILTRES_ECHEC = 10033;
         /**
-         * Liste d'utilisateur inexistant
+         * Liste d'article' inexistante
          */
-        public static final int LECTURE_UTILISATEUR_INEXISTANT = 10004;
+        public static final int LECTURE_ARTICLE_INEXISTANT = 10034;
         /**
          * Erreur à la suppression d'un article
          */
-        public static final int SUPPRESSION_ARTICLE_ERREUR = 10005;
+        public static final int SUPPRESSION_ARTICLE_ERREUR = 10035;
+
+
+        // codes erreurs utilisateurs
         /**
-         * Erreur à la suppression d'une liste
+         * Liste d'article' inexistante
+         */
+        public static final int LECTURE_UTILISATEUR_INEXISTANT = 10001;
+
+        /**
+         * Echec de la lecture des articles
+         */
+        public static final int LECTURE_UTILISATEUR_ECHEC = 10002;
+
+        /**
+         * Erreur à la suppression d'un utilisateur
          */
         public static final int SUPPRESSION_UTILISATEUR_ERREUR = 10006;
-
 }

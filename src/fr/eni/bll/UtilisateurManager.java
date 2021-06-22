@@ -16,7 +16,7 @@ public class UtilisateurManager {
     private final UtilisateurDAO userDAO;
 
     public UtilisateurManager() {
-        this.userDAO = DAOFactory.getUtilisateurDAO();;
+        this.userDAO = DAOFactory.getUtilisateurDAO();
     }
 
 
@@ -70,5 +70,11 @@ public class UtilisateurManager {
         if(  motDePasse==null || motDePasse.trim().length()>100 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
+    }
+
+    public Utilisateur retournerUtilisateur(String identifiant) throws BusinessException {
+        Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(identifiant);
+
+        return  utilisateurTrouve;
     }
 }

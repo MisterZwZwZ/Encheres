@@ -48,6 +48,8 @@ public class LoginServlet extends HttpServlet {
                 //renvoyer message d'erreur mot de passe sur la jsp login
                 listeCodesErreur.add(CodesErreurServlet.MDP_INCORRECT);
                 request.setAttribute("listeCodesErreur", listeCodesErreur);
+                // On garde l'affichage email, fragment pour entête
+                request.setAttribute("email", email);
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }
         } catch (BusinessException ex) {

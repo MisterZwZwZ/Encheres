@@ -1,14 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Accueil</title>
 </head>
 <body>
-<header>
-    <h1>ENI-Encheres</h1>
-    <a href="<%=request.getContextPath()%>/inscription">S'inscrire</a>
-    <a href="<%=request.getContextPath()%>/login">Se connecter</a>
-</header>
+
+<jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
 <p>Filtres</p>
 <form action="" method="POST">

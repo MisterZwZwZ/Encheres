@@ -26,9 +26,9 @@ public abstract class CodesErreurDal {
          */
         public static final int LECTURE_ARTICLES_FILTRES_ECHEC = 10003;
         /**
-         * Liste d'article' inexistante
+         * Liste d'utilisateur inexistant
          */
-        public static final int LECTURE_LISTE_INEXISTANTE = 10004;
+        public static final int LECTURE_UTILISATEUR_INEXISTANT = 10004;
         /**
          * Erreur à la suppression d'un article
          */

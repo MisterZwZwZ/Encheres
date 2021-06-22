@@ -16,4 +16,9 @@ public class Accueil extends HttpServlet {
         System.out.println("coucou");
         request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+    }
 }

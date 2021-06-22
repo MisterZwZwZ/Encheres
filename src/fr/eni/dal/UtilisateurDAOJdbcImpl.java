@@ -1,5 +1,6 @@
 package fr.eni.dal;
 
+import fr.eni.BusinessException;
 import fr.eni.bo.Utilisateur;
 
 import java.sql.Connection;
@@ -11,12 +12,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String INSERT_USER = "insert into UTILISATEURS(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, administrateur) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     @Override
-    public void insertUser(Utilisateur utilisateur) throws DalException {
+    public void insertUser(Utilisateur utilisateur) throws BusinessException {
         if (utilisateur == null) {
-            DalException dalException = new DalException("erreur lors de l'insertion - l'utilisateur ne peut pas être vide");
-            //FIXME : selon si on utilise des codes erreur ou non
-            // dalException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
-            throw dalException;
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_NULL);
+            throw businessException;
         }
 
         try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -56,10 +56,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            DalException dalException = new DalException("erreur lors de l'insertion d'un utilisateur");
-            //FIXME : selon si on utilise des codes erreur ou non
-            // dalException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
-            throw dalException;
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_ECHEC);
+            throw businessException;
         }
     }
 }

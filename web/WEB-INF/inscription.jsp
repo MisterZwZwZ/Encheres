@@ -1,37 +1,54 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="fr.eni.messages.LecteurErreur" %>
+
+
 <html>
 <head>
-    <title>Profil</title>
+    <title>Inscription</title>
 </head>
 <body>
 <h1>ENI-Enchères</h1>
 
-<h2>Mon profil</h2>
+<h2>Inscription</h2>
 
-<form action="<%=request.getContextPath()%>/inscription" method="POST">
+<form action="${pageContext.request.contextPath}/inscription" method="post">
     <label for="pseudo">Pseudo :</label>
-        <input type="text" id="pseudo" value="pseudo">
+        <input type="text" name="pseudo" id="pseudo" placeholder="pseudo">
     <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" value="prenom">
+        <input type="text" name="prenom" id="prenom" placeholder="prenom">
     <label for="nom">Nom :</label>
-        <input type="text" id="nom" value="nom">
+        <input type="text" name="nom" id="nom" placeholder="nom">
     <label for="email">Email :</label>
-        <input type="email" id="email" value="email">
+        <input type="email" name="email" id="email" placeholder="email">
     <label for="telephone">Téléphone :</label>
-        <input type="tel" id="telephone" value="telephone">
+        <input type="tel" name="telephone" id="telephone" placeholder="telephone">
     <label for="rue">Rue :</label>
-        <input type="text" id="rue" value="rue">
+        <input type="text" name="rue" id="rue" placeholder="rue">
     <label for="codepostal">Code postal :</label>
-        <input type="text" id="codepostal" value="codepostal">
+        <input type="text" name="cp" id="codepostal" placeholder="code postal">
     <label for="ville">Ville :</label>
-        <input type="text" id="ville" value="ville">
+        <input type="text" name="ville" id="ville" placeholder="ville">
     <label for="pass">Mot de passe :</label>
-        <input type="password" id="pass" value="pass">
+        <input type="password" name="password" id="pass" placeholder="mot de passe">
     <label for="confpass">Confirmation  :</label>
-        <input type="password" id="confpass" value="confpass">
+        <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passer">
 
     <input type="submit" value="Créer">
     <input type="submit" value="Annuler">
 </form>
+
+
+<c:if test="${!empty listeCodesErreur}">
+    <div class="alert alert-danger" role="alert">
+        <strong>Erreur !</strong>
+        <ul>
+            <c:forEach var="code" items="${listeCodesErreur}">
+                <li>${LecteurErreur.getMessageErreur(code)}</li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
+
 </body>
 </html>

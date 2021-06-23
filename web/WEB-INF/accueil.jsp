@@ -24,15 +24,18 @@
     <c:choose>
         <c:when test="${ArticlesEncherissables.size()>0}">
             <table>
+                <tbody>
                 <c:forEach items="${ArticlesEncherissables}" var="article">
-                    <tbody>
-                        <tr><c:out value="${article.nomArticle}"/></tr>
-                        <tr><c:out value="${article.description}"/></tr>
-                        <tr><c:out value="Prix de vente : ${article.prixInitial} points"/></tr>
-                        <tr><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></tr>
+                    <tr><c:out value="${article.nomArticle}"/></tr>
+                    <tr><c:out value="${article.description}"/></tr>
+                    <tr><c:out value="Prix de vente : ${article.prixInitial} points"/></tr>
+                    <tr><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></tr>
+                    <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
                         <tr><c:out value="Vendeur : ${article.vendeur.pseudo}"/></tr>
-                    </tbody>
+                    </a>
+
                 </c:forEach>
+                </tbody>
             </table>
         </c:when>
         <c:otherwise>

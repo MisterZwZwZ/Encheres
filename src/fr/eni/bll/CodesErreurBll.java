@@ -62,7 +62,10 @@ public abstract class CodesErreurBll {
      * Echec le mot de passe ne respecte pas les règles définies (complexité)
      */
     public static final int REGLE_USER_MDP_ERREUR = 20013;
-
+    /**
+     * Echec le pseudo ne correspond à aucun compte en bdd
+     */
+    public static final int PSEUDO_INEXISTANT = 10003;
 
 
     /**

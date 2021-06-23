@@ -11,6 +11,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
     private static final String INSERT_USER = "insert into UTILISATEURS(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, administrateur) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_USER_BY_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email=?";
+    private static final String SELECT_USER_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo=?";
     private static final String SELECT_ALL_PSEUDO = "SELECT pseudo FROM UTILISATEURS";
     private static final String SELECT_ALL_EMAIL = "SELECT email FROM UTILISATEURS";
     private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE ID=?";
@@ -146,6 +147,50 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
                     utilisateur.setCredit(rs.getInt("credit"));
                     utilisateur.setAdministrateur(rs.getBoolean("administrateur"));
                 }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //gérer erreur SQL
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_UTILISATEUR_ECHEC);
+            throw businessException;
+        }
+        if (utilisateur.getNoUtilisateur() == 0) {
+            //gérer utilisateur inexistant
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_UTILISATEUR_INEXISTANT);
+            throw businessException;
+        }
+
+        return utilisateur;
+    }
+
+
+    /**
+     * Retourne un objet Utilisateur correspondant au pseudo passé en argument
+     * @param pseudo
+     * @return Utilisateur
+     * @throws BusinessException
+     */
+    @Override
+    public Utilisateur selectUserByPseudo(String pseudo) throws BusinessException {
+        Utilisateur utilisateur = new Utilisateur();
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_USER_BY_PSEUDO);
+            pstmt.setString(1, pseudo);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+                utilisateur.setPseudo(rs.getString("pseudo"));
+                utilisateur.setNom(rs.getString("nom"));
+                utilisateur.setPrenom(rs.getString("prenom"));
+                utilisateur.setEmail(rs.getString("email"));
+                utilisateur.setTelephone(rs.getString("telephone"));
+                utilisateur.setRue(rs.getString("rue"));
+                utilisateur.setCodePostal(rs.getString("code_postal"));
+                utilisateur.setVille(rs.getString("ville"));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

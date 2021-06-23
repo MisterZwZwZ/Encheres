@@ -5,6 +5,7 @@ import fr.eni.bo.Utilisateur;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
 
+import java.io.CharConversionException;
 import java.util.List;
 
 public class UtilisateurManager {
@@ -20,7 +21,7 @@ public class UtilisateurManager {
      */
     public void insererUtilisateur(String pseudo, String nom, String prenom, String email, String telephone,
                                    String rue, String codePostal, String ville, String motDePasse) throws BusinessException {
-        //TODO les erreurs au niveau de la BLL ne sont pas remontées jusqu'à l'ihm
+
         BusinessException businessException = new BusinessException();
         this.validerDonneesUtilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse,
                 businessException);
@@ -40,7 +41,7 @@ public class UtilisateurManager {
     /**
      * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
      */
-    private void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
+    public void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
 
         if(  pseudo==null || pseudo.trim().length()>30  )
         {
@@ -57,7 +58,13 @@ public class UtilisateurManager {
             }
         }
 
-        //TODO : vérifier que le pseudo ne contient que des caractères alphanumériques
+        //Vérifier que le pseudo ne contient que des caractères alphanumériques
+        //vérification du mot de passe
+        Boolean alphanum = pseudoValidation(pseudo);
+        if (!alphanum) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
+        }
+
         if( nom==null || nom.trim().length()>30){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_NOM_ERREUR);
         }
@@ -102,21 +109,29 @@ public class UtilisateurManager {
     }
 
     /**
+     * Cette méthode vérifie que le pseudo choisi par l'utilisateur ne contient que des caractères alphanumériques
+     * @param pseudo
+     * @return
+     */
+    public Boolean pseudoValidation(String pseudo) {
+        Boolean alphanum =  pseudo.matches("(\\w|-|_)+");;
+        return alphanum;
+    }
+
+    /**
      * On impose des règles sur le mot de passe
      * (?=.*[0-9]) un chiffre doit apparaître au moins une fois
      * (?=.*[a-z]) une lettre minuscule doit apparaître au moins une fois
      * (?=.*[A-Z]) une lettre majuscule doit apparaître au moins une fois
-     * (?=.*[@#$%^&+=]) un caractère spécial doit apparaître au moins une fois
      * (?=\\S+$) aucun espace n'est autorisé dans toute la chaîne
      * .{8,} au moins 8 caractères
      * @param motDePasse
      */
     public boolean passwordValidation(String motDePasse) {
-        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
         Boolean result =  motDePasse.matches(pattern);
         return result;
         }
-
 
     /**
      * Retourne un objet Utilisateur correspondant au mot de passe passé en argument
@@ -128,6 +143,31 @@ public class UtilisateurManager {
         Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(email);
         // TODO ajout de contrôles métiers pour valider le formatage de l'adresse mail
         return  utilisateurTrouve;
+    }
+
+    /**
+     * Retourne un objet utilisateur correspond au pseudo passé en arugment.
+     * @param pseudo
+     * @throws BusinessException
+     */
+    public Utilisateur retournerUtilisateurParPseudo(String pseudo) throws BusinessException {
+        BusinessException businessException = new BusinessException();
+        if(  pseudo==null || pseudo.trim().length()>30  )
+        {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
+        }
+        //Vérifier si le pseudo n'existe pas déjà en bdd
+        List<String> listeDesPseudosEnBase = userDAO.selectAllPseudo();
+        if (listeDesPseudosEnBase != null) {
+            for (String p :listeDesPseudosEnBase
+            ) {
+                if (!p.equals(pseudo)){
+                    businessException.ajouterErreur(CodesErreurBll.PSEUDO_INEXISTANT);
+                }
+            }
+        }
+        Utilisateur utilisateurTrouve = userDAO.selectUserByPseudo(pseudo);
+        return utilisateurTrouve;
     }
 
     //TODO : relier cette méthode à l'IHM

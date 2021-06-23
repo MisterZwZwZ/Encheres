@@ -140,11 +140,8 @@ public class UtilisateurManager {
      * @throws BusinessException
      */
     public Utilisateur retournerUtilisateurParEmail(String email) throws BusinessException {
-
         Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(email);
-
         return  utilisateurTrouve;
-
     }
 
     /**

@@ -14,21 +14,50 @@
 </head>
 <body>
 
+<jsp:include page="/WEB-INF/fragments/header.jsp"/>
+
 <table>
     <tbody>
-    <tr>Pseudo : ${utilisateur.pseudo} </tr>
-    <tr>Nom : ${utilisateur.nom} </tr>
-    <tr>Prénom : ${utilisateur.prenom}</tr>
-    <tr>Email : ${utilisateur.email} </tr>
-    <tr>Telephone : ${utilisateur.telephone} </tr>
-    <tr>Rue : ${utilisateur.rue} </tr>
-    <tr>Code postal : ${utilisateur.codePostal} </tr>
-    <tr>Ville : ${utilisateur.ville} </tr>
+    <tr>
+        <td>Pseudo : </td>
+        <td>${utilisateur.pseudo} </td>
+    </tr>
+    <tr>
+        <td>Nom : </td>
+        <td>${utilisateur.nom} </td>
+    </tr>
+    <tr>
+        <td>Prénom : </td>
+        <td>${utilisateur.prenom}</td>
+    </tr>
+    <tr>
+        <td>Email : </td>
+        <td>${utilisateur.email} </td>
+    </tr>
+    <tr>
+        <td>Telephone : </td>
+        <td>${utilisateur.telephone} </td>
+    </tr>
+    <tr>
+        <td>Rue : </td>
+        <td>${utilisateur.rue} </td>
+    </tr>
+    <tr>
+        <td>Code postal : </td>
+        <td>${utilisateur.codePostal} </td>
+    </tr>
+    <tr>
+        <td>Ville : </td>
+        <td>${utilisateur.ville} </td>
+    </tr>
     </tbody>
 </table>
 
 <a href="accueil">Retour vers l'accueil</a>
 <!-- gérer le bouton modifier si on est connecté-->
+<c:if test="${sessionScope.utilisateur.pseudo == utilisateur.pseudo }">
+    <a href="<%=request.getContextPath()%>/monprofil">Modifier</a>
+</c:if>
 
 </body>
 </html>

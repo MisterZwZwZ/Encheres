@@ -10,15 +10,15 @@
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
 <p>Filtres</p>
-<form action="" method="POST">
+<form action="${pageContext.request.contextPath}/accueil" method="POST">
     <input type="search" id="recherche-article" name="recherche" placeholder="Vous cherchez ?">
-    <button>Rechercher</button>
     <select name="categories" id="categories">
         <option value="Informatique">Informatique</option>
         <option value="Ameublement">Ameublement</option>
         <option value="Vetements">Vêtements</option>
         <option value="Sports&Loisirs">Sports & Loisirs</option>
     </select>
+    <input type="submit" value="Rechercher">
 </form>
 <div>
     <c:choose>
@@ -33,7 +33,6 @@
                     <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
                         <tr><c:out value="Vendeur : ${article.vendeur.pseudo}"/></tr>
                     </a>
-
                 </c:forEach>
                 </tbody>
             </table>

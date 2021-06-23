@@ -39,8 +39,15 @@ public class AccueilServlet extends HttpServlet {
         request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        //récupération du choix de la catégorie ou de la recherche saisie de l'utilisateur
+        String categorie = request.getParameter("categories");
+        String recherche = request.getParameter("recherche");
+
+
+
+        doGet(request,response);
     }
 }

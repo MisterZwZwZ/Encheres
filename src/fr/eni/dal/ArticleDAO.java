@@ -1,10 +1,14 @@
 package fr.eni.dal;
 
+import fr.eni.BusinessException;
 import fr.eni.bo.Article;
+import fr.eni.bo.Utilisateur;
 
 import java.util.List;
 
 public interface ArticleDAO {
 
-    List<Article> selectArticlesEncherissables();
+    void insertArticle(Article article) throws BusinessException;
+    List<Article> selectArticlesEncherissables() throws BusinessException;
+    List<Article> selectArticlesByCategorie(int id) throws BusinessException;
 }

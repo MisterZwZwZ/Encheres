@@ -97,6 +97,10 @@ public abstract class CodesErreurBll {
      * Echec le prix final de l'article  ne respecte pas les règles définies
      */
     public static final int REGLE_ART_PRIXFINAL_ERREUR = 20036;
+    /**
+     * La catégorie de l'article n'est pas choisie
+     */
+    public static final int REGLE_ART_CATEGORIE_ERREUR = 20037;
 
 
 }

@@ -9,6 +9,7 @@ import fr.eni.dal.DAOFactory;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ArticleManager {
@@ -20,27 +21,11 @@ public class ArticleManager {
     }
 
     /**
-     * Insere un article en BDD
-     */
-    //TODO connection à l'IHM
-    public void insererArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int prixVente, Categorie categorie, Utilisateur vendeur) throws BusinessException {
-        BusinessException businessException = new BusinessException();
-
-        if(!(businessException.hasErreurs())){
-            Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, prixVente, categorie, vendeur);
-            articleDAO.insertArticle(article);
-        }
-        else {
-            throw businessException;
-        }
-    }
-
-    /**
      * Vérifie les données saisies par l'utilisateur lors de l'ajout d'un article
      */
     public void validerArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int prixVente, Categorie categorie, BusinessException businessException) throws BusinessException{
         if(nomArticle == null || nomArticle.trim().length()>30){
-          businessException.ajouterErreur(CodesErreurBll.REGLE_ART_NOM_ERREUR);
+            businessException.ajouterErreur(CodesErreurBll.REGLE_ART_NOM_ERREUR);
         }
         if(description == null || description.trim().length()>300){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_DESCR_ERREUR);
@@ -48,7 +33,7 @@ public class ArticleManager {
         if(dateDebutEnchere == null || dateDebutEnchere.isBefore(LocalDate.now())){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_DATEDEBUT_ERREUR);
         }
-        if(dateFinEnchere == null || dateFinEnchere.isBefore(dateDebutEnchere)){
+        if(dateFinEnchere == null || dateFinEnchere.isBefore(Objects.requireNonNull(dateDebutEnchere))){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_DATEFIN_ERREUR);
         }
         if(prixInitial <= 0 ){
@@ -63,6 +48,25 @@ public class ArticleManager {
     }
 
     /**
+     * Insere un article en BDD une fois les contrôles effectués
+     */
+    //TODO connection à l'IHM
+    public void insererArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int prixVente, Categorie categorie, Utilisateur vendeur) throws BusinessException {
+
+        BusinessException businessException = new BusinessException();
+        this.validerArticle(nomArticle,description, dateDebutEnchere,dateFinEnchere, prixInitial, prixVente, categorie, businessException);
+
+        if(!(businessException.hasErreurs())){
+            Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, prixVente, categorie, vendeur);
+            articleDAO.insertArticle(article);
+        }
+        else {
+            throw businessException;
+        }
+    }
+
+
+    /**
      * Renvoie la liste des articles encherissables
      */
     public List<Article> AfficherArticlesEncherissables() throws BusinessException {
@@ -73,10 +77,14 @@ public class ArticleManager {
     /**
      * Renvoie la liste des articles par catégorie
      */
+    //TODO connection à l'IHM
     public List<Article> AfficherArticleParCategorie(int noCategorie) throws BusinessException {
       return this.articleDAO.selectArticlesByCategorie(noCategorie);
     }
 
-
+    //TODO connection à l'IHM
+    public void supprimerArticle(int id) throws BusinessException {
+        articleDAO.deleteArticle(id);
+    }
 
 }

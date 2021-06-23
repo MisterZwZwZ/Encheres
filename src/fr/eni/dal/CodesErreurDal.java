@@ -17,6 +17,8 @@ public abstract class CodesErreurDal {
 
 
         //TODO personnaliser les erreurs DAL
+
+        // codes erreurs articles
         /**
          * Echec de la lecture des articles
          */
@@ -26,7 +28,7 @@ public abstract class CodesErreurDal {
          */
         public static final int LECTURE_ARTICLES_FILTRES_ECHEC = 10033;
         /**
-         * Liste d'article' inexistante
+         * Liste d'articles inexistante
          */
         public static final int LECTURE_ARTICLE_INEXISTANT = 10034;
         /**

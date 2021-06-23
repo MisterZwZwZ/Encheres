@@ -26,13 +26,23 @@
             <table>
                 <tbody>
                 <c:forEach items="${ArticlesEncherissables}" var="article">
-                    <tr><c:out value="${article.nomArticle}"/></tr>
-                    <tr><c:out value="${article.description}"/></tr>
-                    <tr><c:out value="Prix de vente : ${article.prixInitial} points"/></tr>
-                    <tr><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></tr>
+                    <tr>
+                        <td><c:out value="${article.nomArticle}"/></td>
+                    </tr>
+                    <tr>
+                        <td><c:out value="${article.description}"/></td>
+                    </tr>
+                    <tr>
+                        <td><c:out value="Prix de vente : ${article.prixInitial} points"/></td>
+                    </tr>
+                    <tr>
+                        <td><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></td>
+                    </tr>
+                    <tr>
                     <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
-                        <tr><c:out value="Vendeur : ${article.vendeur.pseudo}"/></tr>
+                        <td><c:out value="Vendeur : ${article.vendeur.pseudo}"/></td>
                     </a>
+                    </tr>
                 </c:forEach>
                 </tbody>
             </table>

@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
             if (motDePasse.equals(motPasseBDD)) {
                 //envoi de l'utilisateur à la session
                 session.setAttribute("utilisateur", utilisateur);
-                request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
+                request.getRequestDispatcher("accueil").forward(request, response);
 
             } else {
                 //renvoyer message d'erreur mot de passe sur la jsp login
@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
             listeCodesErreur.add(CodesErreurServlet.UTILISATEUR_INEXISTANT);
 
             request.setAttribute("listeCodesErreur", listeCodesErreur);
-            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+            request.getRequestDispatcher("accueil").forward(request, response);
             ex.printStackTrace();
         }
     }

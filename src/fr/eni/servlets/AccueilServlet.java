@@ -26,6 +26,7 @@ public class AccueilServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.invalidate();
         }
+        //TODO affichage quand connecté ?
 
 //        affichage de la liste des articles encherissables
         ArticleManager articleManager = new ArticleManager();
@@ -36,5 +37,10 @@ public class AccueilServlet extends HttpServlet {
             e.printStackTrace();
         }
         request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 }

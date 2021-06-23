@@ -118,7 +118,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     }
 
     /**
-     * Retourne un objet Utilisateur correspondant au mot de passe passé en argument
+     * Retourne un objet Utilisateur correspondant à l'email passé en argument
      * @param email
      * @return Utilisateur
      * @throws BusinessException
@@ -130,7 +130,6 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             PreparedStatement pstmt = cnx.prepareStatement(SELECT_USER_BY_EMAIL);
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
-
 
                 while (rs.next()) {
                     utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
@@ -146,6 +145,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
                     utilisateur.setCredit(rs.getInt("credit"));
                     utilisateur.setAdministrateur(rs.getBoolean("administrateur"));
                 }
+            rs.close();
+            pstmt.close();
 
         } catch (Exception e) {
             e.printStackTrace();

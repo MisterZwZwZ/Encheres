@@ -27,6 +27,19 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String motDePasse = request.getParameter("motDePasse");
 
+        if(email == null  || email.trim().equals("")){
+            listeCodesErreur.add(CodesErreurServlet.EMAIL_UTILISATEUR_OBLIGATOIRE);
+        }
+        if(motDePasse == null || motDePasse.trim().equals("")){
+            //On consere l'email saisi précédement
+            request.setAttribute("email", email);
+            listeCodesErreur.add(CodesErreurServlet.MDP_UTILISATEUR_OBLIGATOIRE);
+        }
+
+        if(listeCodesErreur.size()>0) {
+            request.setAttribute("listeCodesErreur",listeCodesErreur);
+            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+        }
 
         UtilisateurManager utilisateurManager = new UtilisateurManager();
         Utilisateur utilisateur = null;
@@ -35,11 +48,12 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         try {
-            //récupération de l'utilisateur associé à l'indentifiant en BDD
-            utilisateur = utilisateurManager.retournerUtilisateur(email);
-            //vérification de la coorespondance du mot de passe
-            String motPasseBDD = utilisateur.getMotDePasse();
-            if (motDePasse.equals(motPasseBDD)) {
+            //récupération de l'utilisateur associé à l'email en BDD & vérification de la coorespondance du mot de passe
+            utilisateur = utilisateurManager.retournerUtilisateurParEmail(email);
+            //l'utilisateur existe, on vérifie que le mot de passe correspond
+            boolean mdpIsOk = utilisateurManager.MotDePasseCorrespond(motDePasse, utilisateur);
+
+            if (mdpIsOk) {
                 //envoi de l'utilisateur à la session
                 session.setAttribute("utilisateur", utilisateur);
                 request.getRequestDispatcher("accueil").forward(request, response);
@@ -48,16 +62,14 @@ public class LoginServlet extends HttpServlet {
                 //renvoyer message d'erreur mot de passe sur la jsp login
                 listeCodesErreur.add(CodesErreurServlet.MDP_INCORRECT);
                 request.setAttribute("listeCodesErreur", listeCodesErreur);
-                // On garde l'affichage email, fragment pour entête
+                // On garde l'affichage de l'email
                 request.setAttribute("email", email);
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }
         } catch (BusinessException ex) {
-            //renvoyer message d'erreur utilisateur inconnu sur la jsp login
-            listeCodesErreur.add(CodesErreurServlet.UTILISATEUR_INEXISTANT);
-
-            request.setAttribute("listeCodesErreur", listeCodesErreur);
-            request.getRequestDispatcher("accueil").forward(request, response);
+            //renvoyer messages d'erreur remontés par les autres couches
+            request.setAttribute("listeCodesErreur", ex.getListeCodesErreur());
+            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             ex.printStackTrace();
         }
     }

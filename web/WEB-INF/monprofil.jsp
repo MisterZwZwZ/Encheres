@@ -41,9 +41,10 @@
     <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passe">
     <p>Crédit : ${sessionScope.utilisateur.credit}</p>
     <input type="submit" value="Enregistrer">
-    <a href="${pageContext.request.contextPath}/supp"><button>Supprimer mon compte</button></a>
-
 </form>
+
+<a href="${pageContext.request.contextPath}/supp"><button>Supprimer mon compte</button></a>
+<a href="${pageContext.request.contextPath}/profil"><button>Retour</button></a>
 
 </body>
 </html>

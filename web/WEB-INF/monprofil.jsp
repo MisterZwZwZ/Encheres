@@ -20,26 +20,26 @@
 <!--! créer une servlet profil / récupérer les infos de la session -->
 <form action="${pageContext.request.contextPath}/monprofil" method="post">
     <label for="pseudo">Pseudo :</label>
-    <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" value="${pseudo}">
+    <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" value="${sessionScope.utilisateur.pseudo}">
     <label for="prenom">Prénom :</label>
-    <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${prenom}">
+    <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${sessionScope.utilisateur.prenom}">
     <label for="nom">Nom :</label>
-    <input type="text" name="nom" id="nom" placeholder="nom" value="${nom}">
+    <input type="text" name="nom" id="nom" placeholder="nom" value="${sessionScope.utilisateur.nom}">
     <label for="email">Email :</label>
-    <input type="email" name="email" id="email" placeholder="email" value="${email}">
+    <input type="email" name="email" id="email" placeholder="email" value="${sessionScope.utilisateur.email}">
     <label for="telephone">Téléphone :</label>
-    <input type="tel" name="telephone" id="telephone" placeholder="telephone" value="${telephone}">
+    <input type="tel" name="telephone" id="telephone" placeholder="telephone" value="${sessionScope.utilisateur.telephone}">
     <label for="rue">Rue :</label>
-    <input type="text" name="rue" id="rue" placeholder="rue" value="${rue}">
+    <input type="text" name="rue" id="rue" placeholder="rue" value="${sessionScope.utilisateur.rue}">
     <label for="codepostal">Code postal :</label>
-    <input type="text" name="cp" id="codepostal" placeholder="code postal" value="${cp}">
+    <input type="text" name="cp" id="codepostal" placeholder="code postal" value="${sessionScope.utilisateur.codePostal}">
     <label for="ville">Ville :</label>
-    <input type="text" name="ville" id="ville" placeholder="ville" value="${ville}">
+    <input type="text" name="ville" id="ville" placeholder="ville" value="${sessionScope.utilisateur.ville}">
     <label for="pass">Mot de passe :</label>
     <input type="password" name="password" id="pass" placeholder="mot de passe">
     <label for="confpass">Confirmation  :</label>
     <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passe">
-    <p>Crédit : ${sessionScope.credit}</p>
+    <p>Crédit : ${sessionScope.utilisateur.credit}</p>
     <input type="submit" value="Enregistrer">
     <a href="${pageContext.request.contextPath}/supp"><button>Supprimer mon compte</button></a>
 

@@ -49,7 +49,7 @@ public abstract class CodesErreurBll {
      */
     public static final int REGLE_USER_PSEUDOUNIQUE_ERREUR = 20010;
     /**
-     * Echec le mot de passe ne respecte pas les règles définies
+     * Echec le mail ne respecte pas les règles définies
      */
     public static final int REGLE_USER_EMAIL_ERREUR = 20011;
 
@@ -67,6 +67,11 @@ public abstract class CodesErreurBll {
      */
     public static final int PSEUDO_INEXISTANT = 10003;
 
+
+    /**
+     * Echec correspondance mot de passe formulaire de connexion/base de donnée
+     */
+    public static final int REGLE_USER_MDP_INCORRECT = 20014;
 
     /**
      * Echec le nom de l'article ne respecte pas les règles définies

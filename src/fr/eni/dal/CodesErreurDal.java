@@ -37,14 +37,14 @@ public abstract class CodesErreurDal {
 
         // codes erreurs utilisateurs
         /**
-         * Liste d'article' inexistante
+         * utilisateur inexistant inexistante
          */
-        public static final int LECTURE_UTILISATEUR_INEXISTANT = 10001;
+        public static final int LECTURE_UTILISATEUR_INEXISTANT = 10002;
 
         /**
-         * Echec de la lecture des articles
+         * Erreur lecture utilisateur en BDD
          */
-        public static final int LECTURE_UTILISATEUR_ECHEC = 10002;
+        public static final int LECTURE_UTILISATEUR_ECHEC = 10003;
 
         /**
          * Erreur à la suppression d'un utilisateur

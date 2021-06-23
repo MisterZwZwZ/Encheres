@@ -134,15 +134,33 @@ public class UtilisateurManager {
         }
 
     /**
-     * Retourne un objet Utilisateur correspondant au mot de passe passé en argument
+     * Retourne un objet Utilisateur correspondant à l'email passé en argument
      * @param email
      * @return Utilisateur
      * @throws BusinessException
      */
-    public Utilisateur retournerUtilisateur(String email) throws BusinessException {
+    public Utilisateur retournerUtilisateurParEmail(String email) throws BusinessException {
+
         Utilisateur utilisateurTrouve = userDAO.selectUserByEmail(email);
-        // TODO ajout de contrôles métiers pour valider le formatage de l'adresse mail
+
         return  utilisateurTrouve;
+
+    }
+
+    /**
+     * Verifie que l'email saisi par l'utilisateur correspond à celui du profil de connexion demandé
+     * @param motDePasse
+     * @param utilisateur
+     * @return
+     */
+    public boolean MotDePasseCorrespond (String motDePasse, Utilisateur utilisateur){
+        BusinessException businessException = new BusinessException();
+        boolean mdpOk = true;
+        if(!(motDePasse.equals(utilisateur.getMotDePasse()))) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_INCORRECT);
+            mdpOk = false;
+        }
+        return mdpOk;
     }
 
     /**

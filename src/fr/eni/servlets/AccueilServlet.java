@@ -28,7 +28,7 @@ public class AccueilServlet extends HttpServlet {
         }
         //TODO affichage quand connecté ?
 
-//        affichage de la liste des articles encherissables
+//        affichage de la liste des articles encherissables sans être connecté (ou connecté)
 
         ArticleManager articleManager = new ArticleManager();
         try{

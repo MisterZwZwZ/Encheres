@@ -3,12 +3,12 @@ package fr.eni.bll;
 import fr.eni.BusinessException;
 import fr.eni.bo.Article;
 import fr.eni.bo.Categorie;
+import fr.eni.bo.Retrait;
 import fr.eni.bo.Utilisateur;
 import fr.eni.dal.ArticleDAO;
 import fr.eni.dal.DAOFactory;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class ArticleManager {
     /**
      * Vérifie les données saisies par l'utilisateur lors de l'ajout d'un article
      */
-    public void validerArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int prixVente, Categorie categorie, BusinessException businessException) throws BusinessException{
+    public void validerArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, BusinessException businessException) throws BusinessException{
         if(nomArticle == null || nomArticle.trim().length()>30){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_NOM_ERREUR);
         }
@@ -40,26 +40,29 @@ public class ArticleManager {
         if(prixInitial <= 0 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_PRIXINITIAL_ERREUR);
         }
-        if(prixVente <= 0){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_ART_PRIXFINAL_ERREUR);
-        }
-        if(categorie == null){
+        if(noCategorie <= 0){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_CATEGORIE_ERREUR);
         }
     }
 
     /**
-     * Insere un article en BDD une fois les contrôles effectués
+     * Insere un article et son addresse de retrait en BDD une fois les contrôles effectués
      */
-    //TODO connection à l'IHM
-    public void insererArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int prixVente, Categorie categorie, Utilisateur vendeur) throws BusinessException {
+    public void insererArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, Utilisateur vendeur, String rue, String codePostal, String ville) throws BusinessException {
 
         BusinessException businessException = new BusinessException();
-        this.validerArticle(nomArticle,description, dateDebutEnchere,dateFinEnchere, prixInitial, prixVente, categorie, businessException);
+        //vérifications des données de l'article
+        this.validerArticle(nomArticle,description, dateDebutEnchere,dateFinEnchere, prixInitial, noCategorie, businessException);
 
         if(!(businessException.hasErreurs())){
-            Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, prixVente, categorie, vendeur);
+            //créer la catégorie
+            Categorie categorie = new Categorie(noCategorie);
+            //créer l'article
+            Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, categorie, vendeur);
+            //créer le retrait
+            Retrait retrait = new Retrait(rue, codePostal, ville, article);
             articleDAO.insertArticle(article);
+            articleDAO.insertRetrait(retrait);
         }
         else {
             throw businessException;
@@ -85,7 +88,7 @@ public class ArticleManager {
       return listeArticlesParCategorie;
     }
 
-    //TODO connection à l'IHM
+    //TODO connection à l'IHM - TL
     public void supprimerArticle(int id) throws BusinessException {
         articleDAO.deleteArticle(id);
     }

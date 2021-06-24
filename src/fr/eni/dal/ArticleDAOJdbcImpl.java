@@ -2,6 +2,7 @@ package fr.eni.dal;
 
 import fr.eni.BusinessException;
 import fr.eni.bo.Article;
+import fr.eni.bo.Retrait;
 import fr.eni.bo.Categorie;
 import fr.eni.bo.Utilisateur;
 
@@ -11,11 +12,12 @@ import java.util.List;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 
-    private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie VALUES (?,?,?,?,?,?,?,?)";
-    private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
-            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
-            "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
-            "          CATEGORIES.no_categorie WHERE ARTICLES.no_categorie = ?";
+    private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES ( ?,?,?,?,?,?,?,? )";
+    private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES ( ?,?,?,? )";
+    private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, CATEGORIES.no_categorie, pseudo FROM ARTICLES " +
+            "INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur " +
+            "INNER JOIN CATEGORIES ON ARTICLES.no_categorie = CATEGORIES.no_categorie" +
+            "WHERE CATEGORIES.no_categorie = ?";
     private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE()";
     private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
@@ -28,28 +30,62 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             throw businessException;
         }
         try (Connection cnx = ConnectionProvider.getConnection()) {
-            if(article.getNoArticle()==0){
-                try {
-                PreparedStatement pstmt = cnx.prepareStatement(INSERT_ARTICLE, PreparedStatement.RETURN_GENERATED_KEYS);
-                ResultSet rs;
-                pstmt.setString(1, article.getNomArticle());
-                pstmt.setString(2, article.getDescription());
-                pstmt.setDate(3, java.sql.Date.valueOf(article.getDateDebutEnchere()));
-                pstmt.setDate(4, java.sql.Date.valueOf(article.getDateFinEnchere()));
-                pstmt.setInt(5, article.getPrixInitial());
-                pstmt.setInt(6, article.getPrixVente());
-                pstmt.setInt(7, article.getVendeur().getNoUtilisateur());
-                pstmt.setInt(8, article.getCategorie().getNoCategorie());
-                pstmt.executeUpdate();
-                rs = pstmt.getGeneratedKeys();
-                if(rs.next()){
-                    article.setNoArticle(rs.getInt(1));
-                }
+            cnx.setAutoCommit(false);
+            ResultSet rs;
+                try (PreparedStatement pstmt = cnx.prepareStatement(INSERT_ARTICLE, PreparedStatement.RETURN_GENERATED_KEYS)){
+                    pstmt.setString(1, article.getNomArticle());
+                    pstmt.setString(2, article.getDescription());
+                    pstmt.setDate(3, java.sql.Date.valueOf(article.getDateDebutEnchere()));
+                    pstmt.setDate(4, java.sql.Date.valueOf(article.getDateFinEnchere()));
+                    pstmt.setInt(5, article.getPrixInitial());
+                    pstmt.setInt(6, article.getPrixVente());
+                    pstmt.setInt(7, article.getVendeur().getNoUtilisateur());
+                    pstmt.setInt(8, article.getCategorie().getNoCategorie());
+                    pstmt.executeUpdate();
+                    rs = pstmt.getGeneratedKeys();
+                    if (rs.next()) {
+                        article.setNoArticle(rs.getInt(1));
+                    }
                 rs.close();
                 pstmt.close();
+                cnx.commit();
+                } catch (Exception e) {
+                e.printStackTrace();
+                cnx.rollback();
+                throw e;
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_ECHEC);
+            throw businessException;
+        }
+    }
+
+    /**
+     * Insère un retrait dans la BDD a l'ajout d'un article
+     */
+    @Override
+    public void insertRetrait(Retrait retrait) throws BusinessException{
+        if (retrait == null) {
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_NULL);
+            throw businessException;
+        }
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            cnx.setAutoCommit(false);
+            try (PreparedStatement pstmt = cnx.prepareStatement(INSERT_RETRAIT)){
+                pstmt.setInt(1, retrait.getArticle().getNoArticle());
+                pstmt.setString(2, retrait.getRue());
+                pstmt.setString(3, retrait.getCodePostal());
+                pstmt.setString(4, retrait.getVille());
+                pstmt.executeUpdate();
+                pstmt.close();
+                cnx.commit();
             } catch (Exception e) {
                 e.printStackTrace();
-                }
+                cnx.rollback();
+                throw e;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +95,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         }
     }
 
-        //Select de tous les articles pouvant être encherris
+    /**
+     * Select de tous les articles pouvant être encherris
+     */
     @Override
     public List<Article> selectArticlesEncherissables() throws BusinessException {
         List<Article> listeArticlesEncherissables = new ArrayList<>();
@@ -89,7 +127,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
             throw businessException;
         }
-        System.out.println(listeArticlesEncherissables);
         return listeArticlesEncherissables;
     }
 
@@ -117,8 +154,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 Categorie categorie = new Categorie(rs.getInt("no_categorie"));
                 article.setCategorie(categorie);
             }
-
-
         }catch (SQLException e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();

@@ -40,6 +40,16 @@ public class Article {
         this.vendeur = vendeur;
     }
 
+    public Article(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, Categorie categorie, Utilisateur vendeur) {
+        this.nomArticle = nomArticle;
+        this.description = description;
+        this.dateDebutEnchere = dateDebutEnchere;
+        this.dateFinEnchere = dateFinEnchere;
+        this.prixInitial = prixInitial;
+        this.categorie = categorie;
+        this.vendeur = vendeur;
+    }
+
     public int getNoArticle() {
         return noArticle;
     }
@@ -111,6 +121,7 @@ public class Article {
     public void setVendeur(Utilisateur vendeur) {
         this.vendeur = vendeur;
     }
+
 
     @Override
     public String toString() {

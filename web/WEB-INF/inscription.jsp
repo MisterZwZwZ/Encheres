@@ -35,9 +35,9 @@
         <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passe" required>
 
     <input type="submit" value="Créer">
-    <input type="submit" value="Annuler">
 </form>
 
+<a href="${pageContext.request.contextPath}/accueil"><button>Annuler</button></a>
 
 <c:if test="${!empty listeCodesErreur}">
     <div class="alert alert-danger" role="alert">

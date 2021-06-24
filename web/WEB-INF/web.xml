@@ -20,4 +20,9 @@
         <url-pattern>/private</url-pattern>
     </filter-mapping>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/page-not-found.jsp</location>
+    </error-page>
+
 </web-app>

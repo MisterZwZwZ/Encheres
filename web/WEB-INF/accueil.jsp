@@ -96,7 +96,6 @@
         </c:otherwise>
     </c:choose>
 
-
     <c:choose>
         <c:when test="${listeArticlesParCategorie != null && listeArticlesParCategorie.size()>0}">
             <table>

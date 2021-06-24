@@ -1,6 +1,7 @@
 package fr.eni.bll;
 
 import fr.eni.BusinessException;
+import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
@@ -11,6 +12,7 @@ import java.util.List;
 public class UtilisateurManager {
 
     private final UtilisateurDAO userDAO;
+    private Utilitaire util;
 
     public UtilisateurManager() {
         this.userDAO = DAOFactory.getUtilisateurDAO();
@@ -38,7 +40,6 @@ public class UtilisateurManager {
         }
     }
 
-    //TODO CG : verif mail avec ce regex ^[a-zA-Z0-9\p{P}]*@[a-zA-Z0-9\p{P}]*\.[a-zA-Z0-9\p{P}]*$
     /**
      * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
      */
@@ -60,18 +61,28 @@ public class UtilisateurManager {
         }
 
         //Vérifier que le pseudo ne contient que des caractères alphanumériques
-        //vérification du mot de passe
-        Boolean alphanum = pseudoValidation(pseudo);
+        Boolean alphanum = util.pseudoValidation(pseudo);
         if (!alphanum) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
 
+        //vérifications sur le nom et prénom
         if( nom==null || nom.trim().length()>30){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_NOM_ERREUR);
         }
         if( prenom==null || prenom.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PRENOM_ERREUR);
         }
+
+        Boolean nomValid = nomValidation(nom);
+        if (!nomValid) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
+        }
+        Boolean prenomValid = nomValidation(prenom);
+        if (!prenomValid) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
+        }
+
         if(  email==null || email.trim().length()>60 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
@@ -86,7 +97,7 @@ public class UtilisateurManager {
             }
         }
         //Vérifier le format de l'email
-        Boolean emailvalid = emailValidation(email);
+        Boolean emailvalid = util.emailValidation(email);
         if (!emailvalid) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
         }
@@ -95,7 +106,7 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
         //Vérifier le format du numéro de telephone
-        Boolean telvalid = emailValidation(telephone);
+        Boolean telvalid = util.telValidation(telephone);
         if (!telvalid) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
@@ -106,65 +117,48 @@ public class UtilisateurManager {
         if(  codePostal==null || codePostal.trim().length()>10 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
         }
+
+        //vérification sur la ville
         if(  ville==null || ville.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
+        }
+        Boolean villeValid = nomValidation(ville);
+        if (!prenomValid) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
 
         if(  motDePasse==null || motDePasse.trim().length()>100 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
         }
         //vérification du mot de passe
-        Boolean result = passwordValidation(motDePasse);
+        Boolean result = util.passwordValidation(motDePasse);
         if (!result) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
     }
 
     /**
-     * Cette méthode vérifie que le pseudo choisi par l'utilisateur ne contient que des caractères alphanumériques
-     * @param pseudo
+     * Cette méthode vérifie que le nom et le prénom saisis ne contiennent que des lettres (tirets acceptés)
+     * @param chaine
      * @return
      */
-    public Boolean pseudoValidation(String pseudo) {
-        Boolean alphanum =  pseudo.matches("(\\w|-|_)+");;
-        return alphanum;
-    }
-
-    /**
-     * On impose des règles sur le mot de passe
-     * (?=.*[0-9]) un chiffre doit apparaître au moins une fois
-     * (?=.*[a-z]) une lettre minuscule doit apparaître au moins une fois
-     * (?=.*[A-Z]) une lettre majuscule doit apparaître au moins une fois
-     * (?=\\S+$) aucun espace n'est autorisé dans toute la chaîne
-     * .{8,} au moins 8 caractères
-     * @param motDePasse
-     */
-    public boolean passwordValidation(String motDePasse) {
-        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
-        Boolean result =  motDePasse.matches(pattern);
-        return result;
-        }
-
-    /**
-     * On impose des règles sur l'email : structure a@a.a
-     * @param email
-     */
-    public boolean emailValidation(String email) {
-        String pattern = "^[a-zA-Z0-9\\p{P}]*@[a-zA-Z0-9\\p{P}]*\\.[a-zA-Z0-9\\p{P}]*$";
-        Boolean result =  email.matches(pattern);
+    private Boolean nomValidation(String chaine) {
+        String pattern = "^[a-zA-Z\\-]*$";
+        Boolean result =  chaine.matches(pattern);
         return result;
     }
 
-
     /**
-     * On impose des règles sur le numéro de téléphone : format +nombre
-     * @param telephone
+     * Cette méthode vérifie que la ville ne contient que des lettres (tirets et ' acceptés)
+     * @param ville
+     * @return
      */
-    public boolean telValidation(String telephone) {
-        String pattern = "^\\+[\\p{N}]*$";
-        Boolean result =  telephone.matches(pattern);
+    private Boolean villeValidation(String ville) {
+        String pattern = "^[a-zA-Z\\-\\']*$";
+        Boolean result =  ville.matches(pattern);
         return result;
     }
+
 
     /**
      * Retourne un objet Utilisateur correspondant à l'email passé en argument
@@ -194,7 +188,7 @@ public class UtilisateurManager {
     }
 
     /**
-     * Retourne un objet utilisateur correspond au pseudo passé en arugment.
+     * Retourne un objet utilisateur correspond au pseudo passé en argument.
      * @param pseudo
      * @throws BusinessException
      */
@@ -218,7 +212,11 @@ public class UtilisateurManager {
         return utilisateurTrouve;
     }
 
-    //TODO : relier cette méthode à l'IHM
+    /**
+     * Supprime un compte utilisateur en base de données, à partir de son id
+     * @param id
+     * @throws BusinessException
+     */
     public void supprimerUtilisateur(int id) throws BusinessException {
         BusinessException businessException = new BusinessException();
         if(  id==0  )
@@ -235,7 +233,6 @@ public class UtilisateurManager {
         }
 
     }
-
 
     public void mettreAJourUtilisateur(int no_utilisateur, String pseudoUtilisateur, String email, String telephone, String rue, String cp, String ville, String password) throws BusinessException{
         BusinessException businessException = new BusinessException();
@@ -256,7 +253,7 @@ public class UtilisateurManager {
     }
 
     /**
-     * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
+     * Vérifie les données saisies par l'utilisateur pour la modification d'un compte.
      */
     public void validerNouvellesDonneesUtilisateur(String pseudo, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
 
@@ -265,20 +262,17 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
         }
 
-
         //Vérifier que le pseudo ne contient que des caractères alphanumériques
-
-        Boolean alphanum = pseudoValidation(pseudo);
+        Boolean alphanum = util.pseudoValidation(pseudo);
         if (!alphanum) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
-
 
         if(  email==null || email.trim().length()>60 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
 
-        //TODO : vérifier que le téléphone ne contient que des chiffres
+        //TODO : vérifier que le téléphone ne contient que des chiffres (utiliser la méthode util. )
         if(  telephone.trim().length()>15 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
@@ -296,7 +290,7 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
         }
         //vérification du mot de passe
-        Boolean result = passwordValidation(motDePasse);
+        Boolean result = util.passwordValidation(motDePasse);
         if (!result) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }

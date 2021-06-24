@@ -77,6 +77,11 @@ public abstract class CodesErreurBll {
      */
     public static final int NO_UTILISATEUR_INEXISTANT = 20016;
 
+    /**
+     * les caractères saisis ne sont pas valides dans le champ concernés. Par exemple : le nom et le prénom
+     * ne peuvent pas contenir de caractères spéciaux ou de chiffre.
+     */
+    public static final int CARACTERES_NON_VALIDES = 20017;
 
     /**
      * ID utilisateur non valide

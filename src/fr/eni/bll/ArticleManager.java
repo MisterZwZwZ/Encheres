@@ -76,13 +76,20 @@ public class ArticleManager {
     }
 
     /**
-     * Renvoie la liste des articles par catégorie
+     * Renvoie la liste des articles en vente par catégorie
      */
     public List<Article> AfficherArticleParCategorie(int noCategorie) throws BusinessException {
         List<Article> listeArticlesParCategorie ;
         listeArticlesParCategorie = articleDAO.selectArticlesByCategorie(noCategorie);
           //TODO CG gstion des erreurs
       return listeArticlesParCategorie;
+    }
+
+    public List<Article> selectLesVentesDunUtilisateur(int idUser) throws BusinessException {
+        List<Article> listeDesVentesParUtilisateur ;
+        listeDesVentesParUtilisateur = articleDAO.selectArticlesByCategorie(idUser);
+        //TODO CG gstion des erreurs
+        return listeDesVentesParUtilisateur;
     }
 
     //TODO connection à l'IHM

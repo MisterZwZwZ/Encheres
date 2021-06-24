@@ -15,8 +15,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
             "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
-            "          CATEGORIES.no_categorie WHERE ARTICLES.no_categorie = ?";
-    private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE()";
+            "          CATEGORIES.no_categorie WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND ARTICLES.no_categorie = ?";
+    private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE()";
+    private static final String SELECT_ARTICLES_ENCHERISSABLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND no_utilisateur=?";
+    private static final String SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND ARTICLES.nom_article LIKE ('''%?%'''') ";
+
     private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
 
@@ -59,8 +62,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         }
     }
 
-        //Select de tous les articles pouvant être encherris
     @Override
+    /**
+     * Select de tous les articles pouvant être encherris : dont la date de début est antérieure ou égale à la date du jour,
+     * dont la date de fin est égale ou postérieure à la date du jour
+     */
     public List<Article> selectArticlesEncherissables() throws BusinessException {
         List<Article> listeArticlesEncherissables = new ArrayList<>();
         try(Connection cnx = ConnectionProvider.getConnection()) {
@@ -140,6 +146,110 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             businessException.ajouterErreur(CodesErreurDal.SUPPRESSION_ARTICLE_ERREUR);
             throw businessException;
         }
+    }
+
+    //TODO CG : continuer dans la couche bll etc
+    @Override
+    public List<Article> selectArticlesParMotClef(String chaine) throws BusinessException {
+        List<Article> listeArticleEnVenteParMotClef = new ArrayList<>();
+        //TODO CG  méthode à tester
+        try(Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF);
+            pstmt.setString(1, chaine);
+            ResultSet rs = pstmt.executeQuery();
+            Article article = new Article();
+            while (rs.next()){
+                article.setNoArticle(rs.getInt("no_article"));
+                article.setNomArticle(rs.getString("nom_article"));
+                article.setDescription(rs.getString("description"));
+                article.setDateDebutEnchere(rs.getDate("date_debut_vente").toLocalDate());
+                article.setDateFinEnchere(rs.getDate("date_fin_vente").toLocalDate());
+                article.setPrixInitial(rs.getInt("prix_initial"));
+                article.setPrixVente(rs.getInt("prix_vente"));
+                listeArticleEnVenteParMotClef.add(article);
+
+                Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                article.setVendeur(utilisateur);
+
+                Categorie categorie = new Categorie(rs.getInt("no_categorie"));
+                article.setCategorie(categorie);
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+            throw businessException;
+        }
+        return listeArticleEnVenteParMotClef;
+    }
+
+    @Override
+    public List<Article> selectEncheresByIdUser(int idUser) throws BusinessException {
+        return null;
+    }
+
+    @Override
+    public List<Article> selectEncheresTermineesByIdUser(int idUser) throws BusinessException {
+        return null;
+    }
+
+    @Override
+    /**
+     * Selectionne les articles dont la date de début de vente est antérieure ou égale à la date en cours,
+     * dont la date de fin de vente est égale ou postérieure à la date en cours,
+     * Par Id vendeur
+     */
+    public List<Article> selectAllVentesByIdUser(int idUser) throws BusinessException {
+        List<Article> listeArticleEnVenteParVendeur = new ArrayList<>();
+        //TODO CG  méthode à tester
+        try(Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_ARTICLES_ENCHERISSABLES_BY_ID);
+            pstmt.setInt(1, idUser);
+            ResultSet rs = pstmt.executeQuery();
+            Article article = new Article();
+            while (rs.next()){
+                article.setNoArticle(rs.getInt("no_article"));
+                article.setNomArticle(rs.getString("nom_article"));
+                article.setDescription(rs.getString("description"));
+                article.setDateDebutEnchere(rs.getDate("date_debut_vente").toLocalDate());
+                article.setDateFinEnchere(rs.getDate("date_fin_vente").toLocalDate());
+                article.setPrixInitial(rs.getInt("prix_initial"));
+                article.setPrixVente(rs.getInt("prix_vente"));
+                listeArticleEnVenteParVendeur.add(article);
+
+                Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                article.setVendeur(utilisateur);
+
+                Categorie categorie = new Categorie(rs.getInt("no_categorie"));
+                article.setCategorie(categorie);
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+            throw businessException;
+        }
+        return listeArticleEnVenteParVendeur;
+    }
+
+    @Override
+    /**
+     * Selectionne les articles dont la date de début de vente est postérieure à la date en cours
+     * Par Id vendeur
+     */
+    public List<Article> selectVentesNonDebuteesByIdUser(int idUser) throws BusinessException {
+        return null;
+    }
+
+    @Override
+    /**
+     * selectionne les articles sont la date de fin de vente est dépassée
+     * Par Id vendeur
+     */
+    public List<Article> selectVentesTermineesByIdUser(int idUser) throws BusinessException {
+        return null;
     }
 
     public List<Categorie> selectAllCategories() throws BusinessException{

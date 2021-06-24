@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {
-        "/monprofil",
-        "/supp"
+        "/private/monprofil",
+        "/private/supp"
 })
 
 public class MonProfil extends HttpServlet {

@@ -20,6 +20,10 @@ public class Utilisateur {
     public Utilisateur() {
     }
 
+    public Utilisateur(int noUtilisateur) {
+        this.noUtilisateur = noUtilisateur;
+    }
+
     public Utilisateur(int noUtilisateur, String pseudo) {
         this.noUtilisateur = noUtilisateur;
         this.pseudo = pseudo;

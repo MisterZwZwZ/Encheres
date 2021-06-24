@@ -38,6 +38,7 @@ public class UtilisateurManager {
         }
     }
 
+    //TODO CG : verif mail avec ce regex ^[a-zA-Z0-9\p{P}]*@[a-zA-Z0-9\p{P}]*\.[a-zA-Z0-9\p{P}]*$
     /**
      * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
      */
@@ -84,10 +85,21 @@ public class UtilisateurManager {
                 }
             }
         }
-        //TODO : vérifier que le téléphone ne contient que des chiffres
+        //Vérifier le format de l'email
+        Boolean emailvalid = emailValidation(email);
+        if (!emailvalid) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
+        }
+
         if(  telephone.trim().length()>15 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
+        //Vérifier le format du numéro de telephone
+        Boolean telvalid = emailValidation(telephone);
+        if (!telvalid) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        }
+
         if(  rue==null || rue.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
         }
@@ -132,6 +144,27 @@ public class UtilisateurManager {
         Boolean result =  motDePasse.matches(pattern);
         return result;
         }
+
+    /**
+     * On impose des règles sur l'email : structure a@a.a
+     * @param email
+     */
+    public boolean emailValidation(String email) {
+        String pattern = "^[a-zA-Z0-9\\p{P}]*@[a-zA-Z0-9\\p{P}]*\\.[a-zA-Z0-9\\p{P}]*$";
+        Boolean result =  email.matches(pattern);
+        return result;
+    }
+
+
+    /**
+     * On impose des règles sur le numéro de téléphone : format +nombre
+     * @param telephone
+     */
+    public boolean telValidation(String telephone) {
+        String pattern = "^\\+[\\p{N}]*$";
+        Boolean result =  telephone.matches(pattern);
+        return result;
+    }
 
     /**
      * Retourne un objet Utilisateur correspondant à l'email passé en argument

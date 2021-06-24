@@ -31,11 +31,14 @@ public class RechercheServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //récupération du choix de la catégorie choisie de l'utilisateur
+        //récupération de la catégorie choisie de l'utilisateur
+
         String categorie = request.getParameter("rechercheParcategorie");
         if (categorie != null && !categorie.equals("")){
             try {
-                List<Article> listeArticlesParCategorie = am.AfficherArticleParCategorie(categorie);
+                int noCategorie = Integer.parseInt(categorie);
+                List<Article> listeArticlesParCategorie = am.AfficherArticleParCategorie(noCategorie);
+                request.setAttribute("categories", categorie);
                 request.setAttribute("listeArticlesParCategorie", listeArticlesParCategorie);
             } catch (BusinessException e) {
                 e.printStackTrace();
@@ -43,7 +46,7 @@ public class RechercheServlet extends HttpServlet {
             }
         }
 
-        //récupération du mot clef recherché // TODO CG : à terminer
+        //récupération du mot clef recherché // TODO CG : à faire
         String objetARechercher = request.getParameter("rechercheParMotClef");
 
         request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);

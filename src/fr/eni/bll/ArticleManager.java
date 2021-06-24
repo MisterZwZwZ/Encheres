@@ -78,18 +78,10 @@ public class ArticleManager {
     /**
      * Renvoie la liste des articles par catégorie
      */
-    public List<Article> AfficherArticleParCategorie(String nomCategorie) throws BusinessException {
-        List<Article> listeArticlesParCategorie = new ArrayList<>();
-        //selectionner toutes les catégories par nom et numéro
-        List<Categorie> listeDescategories = articleDAO.selectAllCategories();
-        System.out.println(listeDescategories);
-        //boucler sur la liste des catégories pour retrouver celle sélectionnée à partir de son libelle
-        for (Categorie c: listeDescategories
-             ) {
-            if (c.getLibelle().equals(nomCategorie)){
-                listeArticlesParCategorie = articleDAO.selectArticlesByCategorie(c.getNoCategorie());
-            }
-        }
+    public List<Article> AfficherArticleParCategorie(int noCategorie) throws BusinessException {
+        List<Article> listeArticlesParCategorie ;
+        listeArticlesParCategorie = articleDAO.selectArticlesByCategorie(noCategorie);
+          //TODO CG gstion des erreurs
       return listeArticlesParCategorie;
     }
 

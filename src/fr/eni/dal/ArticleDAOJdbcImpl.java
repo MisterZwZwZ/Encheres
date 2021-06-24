@@ -12,10 +12,10 @@ import java.util.List;
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie VALUES (?,?,?,?,?,?,?,?)";
-    private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, CATEGORIES.no_categorie, pseudo FROM ARTICLES " +
-            "INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur " +
-            "INNER JOIN CATEGORIES ON ARTICLES.no_categorie = CATEGORIES.no_categorie" +
-            "WHERE CATEGORIES.no_categorie = ?";
+    private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
+            "          CATEGORIES.no_categorie WHERE ARTICLES.no_categorie = ?";
     private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE()";
     private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
@@ -110,9 +110,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setPrixInitial(rs.getInt("prix_initial"));
                 article.setPrixVente(rs.getInt("prix_vente"));
                 listeArticleCategorie.add(article);
+
+                Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                article.setVendeur(utilisateur);
+
+                Categorie categorie = new Categorie(rs.getInt("no_categorie"));
+                article.setCategorie(categorie);
             }
-            Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
-            article.setVendeur(utilisateur);
+
 
         }catch (SQLException e) {
             e.printStackTrace();

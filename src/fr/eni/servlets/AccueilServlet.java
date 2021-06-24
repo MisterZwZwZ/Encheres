@@ -29,6 +29,7 @@ public class AccueilServlet extends HttpServlet {
         //TODO affichage quand connecté ?
 
 //        affichage de la liste des articles encherissables
+
         ArticleManager articleManager = new ArticleManager();
         try{
             List<Article> articlesEncherissables = articleManager.AfficherArticlesEncherissables();

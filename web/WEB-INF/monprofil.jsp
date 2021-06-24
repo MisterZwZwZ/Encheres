@@ -14,17 +14,16 @@
     <title>Profil</title>
 </head>
 <body>
-
+<jsp:include page="/WEB-INF/fragments/header.jsp"/>
 <h1>Mon profil</h1>
 
-<!--! créer une servlet profil / récupérer les infos de la session -->
 <form action="${pageContext.request.contextPath}/monprofil" method="post">
     <label for="pseudo">Pseudo :</label>
     <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" value="${sessionScope.utilisateur.pseudo}">
     <label for="prenom">Prénom :</label>
-    <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${sessionScope.utilisateur.prenom}">
+    <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${sessionScope.utilisateur.prenom}" disabled>
     <label for="nom">Nom :</label>
-    <input type="text" name="nom" id="nom" placeholder="nom" value="${sessionScope.utilisateur.nom}">
+    <input type="text" name="nom" id="nom" placeholder="nom" value="${sessionScope.utilisateur.nom}" disabled>
     <label for="email">Email :</label>
     <input type="email" name="email" id="email" placeholder="email" value="${sessionScope.utilisateur.email}">
     <label for="telephone">Téléphone :</label>
@@ -36,12 +35,22 @@
     <label for="ville">Ville :</label>
     <input type="text" name="ville" id="ville" placeholder="ville" value="${sessionScope.utilisateur.ville}">
     <label for="pass">Mot de passe :</label>
-    <input type="password" name="password" id="pass" placeholder="mot de passe">
+    <input type="password" name="password" id="pass" placeholder="mot de passe" value="${sessionScope.utilisateur.motDePasse}">
     <label for="confpass">Confirmation  :</label>
-    <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passe">
+    <input type="password" name="passwordConf" id="confpass" placeholder="confirmez le mot de passe" value="${sessionScope.utilisateur.motDePasse}">
     <p>Crédit : ${sessionScope.utilisateur.credit}</p>
     <input type="submit" value="Enregistrer">
 </form>
+
+<!-- affichage des messages d'erreur éventuels -->
+<c:if test="${!empty listeCodesErreur}">
+    <strong>Erreur lors de la mise à jour des données :</strong>
+    <ul>
+        <c:forEach var="code" items="${listeCodesErreur}">
+            <li>${LecteurErreur.getMessageErreur(code)}</li>
+        </c:forEach>
+    </ul>
+</c:if>
 
 <a href="${pageContext.request.contextPath}/supp?idUtilisateur=${sessionScope.utilisateur.noUtilisateur}"><button>Supprimer mon compte</button></a>
 <a href="${pageContext.request.contextPath}/profil"><button>Retour</button></a>

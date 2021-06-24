@@ -12,7 +12,7 @@
 
 <c:choose>
     <c:when test="${!empty(sessionScope.utilisateur)}">
-        <a href="<%=request.getContextPath()%>/encheres">Enchères</a>
+        <a href="<%=request.getContextPath()%>/accueil">Enchères</a>
         <a href="<%=request.getContextPath()%>/vendre">Vendre un article</a>
         <a href="<%=request.getContextPath()%>/profil">Mon profil</a>
         <a href="<%=request.getContextPath()%>/deconnexion">Se déconnecter</a>

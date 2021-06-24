@@ -44,7 +44,7 @@ public class UtilisateurManager {
      */
     public void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
 
-        if(  pseudo==null || pseudo.trim().length()>30  )
+        if(  pseudo==null || pseudo.trim().length()>30 )
         {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
         }
@@ -187,7 +187,7 @@ public class UtilisateurManager {
         BusinessException businessException = new BusinessException();
         boolean mdpOk = true;
         if(!(motDePasse.equals(utilisateur.getMotDePasse()))) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_INCORRECT);
+            businessException.ajouterErreur(CodesErreurBll.MOT_DE_PASSE_INCORRECT);
             mdpOk = false;
         }
         return mdpOk;
@@ -234,5 +234,71 @@ public class UtilisateurManager {
             throw businessException;
         }
 
+    }
+
+
+    public void mettreAJourUtilisateur(int no_utilisateur, String pseudoUtilisateur, String email, String telephone, String rue, String cp, String ville, String password) throws BusinessException{
+        BusinessException businessException = new BusinessException();
+        // verif si no_utilisateur non null
+        if(no_utilisateur == 0){
+            businessException.ajouterErreur(CodesErreurBll.NO_UTILISATEUR_INEXISTANT);
+        }
+        //verif de la validité des autres champs
+        this.validerNouvellesDonneesUtilisateur(pseudoUtilisateur, email, telephone, rue, cp, ville, password,
+                businessException);
+        if(!(businessException.hasErreurs())) {
+            Utilisateur utilisateur = new Utilisateur(no_utilisateur, pseudoUtilisateur, email, telephone, rue, cp, ville, password);
+            userDAO.updateUser(utilisateur);
+        }else
+        {
+            throw businessException;
+        }
+    }
+
+    /**
+     * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
+     */
+    public void validerNouvellesDonneesUtilisateur(String pseudo, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
+
+        if(  pseudo==null || pseudo.trim().length()>30 )
+        {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
+        }
+
+
+        //Vérifier que le pseudo ne contient que des caractères alphanumériques
+
+        Boolean alphanum = pseudoValidation(pseudo);
+        if (!alphanum) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
+        }
+
+
+        if(  email==null || email.trim().length()>60 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
+        }
+
+        //TODO : vérifier que le téléphone ne contient que des chiffres
+        if(  telephone.trim().length()>15 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        }
+        if(  rue==null || rue.trim().length()>30 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
+        }
+        if(  codePostal==null || codePostal.trim().length()>10 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
+        }
+        if(  ville==null || ville.trim().length()>30 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
+        }
+
+        if(  motDePasse==null || motDePasse.trim().length()>100 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
+        }
+        //vérification du mot de passe
+        Boolean result = passwordValidation(motDePasse);
+        if (!result) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
+        }
     }
 }

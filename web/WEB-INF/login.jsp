@@ -20,10 +20,11 @@
 
     <button>Se connecter</button>
 </form>
+    <a href="${pageContext.request.contextPath}/accueil"><button>Retour</button></a>
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
-        <strong>Erreur!</strong>
+        <strong>Erreur lors de la tentative de connexion :</strong>
         <ul>
             <c:forEach var="code" items="${listeCodesErreur}">
                 <li>${LecteurErreur.getMessageErreur(code)}</li>

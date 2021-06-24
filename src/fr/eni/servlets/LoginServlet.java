@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
             listeCodesErreur.add(CodesErreurServlet.EMAIL_UTILISATEUR_OBLIGATOIRE);
         }
         if(motDePasse == null || motDePasse.trim().equals("")){
-            //On consere l'email saisi précédement
+            //On conserve l'email saisi précédement
             request.setAttribute("email", email);
             listeCodesErreur.add(CodesErreurServlet.MDP_UTILISATEUR_OBLIGATOIRE);
         }
@@ -62,13 +62,15 @@ public class LoginServlet extends HttpServlet {
                 //renvoyer message d'erreur mot de passe sur la jsp login
                 listeCodesErreur.add(CodesErreurServlet.MDP_INCORRECT);
                 request.setAttribute("listeCodesErreur", listeCodesErreur);
-                // On garde l'affichage de l'email
+                // On garde l'affichage du dernier email
                 request.setAttribute("email", email);
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }
         } catch (BusinessException ex) {
             //renvoyer messages d'erreur remontés par les autres couches
             request.setAttribute("listeCodesErreur", ex.getListeCodesErreur());
+            // On garde l'affichage du dernier email
+            request.setAttribute("email", email);
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             ex.printStackTrace();
         }

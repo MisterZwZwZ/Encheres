@@ -15,6 +15,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String SELECT_ALL_PSEUDO = "SELECT pseudo FROM UTILISATEURS";
     private static final String SELECT_ALL_EMAIL = "SELECT email FROM UTILISATEURS";
     private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?";
+    private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo= ?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=? WHERE no_utilisateur=?";
 
     @Override
     public void insertUser(Utilisateur utilisateur) throws BusinessException {
@@ -208,6 +209,41 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
         }
 
         return utilisateur;
+    }
+
+    @Override
+    public void updateUser(Utilisateur utilisateur) throws BusinessException{
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            try {
+                cnx.setAutoCommit(false);
+                PreparedStatement pstmt;
+
+                    pstmt = cnx.prepareStatement(UPDATE_USER);
+                    //TODO utiliser des labels pour identifier les colones ?
+                    pstmt.setString(1, utilisateur.getPseudo());
+                    pstmt.setString(2, utilisateur.getEmail());
+                    pstmt.setString(3, utilisateur.getTelephone());
+                    pstmt.setString(4, utilisateur.getRue());
+                    pstmt.setString(5, utilisateur.getCodePostal());
+                    pstmt.setString(6, utilisateur.getVille());
+                    pstmt.setString(7, utilisateur.getMotDePasse());
+                    pstmt.setInt(8, utilisateur.getNoUtilisateur());
+                    pstmt.executeUpdate();
+
+                    pstmt.close();
+
+                cnx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                cnx.rollback();
+                throw e;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.UPDATE_OBJET_ECHEC);
+            throw businessException;
+        }
     }
 }
 

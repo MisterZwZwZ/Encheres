@@ -67,11 +67,16 @@ public abstract class CodesErreurBll {
      */
     public static final int PSEUDO_INEXISTANT = 10009;
 
+    /**
+     *
+     */
+    public static final int MOT_DE_PASSE_INCORRECT = 20014;
 
     /**
-     * Echec correspondance mot de passe formulaire de connexion/base de donnée
+     * Echec aucun utilisateur identifié sur la session (no_utilisateur inexistant)
      */
-    public static final int REGLE_USER_MDP_INCORRECT = 20014;
+    public static final int NO_UTILISATEUR_INEXISTANT = 20016;
+
 
     /**
      * ID utilisateur non valide

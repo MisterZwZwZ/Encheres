@@ -15,6 +15,11 @@ public abstract class CodesErreurDal {
          */
         public static final int INSERT_OBJET_ECHEC=10001;
 
+        /**
+         * Echec général quand erreur non gérée à l'insertion
+         */
+        public static final int UPDATE_OBJET_ECHEC=10004;
+
 
         //TODO personnaliser les erreurs DAL
 

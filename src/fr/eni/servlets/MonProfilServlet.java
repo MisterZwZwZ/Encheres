@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {
-        "/monprofil",
-        "/supp"
+        "/private/monprofil",
+        "/private/supp"
 })
 
 public class MonProfilServlet extends HttpServlet {

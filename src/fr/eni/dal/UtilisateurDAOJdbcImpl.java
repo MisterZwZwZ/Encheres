@@ -14,7 +14,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String SELECT_USER_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo=?";
     private static final String SELECT_ALL_PSEUDO = "SELECT pseudo FROM UTILISATEURS";
     private static final String SELECT_ALL_EMAIL = "SELECT email FROM UTILISATEURS";
-    private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE ID=?";
+    private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?";
 
     @Override
     public void insertUser(Utilisateur utilisateur) throws BusinessException {

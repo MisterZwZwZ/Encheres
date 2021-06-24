@@ -2,6 +2,7 @@ package fr.eni.dal;
 
 import fr.eni.BusinessException;
 import fr.eni.bo.Article;
+import fr.eni.bo.Categorie;
 import fr.eni.bo.Utilisateur;
 
 import java.sql.*;
@@ -16,6 +17,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             "INNER JOIN CATEGORIES ON ARTICLES.no_categorie = CATEGORIES.no_categorie" +
             "WHERE CATEGORIES.no_categorie = ?";
     private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE()";
+    private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
 
     @Override
@@ -133,5 +135,29 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             businessException.ajouterErreur(CodesErreurDal.SUPPRESSION_ARTICLE_ERREUR);
             throw businessException;
         }
+    }
+
+    public List<Categorie> selectAllCategories() throws BusinessException{
+        List<Categorie> listeCategories = new ArrayList<>();
+        try(Connection cnx = ConnectionProvider.getConnection()) {
+            Statement stmt = cnx.createStatement();
+            ResultSet rs = stmt.executeQuery(SELECT_CATEGORIES);
+            Categorie cat = new Categorie();
+            while(rs.next()){
+                if(rs.getInt("no_categorie") != cat.getNoCategorie()){
+                    cat = new Categorie();
+                    cat.setNoCategorie(rs.getInt("no_categorie"));
+                    cat.setLibelle(rs.getString("libelle"));
+                    listeCategories.add(cat);
+                }
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+            //TODO CG gestion erreur personnalisée
+            throw new BusinessException();
+        }
+        return listeCategories;
     }
 }

@@ -114,8 +114,7 @@ public class InscriptionServlet extends HttpServlet {
                 req.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
         }
-
-        RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/inscription.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("accueil");
         rd.forward(req, resp);
     }
 

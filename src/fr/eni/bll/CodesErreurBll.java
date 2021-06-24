@@ -74,6 +74,12 @@ public abstract class CodesErreurBll {
     public static final int REGLE_USER_MDP_INCORRECT = 20014;
 
     /**
+     * ID utilisateur non valide
+     */
+    public static final int ID_INEXISTANT = 20015;
+
+
+    /**
      * Echec le nom de l'article ne respecte pas les règles définies
      */
     public static final int REGLE_ART_NOM_ERREUR = 20031;

@@ -42,12 +42,6 @@ public class AccueilServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //récupération du choix de la catégorie ou de la recherche saisie de l'utilisateur
-        String categorie = request.getParameter("categories");
-        String recherche = request.getParameter("recherche");
-
-
-
         doGet(request,response);
     }
 }

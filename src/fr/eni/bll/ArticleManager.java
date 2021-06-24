@@ -8,6 +8,7 @@ import fr.eni.dal.ArticleDAO;
 import fr.eni.dal.DAOFactory;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -77,9 +78,19 @@ public class ArticleManager {
     /**
      * Renvoie la liste des articles par catégorie
      */
-    //TODO connection à l'IHM
-    public List<Article> AfficherArticleParCategorie(int noCategorie) throws BusinessException {
-      return this.articleDAO.selectArticlesByCategorie(noCategorie);
+    public List<Article> AfficherArticleParCategorie(String nomCategorie) throws BusinessException {
+        List<Article> listeArticlesParCategorie = new ArrayList<>();
+        //selectionner toutes les catégories par nom et numéro
+        List<Categorie> listeDescategories = articleDAO.selectAllCategories();
+        System.out.println(listeDescategories);
+        //boucler sur la liste des catégories pour retrouver celle sélectionnée à partir de son libelle
+        for (Categorie c: listeDescategories
+             ) {
+            if (c.getLibelle().equals(nomCategorie)){
+                listeArticlesParCategorie = articleDAO.selectArticlesByCategorie(c.getNoCategorie());
+            }
+        }
+      return listeArticlesParCategorie;
     }
 
     //TODO connection à l'IHM

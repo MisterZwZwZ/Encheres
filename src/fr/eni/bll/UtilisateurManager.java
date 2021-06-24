@@ -187,6 +187,19 @@ public class UtilisateurManager {
 
     //TODO : relier cette méthode à l'IHM
     public void supprimerUtilisateur(int id) throws BusinessException {
-        userDAO.deleteUser(id);
+        BusinessException businessException = new BusinessException();
+        if(  id==0  )
+        {
+            businessException.ajouterErreur(CodesErreurBll.ID_INEXISTANT);
+        }
+        if(!(businessException.hasErreurs()))
+        {
+            userDAO.deleteUser(id);
+        }
+        else
+        {
+            throw businessException;
+        }
+
     }
 }

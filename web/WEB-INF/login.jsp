@@ -12,9 +12,9 @@
 
 <form action="${pageContext.request.contextPath}/login" method="POST">
     <label for="identifiant">Identifiant :</label>
-    <input type="email" id="identifiant" name="email" value="${email}" placeholder="email">
+    <input type="email" id="identifiant" name="email" value="${email}" placeholder="email" required>
     <label for="password">Mot de passe :</label>
-    <input type="password" id="password" name="motDePasse" placeholder="mot de passe">
+    <input type="password" id="password" name="motDePasse" placeholder="mot de passe" required>
     <label for="rememberMe">Se souvenir de moi</label>
     <input type="checkbox" id="rememberMe">
 

@@ -43,7 +43,7 @@
     <input type="submit" value="Enregistrer">
 </form>
 
-<a href="${pageContext.request.contextPath}/supp"><button>Supprimer mon compte</button></a>
+<a href="${pageContext.request.contextPath}/supp?idUtilisateur=${sessionScope.utilisateur.noUtilisateur}"><button>Supprimer mon compte</button></a>
 <a href="${pageContext.request.contextPath}/profil"><button>Retour</button></a>
 
 </body>

@@ -29,10 +29,19 @@ public abstract class CodesErreurServlet {
      */
     public static final Integer NOM_ARTICLE_OBLIGATOIRE = 30031;
     public static final Integer DESCR_ARTICLE_OBLIGATOIRE = 30032;
-    public static final Integer DATE_DEBUT_ARTICLE_ERREUR = 30033;
-    public static final Integer DATE_FIN_ARTICLE_ERREUR = 30034;
+    public static final Integer DATE_DEBUT_ENCHERE_ARTICLE_ERREUR = 30033;
+    public static final Integer DATE_FIN_ENCHERE_ARTICLE_ERREUR = 30034;
     public static final Integer PRIX_INITIAL_ARTICLE_ERREUR = 30035;
     public static final Integer PRIX_VENTE_ARTICLE_ERREUR = 30036;
+    public static final Integer CATEGORIE_ARTICLE_ERREUR = 30037;
+
+    /**
+     * Adresse retrait incorrecte
+     */
+    public static final Integer RUE_RETRAIT_ERREUR = 30040;
+    public static final Integer CODE_POSTAL_RETRAIT_ERREUR = 30041;
+    public static final Integer VILLE_RETRAIT_ERREUR = 30042;
+
 
     /**
      * Mot de passe connexion saisis incorrect

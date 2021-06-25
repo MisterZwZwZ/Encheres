@@ -81,46 +81,30 @@ public class ArticleManager {
     }
 
     /**
-     * Renvoie la liste des articles en vente par catégorie
+     * Rechercher des articles par filtre, selon si l'utilisateur est connecté ou non
+     * return liste d'articles
      */
-    public List<Article> afficherArticleParCategorie(int noCategorie) throws BusinessException {
-        List<Article> listeArticlesParCategorie ;
-        listeArticlesParCategorie = articleDAO.selectArticlesByCategorie(noCategorie);
-          //TODO CG gstion des erreurs
-      return listeArticlesParCategorie;
-    }
-
-    public List<Article> afficherLesVentesDunUtilisateur(int idUser) throws BusinessException {
-        List<Article> listeDesVentesParUtilisateur ;
-        listeDesVentesParUtilisateur = articleDAO.selectArticlesByCategorie(idUser);
-        //TODO CG gstion des erreurs // supprimer cette méthode ??? est utilisée ?
-        return listeDesVentesParUtilisateur;
-    }
-
-    /**
-     *  TODO test à supprimer/ Permet de tester la requete SQL - Rechercher par mot clef.
-     * @return
-     * @throws BusinessException
-     */
-    public List<Article> afficherParMotClef(String motclef) throws BusinessException {
-        List<Article> listeparMotClef ;
-        listeparMotClef = articleDAO.selectArticlesParMotClef(motclef);
-        return listeparMotClef;
-    }
-
     public List<Article> rechercheParfiltre(String recherche, int noCategorie, String choixAchatOuVente, String case1,
             String case2, String case3, int noUtilisateur) throws BusinessException {
-        List<Article> listeVentesParFiltres = new ArrayList<>();
+
+        BusinessException businessException = new BusinessException();
+        List<Article> listeArticlesParFiltres = new ArrayList<>();
         String motclef = recherche.toLowerCase(Locale.ROOT);
-        //redirection dans l'une ou l'autre méthode de la DAL selon si "achat" ou "vente" sélectionnée
-        if (choixAchatOuVente.equals("achat")){
-            listeVentesParFiltres = articleDAO.selectArticlesParFiltre(motclef, noCategorie, case1, case2, case3, noUtilisateur);
+
+        //TODO CG cette éthode est expérimentale et vise à fusionner les 2 listes d'articles récupérées pour éviter les doublons
+        //Si l'utilisateur n'est pas connecté
+        if (noUtilisateur == 0){
+            listeArticlesParFiltres = articleDAO.selectEnModeDeconnecte(recherche, noCategorie);
+        } else{
+            //Si l'utilisateur est connecté, redirection dans l'une ou l'autre méthode de la DAL selon si la requete concerne des articles ou des encheres
+            if (noUtilisateur != 0 && choixAchatOuVente.equals("achat")){
+                listeArticlesParFiltres = articleDAO.selectArticlesParFiltre(motclef, noCategorie, case1, case2, case3, noUtilisateur);
+            }
+            if (noUtilisateur != 0 && choixAchatOuVente.equals("vente")){
+                listeArticlesParFiltres = articleDAO.selectVentesParFiltre(motclef, noCategorie, case1, case2, case3, noUtilisateur);
+            }
         }
-        if (choixAchatOuVente.equals("vente")){
-            listeVentesParFiltres = articleDAO.selectVentesParFiltre(motclef, noCategorie, case1, case2, case3, noUtilisateur);
-        }
-        //TODO CG gestion des erreurs
-        return listeVentesParFiltres;
+        return listeArticlesParFiltres;
     }
 
     //TODO connection à l'IHM - TL

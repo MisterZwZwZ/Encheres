@@ -41,4 +41,6 @@ public interface ArticleDAO {
     List<Article> selectVentesParFiltre(String recherche, int noCategorie, String case1,
                                           String case2, String case3, int noUtilisateur) throws BusinessException;
 
+    List<Article> selectEnModeDeconnecte(String recherche, int noCategorie) throws BusinessException;
+
 }

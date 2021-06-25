@@ -12,8 +12,7 @@ import java.util.List;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 
-
-
+    //TODO CG faire un tri des méthodes non utilisées en BLL
     private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
             "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
@@ -497,5 +496,61 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             throw new BusinessException();
         }
         return listeCategories;
+    }
+
+
+    public List<Article> selectEnModeDeconnecte(String recherche, int noCategorie) throws BusinessException{
+            List<Article> listeArticles = new ArrayList<>();
+            Article articleEncours = new Article();
+            StringBuffer sb = new StringBuffer();
+            sb.append(selectArticles);
+
+            if (recherche == null) {
+                recherche = "";
+            }
+            if (noCategorie != 0) {
+                sb.append(and);
+                sb.append(parCate);
+            }
+
+        //on lance la connexion et on exécute la requete
+        try(Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
+            pstmt.setString(1, (recherche));
+            if(noCategorie != 0){
+                pstmt.setInt(2, noCategorie);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                if (rs.getInt(1) != articleEncours.getNoArticle()) {
+                    articleEncours = new Article();
+                    articleEncours.setNoArticle(rs.getInt("no_article"));
+                    articleEncours.setNomArticle(rs.getString("nom_article"));
+                    articleEncours.setDescription(rs.getString("description"));
+                    articleEncours.setDateDebutEnchere(rs.getDate("date_debut_vente").toLocalDate());
+                    articleEncours.setDateFinEnchere(rs.getDate("date_fin_vente").toLocalDate());
+                    articleEncours.setPrixInitial(rs.getInt("prix_initial"));
+                    articleEncours.setPrixVente(rs.getInt("prix_vente"));
+
+                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                    articleEncours.setVendeur(utilisateur);
+
+                    Categorie categorie = new Categorie(rs.getInt("no_categorie"));
+                    articleEncours.setCategorie(categorie);
+
+                    listeArticles.add(articleEncours);
+                }
+            }
+            rs.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+            throw businessException;
+        }
+        return listeArticles;
+
     }
 }

@@ -37,11 +37,6 @@ public class RechercheServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Article> listeArticles = new ArrayList<>();
 
-        //récupération du numéro utilisateur
-        HttpSession session = request.getSession();
-        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-        int noUtilisateur = utilisateur.getNoUtilisateur();
-
         //récupération du mot clef recherché
         String motclef = request.getParameter("rechercheParMotClef");
 
@@ -51,6 +46,14 @@ public class RechercheServlet extends HttpServlet {
         if (categorie != null && !categorie.equals("")) {
             noCategorie = Integer.parseInt(categorie);
         }
+
+        //récupération du numéro utilisateur
+        int noUtilisateur =0;
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        if (utilisateur != null){
+            noUtilisateur = utilisateur.getNoUtilisateur();
+
         //récupération choix "achat" ou "vente"
         String achatOuVente = request.getParameter("achatOuVente");
         System.out.println(achatOuVente);
@@ -64,15 +67,13 @@ public class RechercheServlet extends HttpServlet {
             case1 = request.getParameter("encheresOuvertes");
             case2 = request.getParameter("mesEncheresEnCours");
             case3 = request.getParameter("encheresRemportees");
-            System.out.println("case 1 : " + case1 + "case 2 : " + case2 + "case 3 : " + case3);
         }
         if (achatOuVente.equals("vente")){
             case1 = request.getParameter("ventesEnCours");
             case2 = request.getParameter("ventesNonDebutees");
             case3 = request.getParameter("ventesTerminees");
-            System.out.println("case 1 : " + case1 + "case 2 : " + case2 + "case 3 : " + case3);
-
         }
+
             try {
                 listeArticles = am.rechercheParfiltre(motclef, noCategorie, achatOuVente, case1, case2, case3, noUtilisateur);
             } catch (BusinessException e) {
@@ -80,7 +81,16 @@ public class RechercheServlet extends HttpServlet {
                 //TODO CG gérer les erreurs
             }
 
-            request.setAttribute("listeArticles",listeArticles );
+        }else{
+            try {
+                listeArticles = am.rechercheParfiltre(motclef, noCategorie, "achat", null, null, null, noUtilisateur);
+            } catch (BusinessException e) {
+                e.printStackTrace();
+                //TODO CG gérer les erreurs
+            }
+        }
+
+        request.setAttribute("listeArticles",listeArticles );
             request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
 
     }

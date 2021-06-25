@@ -61,7 +61,7 @@ public class UtilisateurManager {
         }
 
         //Vérifier que le pseudo ne contient que des caractères alphanumériques
-        Boolean alphanum = util.pseudoValidation(pseudo);
+        boolean alphanum = util.pseudoValidation(pseudo);
         if (!alphanum) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
@@ -74,11 +74,11 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PRENOM_ERREUR);
         }
 
-        Boolean nomValid = nomValidation(nom);
+        boolean nomValid = util.nomValidation(nom);
         if (!nomValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
-        Boolean prenomValid = nomValidation(prenom);
+        boolean prenomValid = util.nomValidation(prenom);
         if (!prenomValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
@@ -97,7 +97,7 @@ public class UtilisateurManager {
             }
         }
         //Vérifier le format de l'email
-        Boolean emailvalid = util.emailValidation(email);
+        boolean emailvalid = util.emailValidation(email);
         if (!emailvalid) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
         }
@@ -106,7 +106,7 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
         //Vérifier le format du numéro de telephone
-        Boolean telvalid = util.telValidation(telephone);
+        boolean telvalid = util.telValidation(telephone);
         if (!telvalid) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
@@ -122,7 +122,7 @@ public class UtilisateurManager {
         if(  ville==null || ville.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
         }
-        Boolean villeValid = nomValidation(ville);
+        boolean villeValid = util.villeValidation(ville);
         if (!prenomValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
@@ -131,33 +131,12 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
         }
         //vérification du mot de passe
-        Boolean result = util.passwordValidation(motDePasse);
+        boolean result = util.passwordValidation(motDePasse);
         if (!result) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
     }
 
-    /**
-     * Cette méthode vérifie que le nom et le prénom saisis ne contiennent que des lettres (tirets acceptés)
-     * @param chaine
-     * @return
-     */
-    private Boolean nomValidation(String chaine) {
-        String pattern = "^[a-zA-Z\\-]*$";
-        Boolean result =  chaine.matches(pattern);
-        return result;
-    }
-
-    /**
-     * Cette méthode vérifie que la ville ne contient que des lettres (tirets et ' acceptés)
-     * @param ville
-     * @return
-     */
-    private Boolean villeValidation(String ville) {
-        String pattern = "^[a-zA-Z\\-\\']*$";
-        Boolean result =  ville.matches(pattern);
-        return result;
-    }
 
 
     /**
@@ -272,26 +251,36 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
 
-        //TODO : vérifier que le téléphone ne contient que des chiffres (utiliser la méthode util. )
-        if(  telephone.trim().length()>15 ){
+        boolean isGoodFormat = util.emailValidation(email);
+        if (!isGoodFormat) {
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
+        }
+
+        boolean isNumbersOnly = util.telValidation(telephone);
+        if (!isNumbersOnly) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
-        if(  rue==null || rue.trim().length()>30 ){
+
+        if(telephone.trim().length()>15 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        }
+        if(rue==null || rue.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
         }
-        if(  codePostal==null || codePostal.trim().length()>10 ){
+        if(codePostal==null || codePostal.trim().length()>10 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
         }
-        if(  ville==null || ville.trim().length()>30 ){
+        if(ville==null || ville.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
         }
 
-        if(  motDePasse==null || motDePasse.trim().length()>100 ){
+        if(motDePasse==null || motDePasse.trim().length()>100 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
         }
+
         //vérification du mot de passe
-        Boolean result = util.passwordValidation(motDePasse);
-        if (!result) {
+        boolean isGoodPassword = util.passwordValidation(motDePasse);
+        if (!isGoodPassword) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
     }

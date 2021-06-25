@@ -48,4 +48,26 @@ public class Utilitaire {
         Boolean result =  telephone.matches(pattern);
         return result;
     }
+
+    /**
+     * Cette méthode vérifie que le nom et le prénom saisis ne contiennent que des lettres (tirets acceptés)
+     * @param chaine
+     * @return
+     */
+    public boolean nomValidation(String chaine) {
+        String pattern = "^[a-zA-Z\\-]*$";
+        boolean result =  chaine.matches(pattern);
+        return result;
+    }
+
+    /**
+     * Cette méthode vérifie que la ville ne contient que des lettres (tirets et ' acceptés)
+     * @param ville
+     * @return
+     */
+    public boolean villeValidation(String ville) {
+        String pattern = "^[a-zA-Z\\-\\']*$";
+        boolean result =  ville.matches(pattern);
+        return result;
+    }
 }

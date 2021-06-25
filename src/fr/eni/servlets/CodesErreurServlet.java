@@ -42,6 +42,11 @@ public abstract class CodesErreurServlet {
     public static final Integer CODE_POSTAL_RETRAIT_ERREUR = 30041;
     public static final Integer VILLE_RETRAIT_ERREUR = 30042;
 
+    /**
+     * Enchere incorrecte
+     */
+    public static final Integer ENCHERE_MONTANT_ERREUR = 30043;
+
 
     /**
      * Mot de passe connexion saisis incorrect

@@ -32,8 +32,8 @@ public class AccueilServlet extends HttpServlet {
 
         ArticleManager articleManager = new ArticleManager();
         try{
-            List<Article> articlesEncherissables = articleManager.AfficherArticlesEncherissables();
-            request.setAttribute("ArticlesEncherissables", articlesEncherissables);
+            List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
+            request.setAttribute("listeArticles", articlesEncherissables);
         } catch (Exception e) {
             e.printStackTrace();
         }

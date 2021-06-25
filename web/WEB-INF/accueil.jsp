@@ -25,16 +25,16 @@
     <c:if test="${sessionScope.utilisateur != null}">
 
         <div>
-            <a href="${pageContext.request.contextPath}/recherche?bouton=achat"><input type="radio" name="achatOuVente"
-                                                                                       value="achat" ${coche=="achat"? "checked" : ""}>
+            <a href="${pageContext.request.contextPath}/recherche?bouton=achat">
+                <input type="radio" name="achatOuVente" value="achat" ${coche=="achat"? "checked" : ""}>
                 Achats</a>
-            <input type="checkbox" id="encheresOuvertes" value="enchères ouvertes"
+            <input type="checkbox" id="encheresOuvertes"
                    name="encheresOuvertes" ${coche=="vente"? "disabled" : ""}>
             <label for="encheresOuvertes">Enchères ouvertes</label>
-            <input type="checkbox" id="mesEncheresEnCours" value="mes enchères en cours"
+            <input type="checkbox" id="mesEncheresEnCours"
                    name="mesEncheresEnCours" ${coche=="vente"? "disabled" : ""}>
             <label for="mesEncheresEnCours">Mes enchères en cours</label>
-            <input type="checkbox" id="encheresRemportees" value="enchères remportées"
+            <input type="checkbox" id="encheresRemportees"
                    name="encheresRemportees" ${coche=="vente"? "disabled" : ""}>
             <label for="encheresRemportees">Mes enchères remportées</label>
         </div>
@@ -44,13 +44,13 @@
                                                                                        name="achatOuVente"
                                                                                        value="vente" ${coche=="vente"? "checked" : ""}>
                 Mes ventes</a>
-            <input type="checkbox" id="ventesEnCours" value="ventes en cours"
+            <input type="checkbox" id="ventesEnCours"
                    name="ventesEnCours" ${coche=="achat"? "disabled" : ""}>
             <label for="ventesEnCours">Mes ventes en cours</label>
-            <input type="checkbox" id="ventesNonDebut" value="ventes non débutées"
+            <input type="checkbox" id="ventesNonDebut"
                    name="ventesNonDebutees" ${coche=="achat"? "disabled" : ""}>
             <label for="ventesNonDebut">Ventes non débutées</label>
-            <input type="checkbox" id="ventesTerminees" value="ventes terminées"
+            <input type="checkbox" id="ventesTerminees"
                    name="ventesTerminees" ${coche=="achat"? "disabled" : ""}>
             <label for="ventesTerminees">Ventes terminées</label>
         </div>
@@ -62,10 +62,10 @@
 
 <div>
     <c:choose>
-        <c:when test="${ArticlesEncherissables.size()>0 && categories == null}">
+        <c:when test="${listeArticles.size()>0}">
             <table>
                 <tbody>
-                <c:forEach items="${ArticlesEncherissables}" var="article">
+                <c:forEach items="${listeArticles}" var="article">
                     <tr><td><c:out value="${article.nomArticle}"/></td></tr>
                     <tr><td><c:out value="${article.description}"/></td></tr>
                     <tr><td><c:out value="Prix de vente : ${article.prixInitial} points"/></td></tr>
@@ -92,39 +92,8 @@
         </c:when>
 
         <c:otherwise>
-            <p>Pas d'article encherissable actuellement</p>
+            <p>Pas d'article correspondant</p>
         </c:otherwise>
-    </c:choose>
-
-    <c:choose>
-        <c:when test="${listeArticlesParCategorie != null && listeArticlesParCategorie.size()>0}">
-            <table>
-                <tbody>
-                <c:forEach items="${listeArticlesParCategorie}" var="article">
-                    <tr><td><c:out value="${article.nomArticle}"/></td></tr>
-                    <tr><td><c:out value="${article.description}"/></td></tr>
-                    <tr><td><c:out value="Prix de vente : ${article.prixInitial} points"/></td></tr>
-                    <tr><td><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></td></tr>
-
-                    <tr>
-                        <c:choose>
-                            <c:when test="${sessionScope.utilisateur == null }">
-                                <td><c:out value="Vendeur : ${article.vendeur.pseudo}"/></td>
-                            </c:when>
-
-                            <c:when test="${sessionScope.utilisateur != null }">
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
-                                        <c:out value="Vendeur : ${article.vendeur.pseudo}"/>
-                                    </a></td>
-                            </c:when>
-                        </c:choose>
-                    </tr>
-
-                </c:forEach>
-                </tbody>
-            </table>
-        </c:when>
     </c:choose>
 
 </div>

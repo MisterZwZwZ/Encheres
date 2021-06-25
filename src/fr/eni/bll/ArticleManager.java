@@ -11,6 +11,7 @@ import fr.eni.dal.DAOFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -74,7 +75,7 @@ public class ArticleManager {
     /**
      * Renvoie la liste des articles encherissables
      */
-    public List<Article> AfficherArticlesEncherissables() throws BusinessException {
+    public List<Article> afficherArticlesEncherissables() throws BusinessException {
        List<Article> ArticlesEncherissables = articleDAO.selectArticlesEncherissables();
        return ArticlesEncherissables;
     }
@@ -82,18 +83,44 @@ public class ArticleManager {
     /**
      * Renvoie la liste des articles en vente par catégorie
      */
-    public List<Article> AfficherArticleParCategorie(int noCategorie) throws BusinessException {
+    public List<Article> afficherArticleParCategorie(int noCategorie) throws BusinessException {
         List<Article> listeArticlesParCategorie ;
         listeArticlesParCategorie = articleDAO.selectArticlesByCategorie(noCategorie);
           //TODO CG gstion des erreurs
       return listeArticlesParCategorie;
     }
 
-    public List<Article> selectLesVentesDunUtilisateur(int idUser) throws BusinessException {
+    public List<Article> afficherLesVentesDunUtilisateur(int idUser) throws BusinessException {
         List<Article> listeDesVentesParUtilisateur ;
         listeDesVentesParUtilisateur = articleDAO.selectArticlesByCategorie(idUser);
-        //TODO CG gstion des erreurs
+        //TODO CG gstion des erreurs // supprimer cette méthode ??? est utilisée ?
         return listeDesVentesParUtilisateur;
+    }
+
+    /**
+     *  TODO test à supprimer/ Permet de tester la requete SQL - Rechercher par mot clef.
+     * @return
+     * @throws BusinessException
+     */
+    public List<Article> afficherParMotClef(String motclef) throws BusinessException {
+        List<Article> listeparMotClef ;
+        listeparMotClef = articleDAO.selectArticlesParMotClef(motclef);
+        return listeparMotClef;
+    }
+
+    public List<Article> rechercheParfiltre(String recherche, int noCategorie, String choixAchatOuVente, String case1,
+            String case2, String case3, int noUtilisateur) throws BusinessException {
+        List<Article> listeVentesParFiltres = new ArrayList<>();
+        String motclef = recherche.toLowerCase(Locale.ROOT);
+        //redirection dans l'une ou l'autre méthode de la DAL selon si "achat" ou "vente" sélectionnée
+        if (choixAchatOuVente.equals("achat")){
+            listeVentesParFiltres = articleDAO.selectArticlesParFiltre(motclef, noCategorie, case1, case2, case3, noUtilisateur);
+        }
+        if (choixAchatOuVente.equals("vente")){
+            listeVentesParFiltres = articleDAO.selectVentesParFiltre(motclef, noCategorie, case1, case2, case3, noUtilisateur);
+        }
+        //TODO CG gestion des erreurs
+        return listeVentesParFiltres;
     }
 
     //TODO connection à l'IHM - TL

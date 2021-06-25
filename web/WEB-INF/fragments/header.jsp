@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
-    <h1>ENI-Encheres</h1>
+    <a href="<%=request.getContextPath()%>/accueil"><img src="https://img2.freepng.fr/20180420/xrq/kisspng-cat-spacecraft-drawing-outer-space-clip-art-spaceship-5adaadfe72c5c1.7562180915242808304701.jpg" height="100px" width="100px"></a>
 
 <c:choose>
     <c:when test="${!empty(sessionScope.utilisateur)}">

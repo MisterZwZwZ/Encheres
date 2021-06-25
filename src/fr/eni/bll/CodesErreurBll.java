@@ -118,5 +118,17 @@ public abstract class CodesErreurBll {
      */
     public static final int REGLE_ART_CATEGORIE_ERREUR = 20037;
 
+    /**
+     * La date de l'enchère est invalide
+     */
+    public static final int REGLE_DATE_ENCHERE_ERREUR = 20038;
+
+    /**
+     * Le montant de l'enchere est invalide
+     */
+    public static final int REGLE_MONTANT_ENCHERE_ERREUR = 20039;
+
+
+
 
 }

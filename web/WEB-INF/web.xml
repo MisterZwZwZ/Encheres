@@ -10,15 +10,7 @@
         <welcome-file>accueil</welcome-file>
     </welcome-file-list>
 
-    <filter>
-        <filter-name>connexionFiltre</filter-name>
-        <filter-class>fr.eni.servlets.connexionFiltre</filter-class>
-    </filter>
 
-    <filter-mapping>
-        <filter-name>connexionFiltre</filter-name>
-        <url-pattern>/private</url-pattern>
-    </filter-mapping>
 
     <error-page>
         <error-code>404</error-code>

@@ -12,7 +12,248 @@ import java.util.List;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 
-    private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie VALUES (?,?,?,?,?,?,?,?)";
+    //Méthode "test" de sélection des articles quel que soit le filtre. A assembler avec un String Builder
+    //Faire une 2eme méthode avec une jointure sur la table enchere (2 requetes possibles : mes encheres en cours et mes encheres gagnes)
+    private String SELECT_ARTICLE_FILTRE ;
+    private String selectArticles = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
+            "          CATEGORIES.no_categorie WHERE ARTICLES.nom LIKE ?"; // comprend la recherche par mot clef
+    private String selectEncheres = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
+            "          CATEGORIES.no_categorie INNER JOIN ENCHERES ON ARTICLES.no_utulisateur = ENCHERES.no_utilisateur WHERE ARTICLES.nom LIKE ?"; // comprend la recherche par mot clef
+    private String jointureTableEnchere = "INNER JOIN ENCHERES ON ARTICLES.no_utulisateur = ENCHERES.no_utilisateur ";
+    private String where = "WHERE ";
+    private String parMotClef = "ARTICLES.nom LIKE ?"; // chaine vide si pas de mot clef en entrée
+    private String parCate = "ARTICLES.no_categorie = ? ";
+    private String and = "AND" ;
+    private String ByIdUser = "ARTICLES.no_utilisateur = ?";
+    private String enCours = "date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE()";
+    private String programme = "date_debut_vente > GETDATE()";
+    private String termine = "date_fin_vente < GETDATE()";
+
+
+    /**
+     * ACHATS. Cette méthode sélectionne les articles selon les filtres appliquées.
+     * La requete sql est construite "sur mesure" suivant le contenu des paramètres en entrée.
+     */
+    public List<Article> afficherArticlesParFiltre(String recherche, int noCategorie, String choixAchatOuVente, String case1,
+                                           String case2, String case3, int noUtilisateur) throws BusinessException {
+        List<Article> listeArticlesFiltres = new ArrayList<>();
+        Article article = new Article();;
+        StringBuffer sb = null;
+
+        //On construit la requete sql sur mesure selon les parametres choisis
+        if (recherche == null) {
+            recherche = "";
+        }
+
+        //Choix parmi les ventes selon critères choisis par l'utilisateur
+        if (choixAchatOuVente.equals("vente")) {
+            //TODO CG: vérifier que l'on récupère bien le mot "achat" ou "vente" depuis la jsp
+            sb = new StringBuffer();
+            sb.append(selectArticles);
+            sb.append(and);
+            sb.append(ByIdUser);
+
+            if (case1.equals("on")) {
+                sb.append(and);
+                sb.append(enCours);
+                if (noCategorie != 0) {
+                    sb.append(and);
+                    sb.append(parCate);
+                }
+            }
+            if (case2.equals("on")) {
+                sb.append(and);
+                sb.append(programme);
+                if (noCategorie != 0) {
+                    sb.append(and);
+                    sb.append(parCate);
+                }
+            }
+            if (case3.equals("on")) {
+                sb.append(and);
+                sb.append(termine);
+                if (noCategorie != 0) {
+                    sb.append(and);
+                    sb.append(parCate);
+                }
+            }
+
+        }
+// Affichage des enchères en cours avec 2 parametres possibles et motclef, catégorie
+            if (choixAchatOuVente.equals("achat")) {
+                sb = new StringBuffer();
+                if (case1.equals("on") ) {
+                    sb.append(selectArticles);
+                    sb.append(and);
+                    sb.append(enCours);
+
+                    if (noCategorie != 0) {
+                        sb.append(and);
+                        sb.append(parCate);
+                    }
+                    sb.toString();
+                    System.out.println("requete ventes / case 3 : " + sb.toString());
+                }
+
+                if (case2.equals("on")){
+                    sb.append(selectArticles);
+                    sb.append(jointureTableEnchere);
+                    sb.append(and);
+                    sb.append(ByIdUser);
+                    sb.append(and);
+                    sb.append(enCours);
+
+                    sb.toString();
+                    System.out.println("requete ventes / case 2 : " + sb.toString());
+                }
+                if (case3.equals("on")){
+                    sb.append(selectArticles);
+                    sb.append(jointureTableEnchere);
+                    sb.append(and);
+                    sb.append(ByIdUser);
+                    sb.append(and);
+                    sb.append(termine);
+
+                    sb.toString();
+                    System.out.println("requete ventes / case 3 : " + sb.toString());
+                }
+
+            }
+
+        //test affichage - TODO CG tester cette méthode
+        sb.toString();
+        //on lance la connexion et on exécute la requete
+        try(Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
+            pstmt.setString(1, recherche);
+            if(case2.equals("on") || case3.equals("on")){
+                pstmt.setInt(2, noUtilisateur);
+            }
+            if(noCategorie != 0){
+                pstmt.setInt(3, noCategorie);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                article.setNoArticle(rs.getInt("no_article"));
+                article.setNomArticle(rs.getString("nom_article"));
+                article.setDescription(rs.getString("description"));
+                article.setDateDebutEnchere(rs.getDate("date_debut_vente").toLocalDate());
+                article.setDateFinEnchere(rs.getDate("date_fin_vente").toLocalDate());
+                article.setPrixInitial(rs.getInt("prix_initial"));
+                article.setPrixVente(rs.getInt("prix_vente"));
+                listeArticlesFiltres.add(article);
+
+                Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                article.setVendeur(utilisateur);
+
+                Categorie categorie = new Categorie(rs.getInt("no_categorie"));
+                article.setCategorie(categorie);
+            }
+    }catch (SQLException e) {
+        e.printStackTrace();
+        BusinessException businessException = new BusinessException();
+        businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+        throw businessException;
+    }
+        return listeArticlesFiltres;
+    }
+
+    /**
+     * ENCHERES. Cette méthode sélectionne les encheres de l'utilisateur selon les filtres appliquées.
+     * La requete sql est construite "sur mesure" suivant le contenu des paramètres en entrée.
+     */
+    public List<Article> afficherEncheresParFiltre(String recherche, int noCategorie, String choixAchatOuVente, String case1,
+                                           String case2, String case3, int noUtilisateur) throws BusinessException {
+        List<Article> listeEncheresFiltrees = new ArrayList<>();
+        Article article = new Article();;
+        StringBuffer sb = null;
+
+        //On construit la requete sql sur mesure selon les parametres choisis
+        if (recherche == null) {
+            recherche = "";
+        }
+
+// Affichage des enchères en cours avec 2 parametres possibles et motclef, catégorie
+        if (choixAchatOuVente.equals("achat")) {
+            sb = new StringBuffer();
+            if (case1.equals("on") ) {
+                sb.append(selectArticles);
+                sb.append(and);
+                sb.append(enCours);
+                sb.toString();
+                System.out.println("requete achats / case 1 : " + sb.toString());
+            }
+
+            if (case2.equals("on")){
+                sb.append(selectEncheres);
+                sb.append(and);
+                sb.append(ByIdUser);
+                sb.append(and);
+                sb.append(enCours);
+                sb.toString();
+                System.out.println("requete achats / case 2 : " + sb.toString());
+
+            }
+            if (case3.equals("on")){
+                sb.append(selectEncheres);
+                sb.append(and);
+                sb.append(ByIdUser);
+                sb.append(and);
+                sb.append(termine);
+                sb.toString();
+                System.out.println("requete achats / case 3 : " + sb.toString());
+            }
+        }
+        if (noCategorie != 0) {
+            sb.append(and);
+            sb.append(parCate);
+        }
+        //test affichage - TODO CG tester cette méthode
+        sb.toString();
+        //on lance la connexion et on exécute la requete
+        try(Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
+            pstmt.setString(1, recherche);
+            if(case2.equals("on") || case3.equals("on")){
+                pstmt.setInt(2, noUtilisateur);
+            }
+            if(noCategorie != 0){
+                pstmt.setInt(3, noCategorie);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                article.setNoArticle(rs.getInt("no_article"));
+                article.setNomArticle(rs.getString("nom_article"));
+                article.setDescription(rs.getString("description"));
+                article.setDateDebutEnchere(rs.getDate("date_debut_vente").toLocalDate());
+                article.setDateFinEnchere(rs.getDate("date_fin_vente").toLocalDate());
+                article.setPrixInitial(rs.getInt("prix_initial"));
+                article.setPrixVente(rs.getInt("prix_vente"));
+                listeEncheresFiltrees.add(article);
+
+                Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                article.setVendeur(utilisateur);
+
+                Categorie categorie = new Categorie(rs.getInt("no_categorie"));
+                article.setCategorie(categorie);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+            throw businessException;
+        }
+        return listeEncheresFiltrees;
+    }
+
     private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
             "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
@@ -21,9 +262,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private static final String SELECT_ARTICLES_ENCHERISSABLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND no_utilisateur=?";
     private static final String SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND ARTICLES.nom_article LIKE ('''%?%'''') ";
 
-
+    private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES ( ?,?,?,?,?,?,?,? )";
     private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES ( ?,?,?,? )";
-
 
     private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
@@ -91,8 +331,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             } catch (Exception e) {
                 e.printStackTrace();
                 }
-            }
-         catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_ECHEC);

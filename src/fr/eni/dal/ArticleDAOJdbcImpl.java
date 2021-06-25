@@ -21,13 +21,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private static final String SELECT_ARTICLES_ENCHERISSABLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND no_utilisateur=?";
     private static final String SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND ARTICLES.nom_article LIKE ('''%?%'''') ";
 
-    private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES ( ?,?,?,?,?,?,?,? )";
+
     private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES ( ?,?,?,? )";
-    private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, CATEGORIES.no_categorie, pseudo FROM ARTICLES " +
-            "INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur " +
-            "INNER JOIN CATEGORIES ON ARTICLES.no_categorie = CATEGORIES.no_categorie" +
-            "WHERE CATEGORIES.no_categorie = ?";
-    private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE()";
+
+
     private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
 
@@ -95,7 +92,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
+         catch (Exception e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_ECHEC);

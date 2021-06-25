@@ -12,7 +12,7 @@ import java.util.List;
 public class UtilisateurManager {
 
     private final UtilisateurDAO userDAO;
-    private Utilitaire util;
+    private Utilitaire util = new Utilitaire();
 
     public UtilisateurManager() {
         this.userDAO = DAOFactory.getUtilisateurDAO();

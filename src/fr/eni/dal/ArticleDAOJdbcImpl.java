@@ -16,15 +16,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private static final String SELECT_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
             "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
-            "          CATEGORIES.no_categorie WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND ARTICLES.no_categorie = ?";
-    private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE()";
-    private static final String SELECT_ARTICLES_ENCHERISSABLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND no_utilisateur=?";
-    private static final String SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() AND ARTICLES.nom_article LIKE  '%'+ ? +'%'  ";
+            "          CATEGORIES.no_categorie WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 AND ARTICLES.no_categorie = ?";
+    private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0";
+    private static final String SELECT_ARTICLES_ENCHERISSABLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 AND no_utilisateur=?";
+    private static final String SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 AND ARTICLES.nom_article LIKE  '%'+ ? +'%'  ";
 
     private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES ( ?,?,?,?,?,?,?,? )";
     private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES ( ?,?,?,? )";
 
-    private static final String SELECT_CATEGORIES = "SELECT no_categorie, libelle FROM CATEGORIES";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
 
     //Requete SQL dynamique pour la recherche
@@ -39,7 +38,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private String parCate = "ARTICLES.no_categorie = ? ";
     private String and = " AND " ;
     private String ByIdUser = " ARTICLES.no_utilisateur = ? ";
-    private String enCours = " date_debut_vente <= GETDATE() AND date_fin_vente >= GETDATE() ";
+    private String enCours = " DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0";
     private String programme = " date_debut_vente > GETDATE() ";
     private String termine = " date_fin_vente < GETDATE() ";
 
@@ -474,36 +473,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return null;
     }
 
-    public List<Categorie> selectAllCategories() throws BusinessException{
-        List<Categorie> listeCategories = new ArrayList<>();
-        try(Connection cnx = ConnectionProvider.getConnection()) {
-            Statement stmt = cnx.createStatement();
-            ResultSet rs = stmt.executeQuery(SELECT_CATEGORIES);
-            Categorie cat = new Categorie();
-            while(rs.next()){
-                if(rs.getInt("no_categorie") != cat.getNoCategorie()){
-                    cat = new Categorie();
-                    cat.setNoCategorie(rs.getInt("no_categorie"));
-                    cat.setLibelle(rs.getString("libelle"));
-                    listeCategories.add(cat);
-                }
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            //TODO CG gestion erreur personnalisée
-            throw new BusinessException();
-        }
-        return listeCategories;
-    }
-
-
     public List<Article> selectEnModeDeconnecte(String recherche, int noCategorie) throws BusinessException{
             List<Article> listeArticles = new ArrayList<>();
             Article articleEncours = new Article();
             StringBuffer sb = new StringBuffer();
             sb.append(selectArticles);
+            sb.append(and);
+            sb.append(enCours);
 
             if (recherche == null) {
                 recherche = "";

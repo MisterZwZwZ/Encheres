@@ -1,11 +1,10 @@
 package fr.eni.messages;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
  * Cette classe permet de lire le contenu du fichier messages_erreur.properties
- *
- * @author Administrator
  */
 public class LecteurErreur {
 
@@ -13,7 +12,7 @@ public class LecteurErreur {
 
     static {
         try {
-            rb = ResourceBundle.getBundle("fr.eni.messages.messages_erreur");
+            rb = ResourceBundle.getBundle("fr.eni.messages.messages_erreur", new UTF8Control());
         } catch (Exception e) {
             e.printStackTrace();
         }

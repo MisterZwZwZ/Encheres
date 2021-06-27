@@ -10,7 +10,10 @@
 <head>
     <title>Page non trouvée</title>
 </head>
-<body>
-
+<body style="background-image: url('https://cdn.wallpapersafari.com/17/21/hx5Fdt.jpg');  background-repeat: no-repeat; justify-content: center">
+<div>
+<p style="color: white; text-align: center; font-size: 24px; font-family: 'Calibri Light'; font-style: italic">
+    Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
+</div>
 </body>
 </html>

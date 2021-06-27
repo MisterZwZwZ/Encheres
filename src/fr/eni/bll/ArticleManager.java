@@ -91,7 +91,6 @@ public class ArticleManager {
         List<Article> listeArticlesParFiltres = new ArrayList<>();
         String motclef = recherche.toLowerCase(Locale.ROOT);
 
-        //TODO CG cette éthode est expérimentale et vise à fusionner les 2 listes d'articles récupérées pour éviter les doublons
         //Si l'utilisateur n'est pas connecté
         if (noUtilisateur == 0){
             listeArticlesParFiltres = articleDAO.selectEnModeDeconnecte(recherche, noCategorie);

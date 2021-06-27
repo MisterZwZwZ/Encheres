@@ -66,7 +66,6 @@ public class InscriptionServlet extends HttpServlet {
             req.setAttribute("rue", rue);
         }
 
-        //TODO : verif sur le telephone ?
         String telephone = req.getParameter("telephone");
         req.setAttribute("telephone", telephone);
 

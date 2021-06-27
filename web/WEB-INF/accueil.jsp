@@ -12,14 +12,13 @@
 <p>Filtres</p>
 
 <form action="${pageContext.request.contextPath}/recherche" method="POST">
-    <input type="search" id="recherche-article" name="rechercheParMotClef" placeholder="Le nom de l'article contient">
+    <input type="search" id="recherche-article" name="rechercheParMotClef" placeholder="Le nom de l'article contient" value="${motclef}">
 
-    <select name="rechercheParcategorie" id="categories">
-        <option value="">--Toutes--</option>
-        <option value="1">Informatique</option>
-        <option value="2">Ameublement</option>
-        <option value="3">Vêtements</option>
-        <option value="4">Sports & Loisirs</option>
+    <select name="rechercheParcategorie" id="categorie">
+        <option value="">--${categorie != null? categorie:"Toutes"}--</option>
+        <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
+        <option value="${categorie.key}">${categorie.value}</option>
+        </c:forEach>
     </select>
 
     <c:if test="${sessionScope.utilisateur != null}">
@@ -29,7 +28,7 @@
                 <input type="radio" name="achatOuVente" value="achat" ${coche=="achat"? "checked" : ""}>
                 Achats</a>
             <input type="checkbox" id="encheresOuvertes"
-                   name="encheresOuvertes" ${coche=="vente"? "disabled" : ""}>
+                   name="encheresOuvertes" ${coche=="vente"? "disabled" : ""} ${coche=="achat"? "checked" : ""}>
             <label for="encheresOuvertes">Enchères ouvertes</label>
             <input type="checkbox" id="mesEncheresEnCours"
                    name="mesEncheresEnCours" ${coche=="vente"? "disabled" : ""}>
@@ -45,7 +44,7 @@
                                                                                        value="vente" ${coche=="vente"? "checked" : ""}>
                 Mes ventes</a>
             <input type="checkbox" id="ventesEnCours"
-                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""}>
+                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""}>
             <label for="ventesEnCours">Mes ventes en cours</label>
             <input type="checkbox" id="ventesNonDebut"
                    name="ventesNonDebutees" ${coche=="achat"? "disabled" : ""}>

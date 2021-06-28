@@ -126,6 +126,14 @@ public class EnchereServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         List<Integer> listeCodesErreur = new ArrayList<>();
 
+        //récupération de la proposition de l'utilisateur
+        int montantEnchere = Integer.parseInt(request.getParameter("prix"));
+        if (montantEnchere <= 0 || montantEnchere <= enchere.getMontantEnchere()) {
+            listeCodesErreur.add(CodesErreurServlet.ENCHERE_MONTANT_ERREUR);
+        } else {
+            request.setAttribute("montantEnchere", montantEnchere);
+        }
+
 //      TODO stocker l'enchère au cas ou l'utilisateur perd l'enchère pour lui rendre les credits
 
 //      TODO faire les vérifications : liaison enchère/Article, enchère/Utilisateur, enchère/Crédit
@@ -138,17 +146,13 @@ public class EnchereServlet extends HttpServlet {
             noUtilisateur = utilisateur.getNoUtilisateur();
         }
 
-        //TODO récupération du numéro d'article sur lequel l'enchère est réalisée
-
-
-
-        //récupération de la proposition de l'utilisateur
-        int montantEnchere = Integer.parseInt(request.getParameter("prix"));
-        if (montantEnchere <= 0 || montantEnchere <= enchere.getMontantEnchere()) {
+        //Vérification du crédit
+        int credit = 0;
+        if(enchere.getMontantEnchere() < utilisateur.getCredit()){
             listeCodesErreur.add(CodesErreurServlet.ENCHERE_MONTANT_ERREUR);
-        } else {
-            request.setAttribute("montantEnchere", montantEnchere);
         }
+
+
 
         // TODO si article déjà enchéri, afficher la dernière offre et verifier que la nouvelle enchère est + élevée
 
@@ -167,7 +171,7 @@ public class EnchereServlet extends HttpServlet {
 //            } catch (BusinessException e) {
 //                e.printStackTrace();
 //                request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
-            doGet(request, response);
+//            doGet(request, response);
         }
     }
 }

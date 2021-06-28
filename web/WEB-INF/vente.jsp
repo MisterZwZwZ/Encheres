@@ -4,6 +4,61 @@
 <html>
 <head>
     <title>Vente</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#dateDebutEnchere").datepicker({
+                altField: "#datepicker",
+                closeText: 'Fermer',
+                prevText: 'Précédent',
+                nextText: 'Suivant',
+                currentText: 'Aujourd\'hui',
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Sem.',
+                minDate: 0,
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 2,
+                changeYear: true,
+                onClose: function (selectedDate, inst) {
+                    var minDate = new Date(Date.parse(selectedDate));
+                    minDate.setDate(minDate.getDate() + 1);
+                    $("#dateFinEnchere").datepicker("option", "minDate", minDate);
+                }
+            });
+
+            $("#dateFinEnchere").datepicker({
+                altField: "#datepicker",
+                closeText: 'Fermer',
+                prevText: 'Précédent',
+                nextText: 'Suivant',
+                currentText: 'Aujourd\'hui',
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Sem.',
+                minDate: "+1D",
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 2,
+                changeYear: true,
+                onClose: function (selectedDate, inst) {
+                    var maxDate = new Date(Date.parse(selectedDate));
+                    maxDate.setDate(maxDate.getDate() - 1);
+                    $("#dateDebutEnchere").datepicker("option", "maxDate", maxDate);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
@@ -16,7 +71,6 @@
 
     <label for="categorie">Catégorie</label>
     <select name="rechercheParcategorie" id="categorie">
-        <option value="">--${categorie != null? categorie:"Toutes"}--</option>
         <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
             <option value="${categorie.key}">${categorie.value}</option>
         </c:forEach>
@@ -25,9 +79,9 @@
     <label for="prixInitial">Mise à prix</label>
     <input type="number" name="prixInitial" id="prixInitial" value="${prixInitial}">
     <label for="dateDebutEnchere">Début de l'enchère</label>
-    <input type="date" name="dateDebutEnchere" id="dateDebutEnchere">
+    <input name="dateDebutEnchere" id="dateDebutEnchere">
     <label for="dateFinEnchere">Fin de l'enchère</label>
-    <input type="date" name="dateFinEnchere" id="dateFinEnchere">
+    <input name="dateFinEnchere" id="dateFinEnchere">
 
     <fieldset>
         <legend>Retrait</legend>
@@ -36,7 +90,7 @@
         <label for="codePostal">Code Postal :</label>
         <input type="text" name="codePostal" id="codePostal" value="${sessionScope.utilisateur.codePostal}"><br/>
         <label for="ville">Ville :</label>
-        <input type="text" name="ville" id="ville"  value="${sessionScope.utilisateur.ville}">
+        <input type="text" name="ville" id="ville" value="${sessionScope.utilisateur.ville}">
     </fieldset>
     <input type="submit" value="Enregistrer">
     <a href="<%=request.getContextPath()%>/accueil">Annuler</a>
@@ -52,6 +106,5 @@
     </ul>
 </c:if>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/date.js"></script>
 </body>
 </html>

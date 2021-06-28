@@ -67,11 +67,16 @@ public class VenteServlet extends HttpServlet {
         }
         request.setAttribute("description", description);
 
-        int categorie = Integer.parseInt(request.getParameter("rechercheParcategorie"));
-        if (categorie <= 0) {
-            listeCodesErreur.add(CodesErreurServlet.CATEGORIE_ARTICLE_ERREUR);
+
+        int categorie = 0;
+        if(!request.getParameter("rechercheParcategorie").equals(" ")){
+            categorie = Integer.parseInt(request.getParameter("rechercheParcategorie"));
+            if(categorie < 0){
+                listeCodesErreur.add(CodesErreurServlet.CATEGORIE_ARTICLE_ERREUR);
+            }
+            request.setAttribute("rechercheParcategorie", categorie);
         }
-        request.setAttribute("rechercheParcategorie", categorie);
+
 
         int prixInitial = 0;
         if (!request.getParameter("prixInitial").equals("")) {

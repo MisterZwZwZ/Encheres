@@ -3,6 +3,7 @@ package fr.eni.bll;
 import fr.eni.BusinessException;
 import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
+import fr.eni.dal.CodesErreurDal;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
 
@@ -256,14 +257,16 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
 
-        boolean isNumbersOnly = util.telValidation(telephone);
-        if (!isNumbersOnly) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        if (telephone != null && !telephone.equals("")){
+            boolean isNumbersOnly = util.telValidation(telephone);
+            if (!isNumbersOnly) {
+                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            }
+            if(telephone.trim().length()>15 ){
+                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            }
         }
 
-        if(telephone.trim().length()>15 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
-        }
         if(rue==null || rue.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
         }

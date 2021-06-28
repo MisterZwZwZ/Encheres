@@ -30,13 +30,16 @@ public class MonProfilServlet extends HttpServlet {
         // renvoi vers la servlet accueil via l'url deconnexion
         if(request.getServletPath().equals("/supp")) {
             UtilisateurManager um = new UtilisateurManager();
-           //on récupére l'id utilisateur à supprimer depuis la jsp
-            int idUtilisateur = Integer.parseInt(request.getParameter("idUtilisateur"));
+           //on récupére l'id de l'utilisateur connecté
+            HttpSession session = request.getSession();
+            Utilisateur utilisateurConnecté = (Utilisateur) session.getAttribute("utilisateur");
+            int idUtilisateur = utilisateurConnecté.getNoUtilisateur();
             try {
                 um.supprimerUtilisateur(idUtilisateur);
                 request.getRequestDispatcher("deconnexion").forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();
+                request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
         }
 
@@ -121,6 +124,8 @@ public class MonProfilServlet extends HttpServlet {
                 //mise à jour de la session utilisateur avec les informations à jour
                 utilisateur = utilisateurManager.retournerUtilisateurParEmail(email);
                 session.setAttribute("utilisateur", utilisateur);
+                String messageConfirmation = "Votre profil a bien été mis à jour";
+                session.setAttribute("message", messageConfirmation);
                 request.getRequestDispatcher("WEB-INF/monprofil.jsp").forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();

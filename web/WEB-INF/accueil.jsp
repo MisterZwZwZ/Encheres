@@ -12,20 +12,22 @@
 <p>Filtres</p>
 
 <form action="${pageContext.request.contextPath}/recherche" method="POST">
-    <input type="search" id="recherche-article" name="rechercheParMotClef" placeholder="Le nom de l'article contient" value="${motclef}">
+    <input type="search" id="recherche-article" name="rechercheParMotClef" placeholder="Le nom de l'article contient"
+           value="${motclef}">
 
-    <select name="rechercheParcategorie" id="categorie" >
+    <select name="rechercheParcategorie" id="categorie">
 
         <option value="">--"Toutes"--</option>
         <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
-        <option value="${categorie.key}" ${categorieChoisie == categorie.value ? "selected" : "" }>${categorie.value}</option>
+            <option value="${categorie.key}" ${categorieChoisie == categorie.value ? "selected" : "" }>${categorie.value}</option>
         </c:forEach>
     </select>
 
     <c:if test="${sessionScope.utilisateur != null}">
 
         <div>
-            <a href="${pageContext.request.contextPath}/recherche?bouton=achat" onclick="GestionCheckBoxAchats(achat,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+            <a href="${pageContext.request.contextPath}/recherche?bouton=achat"
+               onclick="GestionCheckBoxAchats(achat,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
                 <input type="radio" name="achatOuVente" value="achat" checked ${coche=="achat"? "checked" : ""}>
                 Achats</a>
             <input type="checkbox" id="encheresOuvertes"
@@ -45,7 +47,8 @@
                                                                                        value="vente" ${coche=="vente"? "checked" : ""}>
                 Mes ventes</a>
             <input type="checkbox" id="ventesEnCours"
-                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""} onclick="GestionCheckBoxVentes(vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""}
+                   onclick="GestionCheckBoxVentes(vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
             <label for="ventesEnCours">Mes ventes en cours</label>
             <input type="checkbox" id="ventesNonDebut"
                    name="ventesNonDebutees" ${coche=="achat"? "disabled" : ""}>
@@ -62,32 +65,33 @@
 <div>
     <c:choose>
         <c:when test="${listeArticles.size()>0}">
-            <table>
-                <tbody>
-                <c:forEach items="${listeArticles}" var="article">
-                    <tr><td><a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">${article.nomArticle}</a></td></tr>
-                    <tr><td><c:out value="${article.description}"/></td></tr>
-                    <tr><td><c:out value="Prix de vente : ${article.prixInitial} points"/></td></tr>
-                    <tr><td><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></td></tr>
 
-                    <tr>
+            <c:forEach items="${listeArticles}" var="article">
+
+                <div class="card" style="width: 18rem;">
+                    <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
+                        <img src="..." class="card-img-top" alt="photo de l'article en vente"></a>
+                    <div class="card-body">
+                        <h5 class="card-title"><c:out value="${article.nomArticle}"/></h5>
+                        <p class="card-text"><c:out value="Description : ${article.description}"/></p>
+                        <p class="card-text"><c:out value="Prix de vente : ${article.prixInitial} points"/></p>
+                        <p class="card-text"><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
                         <c:choose>
                             <c:when test="${sessionScope.utilisateur == null }">
-                                <td><c:out value="Vendeur : ${article.vendeur.pseudo}"/></td>
+                                <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
                             </c:when>
 
                             <c:when test="${sessionScope.utilisateur != null }">
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
-                                        <c:out value="Vendeur : ${article.vendeur.pseudo}"/>
-                                    </a></td>
+                                <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
+                                    <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
+                                </a>
                             </c:when>
                         </c:choose>
-                    </tr>
-
-                </c:forEach>
-                </tbody>
-            </table>
+                        <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
+                           class="btn btn-primary">Voir l'annonce</a>
+                    </div>
+                </div>
+            </c:forEach>
         </c:when>
 
         <c:otherwise>

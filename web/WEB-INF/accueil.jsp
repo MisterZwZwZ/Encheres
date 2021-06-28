@@ -65,7 +65,7 @@
             <table>
                 <tbody>
                 <c:forEach items="${listeArticles}" var="article">
-                    <tr><td><c:out value="${article.nomArticle}"/></td></tr>
+                    <tr><td><a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">${article.nomArticle}</a></td></tr>
                     <tr><td><c:out value="${article.description}"/></td></tr>
                     <tr><td><c:out value="Prix de vente : ${article.prixInitial} points"/></td></tr>
                     <tr><td><c:out value="Date de fin d'enchère : ${article.dateFinEnchere}"/></td></tr>

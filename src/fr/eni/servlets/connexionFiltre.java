@@ -9,7 +9,8 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/profil",
         "/monprofil",
-        "/vendre"})
+        "/vendre",
+        "/enchere"})
 public class connexionFiltre implements Filter {
     public static final String ACCES_CONNEXION = "WEB-INF/login.jsp";
     public static final String ATT_SESSION_USER = "utilisateur";

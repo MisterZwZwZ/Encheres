@@ -14,6 +14,7 @@ public interface ArticleDAO {
     List<Article> selectArticlesEncherissables() throws BusinessException;
     List<Article> selectArticlesByCategorie(int noCategorie) throws BusinessException;
     List<Article> selectArticlesParMotClef(String chaine) throws BusinessException;
+    Article selectArticleById(int idArt) throws BusinessException;
     void deleteArticle(int id) throws BusinessException;
 
     /**

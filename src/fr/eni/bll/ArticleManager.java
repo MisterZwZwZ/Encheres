@@ -110,4 +110,16 @@ public class ArticleManager {
         articleDAO.deleteArticle(id);
     }
 
+    /**
+     * Retourne un article
+     * @param noArt
+     * @return Article
+     * @throws BusinessException
+     */
+    public Article afficherArticleParNo(int noArt) throws BusinessException{
+        Article articleTrouvé = articleDAO.selectArticleById(noArt);
+
+        return articleTrouvé;
+    }
+
 }

@@ -11,6 +11,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 
     private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES (no_utilisateur,no_article, date_enchere, montant_enchere) VALUES ( ?,?,?,? )";
     private static final String SELECT_ENCHERE_BY_NO_USER = "SELECT no_utilisateur,no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
+    private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT no_utilisateur,no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ?";
     private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET no_utilisateur = ?, no_article = ?, date_enchere = ?, montant_enchere = ?";
 
     /**
@@ -54,6 +55,32 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
         try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERE_BY_NO_USER);
             pstmt.setInt(1, noUtilisateur);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Utilisateur encherisseur = new Utilisateur(rs.getInt("no_utilisateur"));
+                enchere.setEncherisseur(encherisseur);
+                Article article = new Article(rs.getInt("no_article"));
+                enchere.setArticle(article);
+                enchere.setDateEnchere(rs.getDate("date-enchere").toLocalDate());
+                enchere.setMontantEnchere(rs.getInt("montant_enchere"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ENCHERE_ECHEC);
+            throw businessException;
+        }
+        return enchere;
+    }
+
+    @Override
+    public Enchere selectEnchereByNoArticle(int noArt) throws BusinessException {
+        Enchere enchere = new Enchere();
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERE_BY_NO_USER);
+            pstmt.setInt(1, noArt);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {

@@ -17,6 +17,8 @@ public class Retrait {
         this.article = article;
     }
 
+
+
     public String getRue() {
         return rue;
     }

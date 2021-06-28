@@ -57,4 +57,9 @@ public abstract class CodesErreurDal {
          * Erreur à la suppression d'un utilisateur
          */
         public static final int SUPPRESSION_UTILISATEUR_ERREUR = 10006;
+
+        /**
+         * Erreur lecture enchère
+         */
+        public static final int LECTURE_ENCHERE_ECHEC = 10007;
 }

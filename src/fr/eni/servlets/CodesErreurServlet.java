@@ -46,6 +46,9 @@ public abstract class CodesErreurServlet {
      * Enchere incorrecte
      */
     public static final Integer ENCHERE_MONTANT_ERREUR = 30043;
+    public static final Integer ENCHERE_DATE_ERREUR = 30044;
+    public static final Integer ENCHERE_UTILISATEUR_ERREUR = 30045;
+    public static final Integer ENCHERE_CREDIT_ERREUR = 30046;
 
 
     /**

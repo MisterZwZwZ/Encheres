@@ -26,7 +26,7 @@ public class ArticleManager {
     /**
      * Vérifie les données saisies par l'utilisateur lors de l'ajout d'un article
      */
-    public void validerArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, BusinessException businessException) throws BusinessException{
+    public void validerArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, BusinessException businessException){
         if(nomArticle == null || nomArticle.trim().length()>30){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ART_NOM_ERREUR);
         }
@@ -54,10 +54,10 @@ public class ArticleManager {
 
         BusinessException businessException = new BusinessException();
         //vérifications des données de l'article
-        this.validerArticle(nomArticle,description, dateDebutEnchere,dateFinEnchere, prixInitial, noCategorie, businessException);
+        this.validerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, noCategorie, businessException);
 
         if(!(businessException.hasErreurs())){
-            //créer la catégorie
+            //créer le numéro de catégorie
             Categorie categorie = new Categorie(noCategorie);
             //créer l'article
             Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, categorie, vendeur);
@@ -76,8 +76,7 @@ public class ArticleManager {
      * Renvoie la liste des articles encherissables
      */
     public List<Article> afficherArticlesEncherissables() throws BusinessException {
-       List<Article> ArticlesEncherissables = articleDAO.selectArticlesEncherissables();
-       return ArticlesEncherissables;
+        return articleDAO.selectArticlesEncherissables();
     }
 
     /**

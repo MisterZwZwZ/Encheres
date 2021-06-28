@@ -12,9 +12,8 @@
 
     <p><c:out value="${article.nomArticle}"/></p>
     <p><c:out value="Description : ${article.description}"/></p>
-    <p><c:out value="Catégorie : ${article.categorie}"/></p>
-    <p><c:out value="${article.categorie}"/></p>
-    <p><c:out value="Meilleure offre : ${enchere.MeilleureOffre} par ${utilisateur.pseudo}"/></p>
+    <p><c:out value="Catégorie : ${article.categorie.libelle}"/></p>
+    <p><c:out value="Meilleure offre : ${enchere.montantEnchere} par ${enchere.encherisseur.pseudo}"/></p>
     <p><c:out value="Mise à prix : ${article.prixInitial} points"/></p>
     <p><c:out value="Fin de l'enchère : ${article.dateFinEnchere}"/></p>
     <p><c:out value="Retrait : ${retrait.rue} "/></p>

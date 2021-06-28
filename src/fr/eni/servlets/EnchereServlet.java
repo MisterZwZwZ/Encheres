@@ -85,6 +85,7 @@ public class EnchereServlet extends HttpServlet {
         Enchere enchereAAfficher = null;
         try {
             enchereAAfficher = enchereManager.afficherEnchereParNoArticle(articleAAfficher.getNoArticle());
+            request.setAttribute("enchere", enchereAAfficher);
         } catch (BusinessException e) {
             e.printStackTrace();
         }

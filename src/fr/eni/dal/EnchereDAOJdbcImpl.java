@@ -11,7 +11,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 
     private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES (no_utilisateur,no_article, date_enchere, montant_enchere) VALUES ( ?,?,?,? )";
     private static final String SELECT_ENCHERE_BY_NO_USER = "SELECT no_utilisateur,no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
-    private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT no_utilisateur,no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ?";
+    private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT ENCHERES.no_utilisateur,no_article, date_enchere, montant_enchere, pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE no_article = ?";
     private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET no_utilisateur = ?, no_article = ?, date_enchere = ?, montant_enchere = ?";
 
     /**
@@ -79,16 +79,16 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
     public Enchere selectEnchereByNoArticle(int noArt) throws BusinessException {
         Enchere enchere = new Enchere();
         try (Connection cnx = ConnectionProvider.getConnection()) {
-            PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERE_BY_NO_USER);
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERE_BY_NO_ARTICLE);
             pstmt.setInt(1, noArt);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Utilisateur encherisseur = new Utilisateur(rs.getInt("no_utilisateur"));
+                Utilisateur encherisseur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
                 enchere.setEncherisseur(encherisseur);
                 Article article = new Article(rs.getInt("no_article"));
                 enchere.setArticle(article);
-                enchere.setDateEnchere(rs.getDate("date-enchere").toLocalDate());
+                enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
                 enchere.setMontantEnchere(rs.getInt("montant_enchere"));
             }
 

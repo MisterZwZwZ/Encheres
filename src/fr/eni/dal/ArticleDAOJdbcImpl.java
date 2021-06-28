@@ -20,7 +20,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private static final String SELECT_ARTICLES_ENCHERISSABLES = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0";
     private static final String SELECT_ARTICLES_ENCHERISSABLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 AND no_utilisateur=?";
     private static final String SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 AND ARTICLES.nom_article LIKE  '%'+ ? +'%'  ";
-    private static final String SELECT_ARTICLES_BY_ID = "SELECT no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, ARTICLES.no_utilisateur, UTILISATEUR.pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE no_article=?";
+    private static final String SELECT_ARTICLES_BY_ID = "SELECT ARTICLES.no_article, ARTICLES.nom_article, ARTICLES.description, ARTICLES.date_debut_vente, ARTICLES.date_fin_vente, ARTICLES.prix_initial, ARTICLES.prix_vente, ARTICLES.no_utilisateur, UTILISATEURS.pseudo, ARTICLES.no_categorie, c.libelle FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES C ON ARTICLES.no_categorie = C.no_categorie WHERE ARTICLES.no_article=?";
     private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES ( ?,?,?,?,?,?,?,? )";
     private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES ( ?,?,?,? )";
 
@@ -522,16 +522,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
             while (rs.next()) {
                 article.setNoArticle(rs.getInt("no_article"));
-                article.setNomArticle(rs.getString("pseudo"));
-                article.setDescription(rs.getString("nom"));
+                article.setNomArticle(rs.getString("nom_article"));
+                article.setDescription(rs.getString("description"));
                 article.setDateDebutEnchere(rs.getDate("date_debut_vente").toLocalDate());
                 article.setDateFinEnchere(rs.getDate("date_fin_vente").toLocalDate());
                 article.setPrixInitial(rs.getInt("prix_initial"));
                 article.setPrixVente(rs.getInt("prix_vente"));
 
-                Utilisateur vendeur = new Utilisateur(rs.getInt("ARTICLES.no_utilisateur"), rs.getString("UTILISATEUR.pseudo"));
-
+                Utilisateur vendeur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
                 article.setVendeur(vendeur);
+                Categorie categorie = new Categorie(rs.getInt("no_categorie"), rs.getString("libelle"));
+                article.setCategorie(categorie);
+
             }
             rs.close();
             pstmt.close();

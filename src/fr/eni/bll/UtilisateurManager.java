@@ -3,9 +3,11 @@ package fr.eni.bll;
 import fr.eni.BusinessException;
 import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
+import fr.eni.dal.CodesErreurDal;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
 
+import java.io.CharConversionException;
 import java.util.List;
 
 public class UtilisateurManager {

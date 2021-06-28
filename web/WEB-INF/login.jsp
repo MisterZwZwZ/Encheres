@@ -6,6 +6,8 @@
 <html>
 <head>
     <title>Login</title>
+<%-- FIXME CSS  --%>
+    <link type="text/css" rel="stylesheet" href="./styles/loginStyles.css"/>
 </head>
 <body>
 <h1>ENI-Enchères</h1>

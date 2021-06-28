@@ -119,7 +119,7 @@ public abstract class CodesErreurBll {
     public static final int REGLE_ART_CATEGORIE_ERREUR = 20037;
 
     /**
-     * La date de l'enchère est invalide
+     * La date de l'enchère est dépassée
      */
     public static final int REGLE_DATE_ENCHERE_ERREUR = 20038;
 
@@ -127,6 +127,21 @@ public abstract class CodesErreurBll {
      * Le montant de l'enchere est invalide
      */
     public static final int REGLE_MONTANT_ENCHERE_ERREUR = 20039;
+
+    /**
+     * Encherisseur introuvable ou n'est pas connecté
+     */
+    public static final int REGLE_ENCHERE_UTILISATEUR_ERREUR = 20040;
+
+    /**
+     * Crédit encherisseur insuffisant
+     */
+    public static final int REGLE_ENCHERE_CREDIT_ERREUR = 20041;
+
+    /**
+     * Erreur article sur enchere
+     */
+    public static final int REGLE_ENCHERE_ARTICLE_ERREUR = 20042;
 
 
 

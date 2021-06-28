@@ -17,6 +17,10 @@ public class Article {
     public Article() {
     }
 
+    public Article(int noArticle) {
+        this.noArticle = noArticle;
+    }
+
     public Article(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int prixVente, Categorie categorie, Utilisateur vendeur) {
         this.nomArticle = nomArticle;
         this.description = description;
@@ -49,6 +53,7 @@ public class Article {
         this.categorie = categorie;
         this.vendeur = vendeur;
     }
+
 
     public int getNoArticle() {
         return noArticle;

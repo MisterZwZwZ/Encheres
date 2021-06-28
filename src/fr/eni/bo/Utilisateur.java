@@ -70,6 +70,10 @@ public class Utilisateur {
 
     }
 
+    public Utilisateur(Utilisateur noUtilisateur) {
+
+    }
+
     public int getNoUtilisateur() {
         return noUtilisateur;
     }

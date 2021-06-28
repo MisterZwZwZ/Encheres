@@ -2,6 +2,7 @@ package fr.eni.servlets;
 
 import fr.eni.BusinessException;
 import fr.eni.bll.UtilisateurManager;
+import fr.eni.bo.Utilisateur;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,14 +109,21 @@ public class InscriptionServlet extends HttpServlet {
             rd.forward(req, resp);
         } else {
             try {
-                um.insererUtilisateur(pseudoUtilisateur, nomUtilisateur, prenomUtilisateur, email, telephone, rue, cp, ville, password);
+                Utilisateur utilisateurCree = um.insererUtilisateur(pseudoUtilisateur, nomUtilisateur, prenomUtilisateur, email, telephone, rue, cp, ville, password);
+                HttpSession session = req.getSession();
+                session.setAttribute("utilisateur", utilisateurCree);
+                resp.sendRedirect(req.getContextPath()+"/accueil");
             } catch (BusinessException e) {
                 e.printStackTrace();
                 req.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+                RequestDispatcher rd = req.getRequestDispatcher("WEB-INF/inscription.jsp");
+                rd.forward(req, resp);
             }
         }
-        RequestDispatcher rd = req.getRequestDispatcher("accueil");
-        rd.forward(req, resp);
+        //redirection. Renvoie vers la servlet accueil dans la méthode doGet
+
+//        RequestDispatcher rd = req.getRequestDispatcher("accueil");
+//        rd.forward(req, resp);
     }
 
     /**

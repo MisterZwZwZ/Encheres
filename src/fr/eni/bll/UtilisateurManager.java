@@ -3,17 +3,15 @@ package fr.eni.bll;
 import fr.eni.BusinessException;
 import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
-import fr.eni.dal.CodesErreurDal;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
 
-import java.io.CharConversionException;
 import java.util.List;
 
 public class UtilisateurManager {
 
     private final UtilisateurDAO userDAO;
-    private Utilitaire util = new Utilitaire();
+    private Utilitaire utilitaire = new Utilitaire();
 
     public UtilisateurManager() {
         this.userDAO = DAOFactory.getUtilisateurDAO();
@@ -22,10 +20,11 @@ public class UtilisateurManager {
     /**
      * Insere un utilisateur en base de données une fois les contrôles effectués sur les différents champs.
      */
-    public void insererUtilisateur(String pseudo, String nom, String prenom, String email, String telephone,
+    public Utilisateur insererUtilisateur(String pseudo, String nom, String prenom, String email, String telephone,
                                    String rue, String codePostal, String ville, String motDePasse) throws BusinessException {
 
         BusinessException businessException = new BusinessException();
+        Utilisateur utilisateurCree = new Utilisateur();
         this.validerDonneesUtilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse,
                 businessException);
 
@@ -33,12 +32,13 @@ public class UtilisateurManager {
         {
             Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville,
                     motDePasse, 0, false); // Par défaut admin = false. Crédit = 0
-            userDAO.insertUser(utilisateur);
+            utilisateurCree = userDAO.insertUser(utilisateur);
         }
         else
         {
             throw businessException;
         }
+        return utilisateurCree;
     }
 
     /**
@@ -62,7 +62,7 @@ public class UtilisateurManager {
         }
 
         //Vérifier que le pseudo ne contient que des caractères alphanumériques
-        boolean alphanum = util.pseudoValidation(pseudo);
+        boolean alphanum = utilitaire.pseudoValidation(pseudo);
         if (!alphanum) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
@@ -75,11 +75,11 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PRENOM_ERREUR);
         }
 
-        boolean nomValid = util.nomValidation(nom);
+        boolean nomValid = utilitaire.nomValidation(nom);
         if (!nomValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
-        boolean prenomValid = util.nomValidation(prenom);
+        boolean prenomValid = utilitaire.nomValidation(prenom);
         if (!prenomValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
@@ -98,7 +98,7 @@ public class UtilisateurManager {
             }
         }
         //Vérifier le format de l'email
-        boolean emailvalid = util.emailValidation(email);
+        boolean emailvalid = utilitaire.emailValidation(email);
         if (!emailvalid) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
         }
@@ -107,9 +107,11 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
         }
         //Vérifier le format du numéro de telephone
-        boolean telvalid = util.telValidation(telephone);
-        if (!telvalid) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        if (telephone != null && !telephone.equals("")){
+            boolean telvalid = utilitaire.telValidation(telephone);
+            if (!telvalid) {
+                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            }
         }
 
         if(  rue==null || rue.trim().length()>30 ){
@@ -123,7 +125,7 @@ public class UtilisateurManager {
         if(  ville==null || ville.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
         }
-        boolean villeValid = util.villeValidation(ville);
+        boolean villeValid = utilitaire.villeValidation(ville);
         if (!prenomValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
@@ -132,7 +134,7 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
         }
         //vérification du mot de passe
-        boolean result = util.passwordValidation(motDePasse);
+        boolean result = utilitaire.passwordValidation(motDePasse);
         if (!result) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
@@ -243,7 +245,7 @@ public class UtilisateurManager {
         }
 
         //Vérifier que le pseudo ne contient que des caractères alphanumériques
-        Boolean alphanum = util.pseudoValidation(pseudo);
+        Boolean alphanum = utilitaire.pseudoValidation(pseudo);
         if (!alphanum) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
@@ -252,13 +254,13 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
 
-        boolean isGoodFormat = util.emailValidation(email);
+        boolean isGoodFormat = utilitaire.emailValidation(email);
         if (!isGoodFormat) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
 
         if (telephone != null && !telephone.equals("")){
-            boolean isNumbersOnly = util.telValidation(telephone);
+            boolean isNumbersOnly = utilitaire.telValidation(telephone);
             if (!isNumbersOnly) {
                 businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
             }
@@ -282,7 +284,7 @@ public class UtilisateurManager {
         }
 
         //vérification du mot de passe
-        boolean isGoodPassword = util.passwordValidation(motDePasse);
+        boolean isGoodPassword = utilitaire.passwordValidation(motDePasse);
         if (!isGoodPassword) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }

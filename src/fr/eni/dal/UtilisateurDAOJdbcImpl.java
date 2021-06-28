@@ -18,7 +18,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo= ?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=? WHERE no_utilisateur=?";
 
     @Override
-    public void insertUser(Utilisateur utilisateur) throws BusinessException {
+    public Utilisateur insertUser(Utilisateur utilisateur) throws BusinessException {
         if (utilisateur == null) {
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_NULL);
@@ -67,6 +67,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_ECHEC);
             throw businessException;
         }
+        return utilisateur;
     }
 
     @Override

@@ -53,7 +53,7 @@
 </c:if>
 
 <a href="${pageContext.request.contextPath}/supp?idUtilisateur=${sessionScope.utilisateur.noUtilisateur}"><button>Supprimer mon compte</button></a>
-<a href="${pageContext.request.contextPath}/profil"><button>Retour</button></a>
+<a href="${pageContext.request.contextPath}/accueil"><button>Retour</button></a>
 
 </body>
 </html>

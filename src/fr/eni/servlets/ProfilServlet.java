@@ -23,7 +23,7 @@ public class ProfilServlet extends HttpServlet {
             //si on a pas de pseudo utilisateur, c'est que l'on souhaite afficher le profil de l'utilisateur en cours via sa session
             HttpSession session = req.getSession();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-//            req.setAttribute("utilisateur", utilisateur);
+            req.setAttribute("utilisateur", utilisateur);
             System.out.println("affichage profil servlet : pseudo de l'utilisateur connecté" + utilisateur.getPseudo());
             req.getRequestDispatcher("WEB-INF/profil.jsp").forward(req, resp);
         }else{

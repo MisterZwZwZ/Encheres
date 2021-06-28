@@ -55,18 +55,18 @@ public class Utilitaire {
      * @return
      */
     public boolean nomValidation(String chaine) {
-        String pattern = "^[a-zA-Z\\-]*$";
+        String pattern = "^[a-zA-Z\\-\\é\\è\\ê\\ï\\']*";
         boolean result =  chaine.matches(pattern);
         return result;
     }
 
     /**
-     * Cette méthode vérifie que la ville ne contient que des lettres (tirets et ' acceptés)
+     * Cette méthode vérifie que la ville ne contient que des lettres (accents, tirets et ' acceptés)
      * @param ville
      * @return
      */
     public boolean villeValidation(String ville) {
-        String pattern = "^[a-zA-Z\\-\\']*$";
+        String pattern = "^[a-zA-Z\\-\\é\\è\\ê\\ï\\']*"; // "^[a-zA-Z\\-\\']*$";
         boolean result =  ville.matches(pattern);
         return result;
     }

@@ -54,7 +54,11 @@
 </table>
 
 <a href="accueil">Retour vers l'accueil</a>
-<!-- gérer le bouton modifier si on est connecté-->
+<!-- gérer le bouton modifier si on est connecté / problème lors de l'affichage du profil de quelqu'un d'autre-->
+<c:if test="${sessionScope.utilisateur == vendeur}">
+    <a href="<%=request.getContextPath()%>/monprofil">Modifier mon profil</a>
+</c:if>
+
 <c:if test="${sessionScope.utilisateur.pseudo == vendeur.pseudo }">
     <a href="<%=request.getContextPath()%>/monprofil">Modifier</a>
 </c:if>

@@ -24,7 +24,7 @@
     <c:if test="${sessionScope.utilisateur != null}">
 
         <div>
-            <a href="${pageContext.request.contextPath}/recherche?bouton=achat">
+            <a href="${pageContext.request.contextPath}/recherche?bouton=achat" onclick="GestionCheckBoxAchats(achat,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
                 <input type="radio" name="achatOuVente" value="achat" checked ${coche=="achat"? "checked" : ""}>
                 Achats</a>
             <input type="checkbox" id="encheresOuvertes"
@@ -44,7 +44,7 @@
                                                                                        value="vente" ${coche=="vente"? "checked" : ""}>
                 Mes ventes</a>
             <input type="checkbox" id="ventesEnCours"
-                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""} >
+                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""} onclick="GestionCheckBoxVentes(vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
             <label for="ventesEnCours">Mes ventes en cours</label>
             <input type="checkbox" id="ventesNonDebut"
                    name="ventesNonDebutees" ${coche=="achat"? "disabled" : ""}>
@@ -53,7 +53,6 @@
                    name="ventesTerminees" ${coche=="achat"? "disabled" : ""}>
             <label for="ventesTerminees">Ventes terminées</label>
         </div>
-
     </c:if>
 
     <input type="submit" value="Rechercher">
@@ -96,5 +95,6 @@
     </c:choose>
 
 </div>
+<script language="JavaScript" type="text/javascript" src="scripts\app.js"></script>
 </body>
 </html>

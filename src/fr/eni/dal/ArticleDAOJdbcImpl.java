@@ -28,20 +28,20 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     //Requete SQL dynamique pour la recherche
     private String selectArticles = "SELECT ARTICLES.no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
-            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
             "          CATEGORIES.no_categorie WHERE ARTICLES.nom_article LIKE  '%'+ ? +'%' "; // comprend la recherche par mot clef
     private String selectEncheres = "SELECT ARTICLES.no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
-            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
             "          CATEGORIES.no_categorie INNER JOIN ENCHERES ON ARTICLES.no_article = ENCHERES.no_article WHERE ARTICLES.nom_article LIKE '%'+ ? +'%'"; // comprend la recherche par mot clef
     private String selectArticlesJointureEncheres = "SELECT ARTICLES.no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
-            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie, pseudo FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
             "          CATEGORIES.no_categorie LEFT JOIN ENCHERES ON ARTICLES.no_article = ENCHERES.no_article WHERE ARTICLES.nom_article LIKE '%'+ ? +'%'"; // comprend la recherche par mot clef
     private String parCate = " ARTICLES.no_categorie = ? ";
-    private String and = " AND " ;
-    private String or = " OR " ;
+    private String and = " AND ";
+    private String or = " OR ";
     private String achatByIdUser = " ARTICLES.no_utilisateur = ? ";
     private String enchereByIdUser = " ENCHERES.no_utilisateur = ? ";
     private String enCours = " DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 ";
@@ -57,9 +57,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
      * La requete sql est construite "sur mesure" suivant le contenu des paramètres en entrée.
      */
     public List<Article> selectArticlesParFiltre(String recherche, int noCategorie, String case1,
-                                           String case2, String case3, int noUtilisateur) throws BusinessException {
+                                                 String case2, String case3, int noUtilisateur) throws BusinessException {
         List<Article> listeArticlesFiltres = new ArrayList<>();
-        Article articleEncours = new Article();;
+        Article articleEncours = new Article();
+        ;
         StringBuffer sb = null;
         sb = new StringBuffer();
 
@@ -68,8 +69,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             recherche = "";
         }
 
-        //FIXME CG ajouter un parametre catégorie
-        if(case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null) {
+        //FIXME CG ajouter un prametre catégorie
+        if (case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null) {
             sb.append(selectArticlesJointureEncheres);
             sb.append(and);
             sb.append(enCours);
@@ -85,9 +86,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 sb.append(and);
                 sb.append(parCate);
             }
-        }
+        } else if ((case1 != null && case1.equals("on") && case2 == null && case3 == null) || (case1 != null && case1.equals("on") && case2 != null && case2.equals("on"))) {
 
-        else if ( (case1 != null && case1.equals("on") && case2 == null && case3 == null) || (case1 != null && case1.equals("on") && case2 != null && case2.equals("on"))) {
             sb.append(selectArticles);
             sb.append(and);
             sb.append(enCours);
@@ -95,9 +95,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 sb.append(and);
                 sb.append(parCate);
             }
-        }
-
-        else{
+        } else {
             sb.append(selectEncheres);
             sb.append(and);
             sb.append(enchereByIdUser);
@@ -106,43 +104,46 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 sb.append(parCate);
             }
 
-            if(case2 != null && case2.equals("on") && case1 == null && case3 == null) {
+            if (case2 != null && case2.equals("on") && case1 == null && case3 == null) {
                 sb.append(and);
                 sb.append(enCours);
             }
 
-            if (case3 != null && case3.equals("on") && case1 == null && case2 == null){
+            if (case3 != null && case3.equals("on") && case1 == null && case2 == null) {
                 sb.append(and);
                 sb.append(termine);
             }
 
-            if(case2 != null && case2.equals("on") && case3 != null && case3.equals("on")) {
+            if (case2 != null && case2.equals("on") && case3 != null && case3.equals("on")) {
                 sb.append(and);
                 sb.append(debutAvantDateJour);
             }
 
         }
-//        if (noCategorie != 0) {
-//            sb.append(and);
-//            sb.append(parCate);
-//        }
+
 
         sb.toString();
         System.out.println("affihage de la requete exécutée pour test " + sb.toString());
 
         //on lance la connexion et on exécute la requete
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
             pstmt.setString(1, (recherche));
 
-            if((case2 != null && case2.equals("on") && case1 == null) || (case3 != null  && case3.equals("on")) || (case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null)){
+            if (case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null) {
                 pstmt.setInt(2, noUtilisateur);
-                if (noCategorie != 0){
-                    pstmt.setInt(3, noCategorie);}
-                if (noCategorie != 0 && case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null){
-                    pstmt.setInt(4, noCategorie);}
+                if (noCategorie != 0) {
+                    pstmt.setInt(3, noCategorie);
+                    pstmt.setInt(4, noCategorie);
+                }
             }
-            if(noCategorie != 0){
+            if ((case2 != null && case2.equals("on") && case1 == null) || (case3 != null && case3.equals("on")) || (case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null)) {
+                pstmt.setInt(2, noUtilisateur);
+                if (noCategorie != 0) {
+                    pstmt.setInt(3, noCategorie);
+                }
+            }
+            if (noCategorie != 0) {
                 pstmt.setInt(2, noCategorie);
             }
 
@@ -159,7 +160,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     articleEncours.setPrixInitial(rs.getInt("prix_initial"));
                     articleEncours.setPrixVente(rs.getInt("prix_vente"));
 
-                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
                     articleEncours.setVendeur(utilisateur);
 
                     Categorie categorie = new Categorie(rs.getInt("no_categorie"));
@@ -169,12 +170,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 }
             }
             rs.close();
-    }catch (SQLException e) {
-        e.printStackTrace();
-        BusinessException businessException = new BusinessException();
-        businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
-        throw businessException;
-    }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+            throw businessException;
+        }
         return listeArticlesFiltres;
     }
 
@@ -184,7 +185,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
      * La requete sql est construite "sur mesure" suivant le contenu des paramètres en entrée.
      */
     public List<Article> selectVentesParFiltre(String recherche, int noCategorie, String case1,
-                                           String case2, String case3, int noUtilisateur) throws BusinessException {
+                                               String case2, String case3, int noUtilisateur) throws BusinessException {
         List<Article> listeVentesFiltrees = new ArrayList<>();
         Article articleEncours = new Article();
         StringBuffer sb = null;
@@ -212,15 +213,15 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             sb.append(and);
             sb.append(termine);
         }
-        if (case1 != null && case1.equals("on") && (case2 != null && case2.equals("on") ) && case3 == null) {
+        if (case1 != null && case1.equals("on") && (case2 != null && case2.equals("on")) && case3 == null) {
             sb.append(and);
             sb.append(finApresDateJour);
         }
-        if (case1 != null && case1.equals("on") && (case3 != null && case3.equals("on") ) && case2 == null) {
+        if (case1 != null && case1.equals("on") && (case3 != null && case3.equals("on")) && case2 == null) {
             sb.append(and);
             sb.append(debutAvantDateJour);
         }
-        if (case2 != null && case2.equals("on") && (case3 != null && case3.equals("on") ) && case1 == null) {
+        if (case2 != null && case2.equals("on") && (case3 != null && case3.equals("on")) && case1 == null) {
             sb.append(and);
             sb.append(programme);
             sb.append(or);
@@ -236,11 +237,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         System.out.println("requete SQL exécutée : " + sb.toString());
 
         //on lance la connexion et on exécute la requete
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
             pstmt.setString(1, recherche);
             pstmt.setInt(2, noUtilisateur);
-            if(noCategorie != 0){
+            if (noCategorie != 0) {
                 pstmt.setInt(3, noCategorie);
             }
 
@@ -257,7 +258,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     articleEncours.setPrixInitial(rs.getInt("prix_initial"));
                     articleEncours.setPrixVente(rs.getInt("prix_vente"));
 
-                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
                     articleEncours.setVendeur(utilisateur);
 
                     Categorie categorie = new Categorie(rs.getInt("no_categorie"));
@@ -266,7 +267,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     listeVentesFiltrees.add(articleEncours);
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
@@ -285,28 +286,28 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         try (Connection cnx = ConnectionProvider.getConnection()) {
             cnx.setAutoCommit(false);
             ResultSet rs;
-                try (PreparedStatement pstmt = cnx.prepareStatement(INSERT_ARTICLE, PreparedStatement.RETURN_GENERATED_KEYS)){
-                    pstmt.setString(1, article.getNomArticle());
-                    pstmt.setString(2, article.getDescription());
-                    pstmt.setDate(3, java.sql.Date.valueOf(article.getDateDebutEnchere()));
-                    pstmt.setDate(4, java.sql.Date.valueOf(article.getDateFinEnchere()));
-                    pstmt.setInt(5, article.getPrixInitial());
-                    pstmt.setInt(6, article.getPrixVente());
-                    pstmt.setInt(7, article.getVendeur().getNoUtilisateur());
-                    pstmt.setInt(8, article.getCategorie().getNoCategorie());
-                    pstmt.executeUpdate();
-                    rs = pstmt.getGeneratedKeys();
-                    if (rs.next()) {
-                        article.setNoArticle(rs.getInt(1));
-                    }
+            try (PreparedStatement pstmt = cnx.prepareStatement(INSERT_ARTICLE, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                pstmt.setString(1, article.getNomArticle());
+                pstmt.setString(2, article.getDescription());
+                pstmt.setDate(3, java.sql.Date.valueOf(article.getDateDebutEnchere()));
+                pstmt.setDate(4, java.sql.Date.valueOf(article.getDateFinEnchere()));
+                pstmt.setInt(5, article.getPrixInitial());
+                pstmt.setInt(6, article.getPrixVente());
+                pstmt.setInt(7, article.getVendeur().getNoUtilisateur());
+                pstmt.setInt(8, article.getCategorie().getNoCategorie());
+                pstmt.executeUpdate();
+                rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    article.setNoArticle(rs.getInt(1));
+                }
                 rs.close();
                 pstmt.close();
                 cnx.commit();
-                } catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 cnx.rollback();
                 throw e;
-                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
@@ -319,7 +320,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
      * Insère un retrait dans la BDD a l'ajout d'un article
      */
     @Override
-    public void insertRetrait(Retrait retrait) throws BusinessException{
+    public void insertRetrait(Retrait retrait) throws BusinessException {
         if (retrait == null) {
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.INSERT_OBJET_NULL);
@@ -327,7 +328,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         }
         try (Connection cnx = ConnectionProvider.getConnection()) {
             cnx.setAutoCommit(false);
-            try (PreparedStatement pstmt = cnx.prepareStatement(INSERT_RETRAIT)){
+            try (PreparedStatement pstmt = cnx.prepareStatement(INSERT_RETRAIT)) {
                 pstmt.setInt(1, retrait.getArticle().getNoArticle());
                 pstmt.setString(2, retrait.getRue());
                 pstmt.setString(3, retrait.getCodePostal());
@@ -337,7 +338,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 cnx.commit();
             } catch (Exception e) {
                 e.printStackTrace();
-                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
@@ -353,12 +354,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
      */
     public List<Article> selectArticlesEncherissables() throws BusinessException {
         List<Article> listeArticlesEncherissables = new ArrayList<>();
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             Statement stmt = cnx.createStatement();
             ResultSet rs = stmt.executeQuery(SELECT_ARTICLES_ENCHERISSABLES);
             Article articleEncherissable = new Article();
-            while(rs.next()){
-                if(rs.getInt("no_article") != articleEncherissable.getNoArticle()){
+            while (rs.next()) {
+                if (rs.getInt("no_article") != articleEncherissable.getNoArticle()) {
                     articleEncherissable = new Article();
                     articleEncherissable.setNoArticle(rs.getInt("no_article"));
                     articleEncherissable.setNomArticle(rs.getString("nom_article"));
@@ -370,7 +371,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     listeArticlesEncherissables.add(articleEncherissable);
                 }
                 Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
-                    articleEncherissable.setVendeur(utilisateur);
+                articleEncherissable.setVendeur(utilisateur);
             }
             rs.close();
         } catch (SQLException e) {
@@ -386,12 +387,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     @Override
     public List<Article> selectArticlesByCategorie(int noCategorie) throws BusinessException {
         List<Article> listeArticleCategorie = new ArrayList<>();
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(SELECT_ARTICLE_BY_CATEGORIE);
             pstmt.setInt(1, noCategorie);
             ResultSet rs = pstmt.executeQuery();
             Article article = new Article();
-            while (rs.next()){
+            while (rs.next()) {
                 article.setNoArticle(rs.getInt("no_article"));
                 article.setNomArticle(rs.getString("nom_article"));
                 article.setDescription(rs.getString("description"));
@@ -409,7 +410,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             }
 
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
@@ -436,12 +437,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     public List<Article> selectArticlesParMotClef(String chaine) throws BusinessException {
         List<Article> listeArticleEnVenteParMotClef = new ArrayList<>();
 
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(SELECT_ARTICLES_ENCHERISSABLES_PAR_MOTCLEF);
             pstmt.setString(1, chaine);
             ResultSet rs = pstmt.executeQuery();
             Article article = new Article();
-            while (rs.next()){
+            while (rs.next()) {
                 article.setNoArticle(rs.getInt("no_article"));
                 article.setNomArticle(rs.getString("nom_article"));
                 article.setDescription(rs.getString("description"));
@@ -458,7 +459,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setCategorie(categorie);
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
@@ -476,12 +477,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     public List<Article> selectAllVentesByIdUser(int idUser) throws BusinessException {
         List<Article> listeArticleEnVenteParVendeur = new ArrayList<>();
         //TODO CG  méthode à tester
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(SELECT_ARTICLES_ENCHERISSABLES_BY_ID);
             pstmt.setInt(1, idUser);
             ResultSet rs = pstmt.executeQuery();
             Article article = new Article();
-            while (rs.next()){
+            while (rs.next()) {
                 article.setNoArticle(rs.getInt("no_article"));
                 article.setNomArticle(rs.getString("nom_article"));
                 article.setDescription(rs.getString("description"));
@@ -498,7 +499,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setCategorie(categorie);
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
@@ -525,27 +526,27 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return null;
     }
 
-    public List<Article> selectEnModeDeconnecte(String recherche, int noCategorie) throws BusinessException{
-            List<Article> listeArticles = new ArrayList<>();
-            Article articleEncours = new Article();
-            StringBuffer sb = new StringBuffer();
-            sb.append(selectArticles);
-            sb.append(and);
-            sb.append(enCours);
+    public List<Article> selectEnModeDeconnecte(String recherche, int noCategorie) throws BusinessException {
+        List<Article> listeArticles = new ArrayList<>();
+        Article articleEncours = new Article();
+        StringBuffer sb = new StringBuffer();
+        sb.append(selectArticles);
+        sb.append(and);
+        sb.append(enCours);
 
-            if (recherche == null) {
-                recherche = "";
-            }
-            if (noCategorie != 0) {
-                sb.append(and);
-                sb.append(parCate);
-            }
+        if (recherche == null) {
+            recherche = "";
+        }
+        if (noCategorie != 0) {
+            sb.append(and);
+            sb.append(parCate);
+        }
 
         //on lance la connexion et on exécute la requete
-        try(Connection cnx = ConnectionProvider.getConnection()) {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
             pstmt.setString(1, (recherche));
-            if(noCategorie != 0){
+            if (noCategorie != 0) {
                 pstmt.setInt(2, noCategorie);
             }
 
@@ -562,7 +563,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     articleEncours.setPrixInitial(rs.getInt("prix_initial"));
                     articleEncours.setPrixVente(rs.getInt("prix_vente"));
 
-                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"));
+                    Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
                     articleEncours.setVendeur(utilisateur);
 
                     Categorie categorie = new Categorie(rs.getInt("no_categorie"));
@@ -572,7 +573,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 }
             }
             rs.close();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             BusinessException businessException = new BusinessException();
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);

@@ -14,10 +14,11 @@
 <form action="${pageContext.request.contextPath}/recherche" method="POST">
     <input type="search" id="recherche-article" name="rechercheParMotClef" placeholder="Le nom de l'article contient" value="${motclef}">
 
-    <select name="rechercheParcategorie" id="categorie">
+    <select name="rechercheParcategorie" id="categorie" >
+
         <option value="">--"Toutes"--</option>
         <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
-        <option value="${categorie.key}">${categorie.value}</option>
+        <option value="${categorie.key}" ${categorieChoisie == categorie.value ? "selected" : "" }>${categorie.value}</option>
         </c:forEach>
     </select>
 

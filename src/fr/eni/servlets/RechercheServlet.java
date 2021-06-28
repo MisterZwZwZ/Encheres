@@ -60,7 +60,8 @@ public class RechercheServlet extends HttpServlet {
             Map listeDesCategories = new HashMap();
             listeDesCategories = (Map) this.getServletContext().getAttribute("listeDesCategories");
             listeDesCategories.get(noCategorie);
-            request.setAttribute("categorie", listeDesCategories.get(noCategorie));
+            request.setAttribute("categorieChoisie", listeDesCategories.get(noCategorie));
+            System.out.println(listeDesCategories.get(noCategorie));
         }
 
         //récupération du numéro utilisateur
@@ -104,6 +105,7 @@ public class RechercheServlet extends HttpServlet {
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
         }
+
 
         request.setAttribute("listeArticles",listeArticles );
         request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);

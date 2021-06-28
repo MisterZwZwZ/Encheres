@@ -256,13 +256,15 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
 
-        boolean isNumbersOnly = util.telValidation(telephone);
-        if (!isNumbersOnly) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
-        }
+        if(telephone != null || !telephone.trim().equals("")) {
+            boolean isNumbersOnly = util.telValidation(telephone);
+            if (!isNumbersOnly) {
+                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            }
 
-        if(telephone.trim().length()>15 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            if (telephone.trim().length() > 15) {
+                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            }
         }
         if(rue==null || rue.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);

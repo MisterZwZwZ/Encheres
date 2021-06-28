@@ -69,8 +69,8 @@
             <c:forEach items="${listeArticles}" var="article">
 
                 <div class="card" style="width: 18rem;">
-                    <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
-                        <img src="..." class="card-img-top" alt="photo de l'article en vente"></a>
+
+                        <img src="..." class="card-img-top" alt="photo de l'article en vente">
                     <div class="card-body">
                         <h5 class="card-title"><c:out value="${article.nomArticle}"/></h5>
                         <p class="card-text"><c:out value="Description : ${article.description}"/></p>
@@ -90,6 +90,7 @@
                         <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
                            class="btn btn-primary">Voir l'annonce</a>
                     </div>
+
                 </div>
             </c:forEach>
         </c:when>

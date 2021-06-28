@@ -26,7 +26,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO{
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Article article = new Article(rs.getInt("no_utilisateur"));
+                Article article = new Article(rs.getInt("no_article"));
                 retrait.setArticle(article);
                 retrait.setRue(rs.getString("rue"));
                 retrait.setCodePostal(rs.getString("code_postal"));

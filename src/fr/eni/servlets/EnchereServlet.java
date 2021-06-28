@@ -1,8 +1,12 @@
 package fr.eni.servlets;
 
+import fr.eni.BusinessException;
 import fr.eni.bll.ArticleManager;
 import fr.eni.bll.EnchereManager;
+import fr.eni.bll.RetraitManager;
+import fr.eni.bo.Article;
 import fr.eni.bo.Enchere;
+import fr.eni.bo.Retrait;
 import fr.eni.bo.Utilisateur;
 
 import javax.servlet.RequestDispatcher;
@@ -13,27 +17,108 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/encherir")
+@WebServlet("/enchere")
 public class EnchereServlet extends HttpServlet {
 
     private EnchereManager enchereManager;
     private ArticleManager articleManager;
+    private RetraitManager retraitManager;
     Enchere enchere = new Enchere();
+    Article article = new Article();
 
     @Override
     public void init() throws ServletException {
         this.enchereManager = new EnchereManager();
+        this.articleManager = new ArticleManager();
+        this.retraitManager = new RetraitManager();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if (!(session.getAttribute("utilisateur") == null)) {
-            request.getRequestDispatcher("WEB-INF/enchere.jsp").forward(request, response);
+        request.setCharacterEncoding("utf-8");
+        List<Integer> listeCodesErreur = new ArrayList<>();
+
+
+        //Récupérer le numero de l'article que l'on veut afficher
+        Article articleAAfficher = null;
+        int noArticle = Integer.parseInt(request.getParameter("noarticle"));
+        if (noArticle == 0) {
+            listeCodesErreur.add(CodesErreurServlet.CLIC_ARTICLE_ERREUR);
+        } else {
+            //récupérer l'objet article correspondant
+            try {
+                articleAAfficher = articleManager.afficherArticleParNo(noArticle);
+                //Renvoyer cet article à la jsp
+                request.setAttribute("article", articleAAfficher);
+            } catch (BusinessException e) {
+                e.printStackTrace();
+                request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+            }
         }
+
+        // en déduire l'état de l'enchère(pas débutée, en cours, terminée)
+        LocalDate datedebutEnchere = articleAAfficher.getDateDebutEnchere();
+        LocalDate dateFinEnchere = articleAAfficher.getDateFinEnchere();
+
+        String etatVente = "";
+
+        if(LocalDate.now().isBefore(datedebutEnchere)){
+            etatVente = "pas démarrée";
+        }else if(LocalDate.now().isAfter(datedebutEnchere) && LocalDate.now().isBefore(dateFinEnchere)) {
+            etatVente = "en cours";
+        } else if(LocalDate.now().isAfter(dateFinEnchere)){
+            etatVente = "terminée";
+        }
+
+        //Renvoyer l'état de l'enchère à la jsp
+        request.setAttribute("etatVente", etatVente);
+
+        //récupérer l'utilisateur souhaitant afficher l'enchère
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+
+        //récupérer l'enchère éventuelle liée à l'article
+        Enchere enchereAAfficher = null;
+        try {
+            enchereAAfficher = enchereManager.afficherEnchereParNoArticle(articleAAfficher.getNoArticle());
+        } catch (BusinessException e) {
+            e.printStackTrace();
+        }
+        //récupérer le meilleur encherisseur
+        Utilisateur meilleurEncherisseur = enchereAAfficher.getEncherisseur();
+
+        //en déduire le rôle de l'utilisateur(vendeur, encherisseur, meilleur encherisseur, acquereur )
+        String statutUtilisateur = "";
+        if(utilisateur.getNoUtilisateur() == articleAAfficher.getVendeur().getNoUtilisateur()){
+            //l'utilisateur est le vendeur de l'article
+            statutUtilisateur = "vendeur";
+        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminée")){
+            //l'utilisateur a remporté l'enchère
+            statutUtilisateur = "acquereur";
+        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){
+            //l'utilisateur est le meilleur enchereur actuel et ne peut pas surencherir
+            statutUtilisateur = "meilleurEncherisseur";
+        } else {
+            statutUtilisateur = "encherisseur";
+        }
+        // envoyer le statut de l'utilisateur à la jsp
+        request.setAttribute("statutUtilisateur", statutUtilisateur);
+
+        //récupérer le Retrait
+        Retrait retraitAAfficher = null;
+        try {
+            retraitAAfficher = retraitManager.afficherRetraitParNoArticle(articleAAfficher.getNoArticle());
+            request.setAttribute("retrait", retraitAAfficher);
+        } catch (BusinessException e) {
+            e.printStackTrace();
+        }
+
+        //renvoyer la requête à la jsp qui gére l'affichage en fonction de ces éléments
+        request.getRequestDispatcher("WEB-INF/enchere.jsp").forward(request, response);
     }
 
     @Override
@@ -86,4 +171,5 @@ public class EnchereServlet extends HttpServlet {
         }
     }
 }
+
 

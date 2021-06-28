@@ -40,4 +40,11 @@ public class EnchereManager {
             enchereDAO.creerEnchere(enchere);
         }
     }
+
+    public Enchere afficherEnchereParNoArticle(int noArt) throws BusinessException{
+        Enchere enchereTrouvée = enchereDAO.selectEnchereByNoArticle(noArt);
+
+        return enchereTrouvée;
+
+    }
 }

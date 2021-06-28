@@ -62,4 +62,11 @@ public abstract class CodesErreurDal {
          * Erreur lecture enchère
          */
         public static final int LECTURE_ENCHERE_ECHEC = 10007;
+
+
+        // codes erreurs Retraits
+        /**
+         * Erreur lecture Retrait
+         */
+        public static final int LECTURE_RETRAIT_ECHEC = 40000;
 }

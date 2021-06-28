@@ -8,7 +8,7 @@
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 <h1>Détail vente</h1>
-<form action="${pageContext.request.contextPath}/encherir" method="POST">
+<form action="${pageContext.request.contextPath}/enchere" method="">
 
     <p><c:out value="${article.nomArticle}"/></p>
     <p><c:out value="Description : ${article.description}"/></p>

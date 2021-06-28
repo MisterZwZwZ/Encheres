@@ -1,5 +1,7 @@
 package fr.eni.dal;
 
+import fr.eni.bo.Retrait;
+
 public abstract class DAOFactory {
     private static UtilisateurDAO utilisateurDao;
 
@@ -19,5 +21,8 @@ public abstract class DAOFactory {
 
         return new EnchereDAOJdbcImpl();
     }
+    public static RetraitDAO getRetraitDAO() {
 
+        return new RetraitDAOJdbcImpl();
+    }
 }

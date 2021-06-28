@@ -34,6 +34,8 @@ public abstract class CodesErreurServlet {
     public static final Integer PRIX_INITIAL_ARTICLE_ERREUR = 30035;
     public static final Integer PRIX_VENTE_ARTICLE_ERREUR = 30036;
     public static final Integer CATEGORIE_ARTICLE_ERREUR = 30037;
+    public static final Integer CLIC_ARTICLE_ERREUR = 30038;
+
 
     /**
      * Adresse retrait incorrecte

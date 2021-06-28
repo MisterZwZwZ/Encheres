@@ -37,10 +37,12 @@
                                    href="<%=request.getContextPath()%>/accueil">Enchères</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="<%=request.getContextPath()%>/vendre">Vendre un article</a>
+                                <a class="nav-link active" href="<%=request.getContextPath()%>/vendre">Vendre un
+                                    article</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="<%=request.getContextPath()%>/profil">Voir mon profil</a>
+                                <a class="nav-link active" href="<%=request.getContextPath()%>/profil">Voir mon
+                                    profil</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" href="<%=request.getContextPath()%>/monprofil">Modifier mon

@@ -83,6 +83,7 @@ public class MonProfilServlet extends HttpServlet {
         String telephone = request.getParameter("telephone");
         request.setAttribute("telephone", telephone);
 
+
         String cp = request.getParameter("cp");
         if (cp == null || cp.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.CP_UTILISATEUR_OBLIGATOIRE);

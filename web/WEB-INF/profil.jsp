@@ -55,7 +55,7 @@
 
 <a href="accueil">Retour vers l'accueil</a>
 <!-- gérer le bouton modifier si on est connecté-->
-<c:if test="${sessionScope.utilisateur.pseudo == utilisateur.pseudo }">
+<c:if test="${sessionScope.utilisateur.pseudo == vendeur.pseudo }">
     <a href="<%=request.getContextPath()%>/monprofil">Modifier</a>
 </c:if>
 

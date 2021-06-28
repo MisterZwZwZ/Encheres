@@ -32,7 +32,6 @@ public class RechercheServlet extends HttpServlet {
         if (btnAchatOuVente.equals("vente")){
             request.setAttribute("coche", "vente");
         }
-        System.out.println("passage dans la servlet");
     request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
     }
 
@@ -52,6 +51,7 @@ public class RechercheServlet extends HttpServlet {
 
         //récupération de la catégorie choisie de l'utilisateur
         String categorie = request.getParameter("rechercheParcategorie");
+        //TODO CG en jsp, réafficher la possibilité de ne pas trier par catégorie
 
         int noCategorie = 0;
         if (categorie != null && !categorie.equals("")) {
@@ -60,7 +60,6 @@ public class RechercheServlet extends HttpServlet {
             Map listeDesCategories = new HashMap();
             listeDesCategories = (Map) this.getServletContext().getAttribute("listeDesCategories");
             listeDesCategories.get(noCategorie);
-            System.out.println("la nom de categorie clique : " + listeDesCategories.get(noCategorie));
             request.setAttribute("categorie", listeDesCategories.get(noCategorie));
         }
 
@@ -73,7 +72,6 @@ public class RechercheServlet extends HttpServlet {
 
         //récupération choix "achat" ou "vente"
         String achatOuVente = request.getParameter("achatOuVente");
-        System.out.println(achatOuVente);
 
         //Récupération des cases cochees
         String case1 = null;
@@ -107,9 +105,7 @@ public class RechercheServlet extends HttpServlet {
             }
         }
 
-        //FIXME CG : la requete SQL n'affiche pas les articles dont la vente se finit aujourd'hui !!
         request.setAttribute("listeArticles",listeArticles );
         request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
-
     }
 }

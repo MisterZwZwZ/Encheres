@@ -31,16 +31,24 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
             "          CATEGORIES.no_categorie WHERE ARTICLES.nom_article LIKE  '%'+ ? +'%' "; // comprend la recherche par mot clef
-    private String selectVentes = "SELECT ARTICLES.no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
+    private String selectEncheres = "SELECT ARTICLES.no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
             "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
             "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
-            "          CATEGORIES.no_categorie INNER JOIN ENCHERES ON ARTICLES.no_utilisateur = ENCHERES.no_utilisateur WHERE ARTICLES.nom_article LIKE '%'+ ? +'%'"; // comprend la recherche par mot clef
-    private String parCate = "ARTICLES.no_categorie = ? ";
+            "          CATEGORIES.no_categorie INNER JOIN ENCHERES ON ARTICLES.no_article = ENCHERES.no_article WHERE ARTICLES.nom_article LIKE '%'+ ? +'%'"; // comprend la recherche par mot clef
+    private String selectArticlesJointureEncheres = "SELECT ARTICLES.no_article, nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente,\n" +
+            "       ARTICLES.no_utilisateur, CATEGORIES.no_categorie FROM ARTICLES INNER JOIN UTILISATEURS ON\n" +
+            "           ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES.no_categorie =\n" +
+            "          CATEGORIES.no_categorie LEFT JOIN ENCHERES ON ARTICLES.no_article = ENCHERES.no_article WHERE ARTICLES.nom_article LIKE '%'+ ? +'%'"; // comprend la recherche par mot clef
+    private String parCate = " ARTICLES.no_categorie = ? ";
     private String and = " AND " ;
-    private String ByIdUser = " ARTICLES.no_utilisateur = ? ";
-    private String enCours = " DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0";
+    private String or = " OR " ;
+    private String achatByIdUser = " ARTICLES.no_utilisateur = ? ";
+    private String enchereByIdUser = " ENCHERES.no_utilisateur = ? ";
+    private String enCours = " DATEDIFF(day, getdate(), date_fin_vente)>=0 AND DATEDIFF(day, date_debut_vente, GETDATE())>=0 ";
     private String programme = " date_debut_vente > GETDATE() ";
     private String termine = " date_fin_vente < GETDATE() ";
+    private String finApresDateJour = " DATEDIFF(day, GETDATE(), date_fin_vente)>=0 ";
+    private String debutAvantDateJour = " DATEDIFF(day, date_debut_vente, GETDATE())>=0 ";
 
 
     @Override
@@ -53,57 +61,86 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         List<Article> listeArticlesFiltres = new ArrayList<>();
         Article articleEncours = new Article();;
         StringBuffer sb = null;
+        sb = new StringBuffer();
 
         //On construit la requete sql sur mesure selon les parametres choisis
         if (recherche == null) {
             recherche = "";
         }
 
-        sb = new StringBuffer();
-        if (case1 != null && case1.equals("on") ) {
+        //FIXME CG ajouter un parametre catégorie
+        if(case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null) {
+            sb.append(selectArticlesJointureEncheres);
+            sb.append(and);
+            sb.append(enCours);
+            if (noCategorie != 0) {
+                sb.append(and);
+                sb.append(parCate);
+            }
+            sb.append(or);
+            sb.append(enchereByIdUser);
+            sb.append(and);
+            sb.append(debutAvantDateJour);
+            if (noCategorie != 0) {
+                sb.append(and);
+                sb.append(parCate);
+            }
+        }
+
+        else if ( (case1 != null && case1.equals("on") && case2 == null && case3 == null) || (case1 != null && case1.equals("on") && case2 != null && case2.equals("on"))) {
             sb.append(selectArticles);
             sb.append(and);
             sb.append(enCours);
-            sb.toString();
-            System.out.println("requete achats / case 1 : " + sb.toString());
+            if (noCategorie != 0) {
+                sb.append(and);
+                sb.append(parCate);
+            }
         }
 
         else{
-            sb.append(selectVentes);
+            sb.append(selectEncheres);
             sb.append(and);
-            sb.append(ByIdUser);
+            sb.append(enchereByIdUser);
+            if (noCategorie != 0) {
+                sb.append(and);
+                sb.append(parCate);
+            }
 
-            if(case2 != null && case2.equals("on")) {
+            if(case2 != null && case2.equals("on") && case1 == null && case3 == null) {
                 sb.append(and);
                 sb.append(enCours);
-
-                sb.toString();
-                System.out.println("requete achats / case 2 : " + sb.toString());
             }
 
-            if (case3 != null && case3.equals("on")){
+            if (case3 != null && case3.equals("on") && case1 == null && case2 == null){
                 sb.append(and);
                 sb.append(termine);
-
-                sb.toString();
-                System.out.println("requete achats / case 3 : " + sb.toString());
             }
-        }
-        if (noCategorie != 0) {
-            sb.append(and);
-            sb.append(parCate);
-        }
 
-        //Test affichage
-        System.out.println(sb.toString());
+            if(case2 != null && case2.equals("on") && case3 != null && case3.equals("on")) {
+                sb.append(and);
+                sb.append(debutAvantDateJour);
+            }
+
+        }
+//        if (noCategorie != 0) {
+//            sb.append(and);
+//            sb.append(parCate);
+//        }
+
+        sb.toString();
+        System.out.println("affihage de la requete exécutée pour test " + sb.toString());
+
         //on lance la connexion et on exécute la requete
         try(Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
             pstmt.setString(1, (recherche));
-            if((case2 != null && case2.equals("on")) || (case3 != null  && case3.equals("on"))){
+
+            if((case2 != null && case2.equals("on") && case1 == null) || (case3 != null  && case3.equals("on")) || (case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null)){
                 pstmt.setInt(2, noUtilisateur);
                 if (noCategorie != 0){
                     pstmt.setInt(3, noCategorie);}
+                if (noCategorie != 0 && case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null){
+                    pstmt.setInt(4, noCategorie);}
             }
             if(noCategorie != 0){
                 pstmt.setInt(2, noCategorie);
@@ -161,27 +198,42 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         sb = new StringBuffer();
         sb.append(selectArticles);
         sb.append(and);
-        sb.append(ByIdUser);
+        sb.append(achatByIdUser);
 
-        if (case1 != null && case1.equals("on")) {
+        if (case1 != null && case1.equals("on") && case2 == null && case3 == null) {
             sb.append(and);
             sb.append(enCours);
         }
-        if (case2 != null && case2.equals("on")) {
+        if (case2 != null && case2.equals("on") && case1 == null && case3 == null) {
             sb.append(and);
             sb.append(programme);
         }
-        if (case3 != null && case3.equals("on")) {
+        if (case3 != null && case3.equals("on") && case1 == null && case2 == null) {
             sb.append(and);
             sb.append(termine);
         }
+        if (case1 != null && case1.equals("on") && (case2 != null && case2.equals("on") ) && case3 == null) {
+            sb.append(and);
+            sb.append(finApresDateJour);
+        }
+        if (case1 != null && case1.equals("on") && (case3 != null && case3.equals("on") ) && case2 == null) {
+            sb.append(and);
+            sb.append(debutAvantDateJour);
+        }
+        if (case2 != null && case2.equals("on") && (case3 != null && case3.equals("on") ) && case1 == null) {
+            sb.append(and);
+            sb.append(programme);
+            sb.append(or);
+            sb.append(termine);
+        }
+
         if (noCategorie != 0) {
             sb.append(and);
             sb.append(parCate);
         }
 
         //Test affichage
-        System.out.println(sb.toString());
+        System.out.println("requete SQL exécutée : " + sb.toString());
 
         //on lance la connexion et on exécute la requete
         try(Connection cnx = ConnectionProvider.getConnection()) {

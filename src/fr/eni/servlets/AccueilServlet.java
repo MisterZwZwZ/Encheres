@@ -33,10 +33,8 @@ public class AccueilServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.invalidate();
         }
-        //TODO affichage quand connecté ?
 
         // affichage de la liste des articles encherissables et de la liste des catégories qui est passée en attributs de portée application
-
         try{
             List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
             Map listeDesCategories = new HashMap();

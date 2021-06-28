@@ -19,32 +19,31 @@ public class ProfilServlet extends HttpServlet {
         UtilisateurManager um = new UtilisateurManager();
         String pseudo = req.getParameter("pseudo");
 
-        if(pseudo == null || !(pseudo.trim().equals(""))) {
+        if(pseudo == null || (pseudo.trim().equals(""))) {
             //si on a pas de pseudo utilisateur, c'est que l'on souhaite afficher le profil de l'utilisateur en cours via sa session
             HttpSession session = req.getSession();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-            req.setAttribute("utilisateur", utilisateur);
-
+//            req.setAttribute("utilisateur", utilisateur);
+            System.out.println("affichage profil servlet : pseudo de l'utilisateur connecté" + utilisateur.getPseudo());
             req.getRequestDispatcher("WEB-INF/profil.jsp").forward(req, resp);
         }else{
-            //On récupère l'utilisateur par son pseudo car il est unique
+            //On récupère le profil à afficher (vendeur de l'article) par son pseudo car il est unique
             try {
                 Utilisateur utilisateurTrouve = um.retournerUtilisateurParPseudo(pseudo);
                 System.out.println(utilisateurTrouve.getNom());
-                req.setAttribute("utilisateur", utilisateurTrouve);
+                req.setAttribute("vendeur", utilisateurTrouve);
+                System.out.println("affichage profil servlet : pseudo du vendeur de l'article" + utilisateurTrouve.getPseudo());
+                req.getRequestDispatcher("WEB-INF/profil.jsp").forward(req, resp);
             } catch (BusinessException e) {
                 e.printStackTrace();
-                //TODO : gérer les erreurs
+                req.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
-
-
         }
-
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+
     }
 }

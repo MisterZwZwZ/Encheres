@@ -15,7 +15,7 @@
     <input type="search" id="recherche-article" name="rechercheParMotClef" placeholder="Le nom de l'article contient" value="${motclef}">
 
     <select name="rechercheParcategorie" id="categorie">
-        <option value="">--${categorie != null? categorie:"Toutes"}--</option>
+        <option value="">--"Toutes"--</option>
         <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
         <option value="${categorie.key}">${categorie.value}</option>
         </c:forEach>
@@ -25,10 +25,10 @@
 
         <div>
             <a href="${pageContext.request.contextPath}/recherche?bouton=achat">
-                <input type="radio" name="achatOuVente" value="achat" ${coche=="achat"? "checked" : ""}>
+                <input type="radio" name="achatOuVente" value="achat" checked ${coche=="achat"? "checked" : ""}>
                 Achats</a>
             <input type="checkbox" id="encheresOuvertes"
-                   name="encheresOuvertes" ${coche=="vente"? "disabled" : ""} ${coche=="achat"? "checked" : ""}>
+                   name="encheresOuvertes" ${coche=="vente"? "disabled" : ""} ${coche=="achat"? "checked" : ""} >
             <label for="encheresOuvertes">Enchères ouvertes</label>
             <input type="checkbox" id="mesEncheresEnCours"
                    name="mesEncheresEnCours" ${coche=="vente"? "disabled" : ""}>
@@ -44,7 +44,7 @@
                                                                                        value="vente" ${coche=="vente"? "checked" : ""}>
                 Mes ventes</a>
             <input type="checkbox" id="ventesEnCours"
-                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""}>
+                   name="ventesEnCours" ${coche=="achat"? "disabled" : ""} ${coche=="vente"? "checked" : ""} >
             <label for="ventesEnCours">Mes ventes en cours</label>
             <input type="checkbox" id="ventesNonDebut"
                    name="ventesNonDebutees" ${coche=="achat"? "disabled" : ""}>

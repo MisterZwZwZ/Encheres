@@ -86,9 +86,11 @@ public class EnchereManager {
 
     public Enchere afficherEnchereParNoArticle(int noArt) throws BusinessException{
         Enchere enchereTrouvee = enchereDAO.selectEnchereByNoArticle(noArt);
-        //modifier l'enchere avec un utilisateur complet
-        Utilisateur utilisateur = userManager.retournerUtilisateurParId(enchereTrouvee.getEncherisseur().getNoUtilisateur());
-        enchereTrouvee.setEncherisseur(utilisateur);
+        if (enchereTrouvee.getDateEnchere() != null){
+            //modifier l'enchere avec un utilisateur complet
+            Utilisateur utilisateur = userManager.retournerUtilisateurParId(enchereTrouvee.getEncherisseur().getNoUtilisateur());
+            enchereTrouvee.setEncherisseur(utilisateur);
+        }
         return enchereTrouvee;
 
     }

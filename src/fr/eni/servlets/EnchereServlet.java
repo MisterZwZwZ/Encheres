@@ -44,7 +44,11 @@ public class EnchereServlet extends HttpServlet {
 
         //Récupérer le numero de l'article que l'on veut afficher
         Article articleAAfficher = null;
-        int noArticle = Integer.parseInt(request.getParameter("noarticle"));
+        int noArticle = 0;
+        if (request.getParameter("noarticle") != null && !request.getParameter("noarticle").equals("")){
+            noArticle = Integer.parseInt(request.getParameter("noarticle"));
+        }
+
         if (noArticle == 0) {
             listeCodesErreur.add(CodesErreurServlet.CLIC_ARTICLE_ERREUR);
         } else {
@@ -136,7 +140,7 @@ public class EnchereServlet extends HttpServlet {
         }
 
         //Récupération de l'objet concerné par l'enchère
-        int noArticle = Integer.parseInt(request.getParameter("noArticle"));
+        int noArticle = Integer.parseInt(request.getParameter("noarticle"));
 
         //récupération de la proposition d'enchere de l'utilisateur et vérification par rapport à son crédit
         int montantEnchere = 0;
@@ -154,8 +158,7 @@ public class EnchereServlet extends HttpServlet {
         //S'il y a des erreurs, les afficher.
         if (listeCodesErreur.size() > 0) {
             request.setAttribute("listeCodesErreur", listeCodesErreur);
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/enchere.jsp");
-            rd.forward(request, response);
+            doGet(request, response);
 
         //Sinon, on passe l'enchère au manager qui va effectuer les contrôles et l'envoyer en bdd.
         } else {

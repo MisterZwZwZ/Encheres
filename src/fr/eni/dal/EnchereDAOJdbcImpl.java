@@ -6,6 +6,7 @@ import fr.eni.bo.Enchere;
 import fr.eni.bo.Utilisateur;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 
@@ -80,6 +81,11 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             throw businessException;
         }
         return enchere;
+    }
+
+    @Override
+    public Enchere selectEnchereByDate(LocalDate dateDebutEnchere) throws BusinessException {
+        return null;
     }
 
     /**

@@ -67,11 +67,11 @@ public class EnchereServlet extends HttpServlet {
         String etatVente = "";
 
         if(LocalDate.now().isBefore(datedebutEnchere)){
-            etatVente = "pas démarrée";
+            etatVente = "pas demarree";
         }else if(LocalDate.now().isAfter(datedebutEnchere) && LocalDate.now().isBefore(dateFinEnchere)) {
             etatVente = "en cours";
         } else if(LocalDate.now().isAfter(dateFinEnchere)){
-            etatVente = "terminée";
+            etatVente = "terminee";
         }
 
         //Renvoyer l'état de l'enchère à la jsp
@@ -97,7 +97,7 @@ public class EnchereServlet extends HttpServlet {
         if(utilisateur.getNoUtilisateur() == articleAAfficher.getVendeur().getNoUtilisateur()){
             //l'utilisateur est le vendeur de l'article
             statutUtilisateur = "vendeur";
-        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminée")){
+        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminee")){
             //l'utilisateur a remporté l'enchère
             statutUtilisateur = "acquereur";
         } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){

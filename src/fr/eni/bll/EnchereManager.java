@@ -92,4 +92,11 @@ public class EnchereManager {
         return enchereTrouvee;
 
     }
+
+    public Enchere afficherEncherePseudoParNoArticle(int noArt) throws BusinessException{
+        Enchere enchereTrouvee = enchereDAO.selectEncherePseudoByNoArticle(noArt);
+        return enchereTrouvee;
+
+    }
+
 }

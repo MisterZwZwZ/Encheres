@@ -13,6 +13,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
     private static final String SELECT_ENCHERE_BY_ID_USER = "SELECT no_utilisateur,no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
     private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT ENCHERES.no_utilisateur AS encherisseur, ENCHERES.no_article, date_enchere, montant_enchere, ARTICLES.no_utilisateur AS vendeur FROM ENCHERES INNER JOIN ARTICLES ON ENCHERES.no_article = ARTICLES.no_article INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE ARTICLES.no_article = ?";
     private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET no_utilisateur = ?, date_enchere = ?, montant_enchere = ? WHERE no_article = ?";
+    private static final String SELECT_ENCHERE_AND_PSEUDO_BY_NO_ARTICLE = "SELECT ENCHERES.no_utilisateur, no_article, date_enchere, montant_enchere, pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE no_article = ?";
 
     /**
      * Créé une enchère dans la BDD si aucune enchere sur l'article n'a déjà été faite.
@@ -98,6 +99,38 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             while (rs.next()) {
                 //FIXME CG probleme ici : ne créé pas l'enchere / passe dorectement au catch puis retourne une enchere null
                 Utilisateur encherisseur = new Utilisateur(rs.getInt("encherisseur"));
+                enchere.setEncherisseur(encherisseur);
+                Article article = new Article(rs.getInt("no_article"));
+                enchere.setArticle(article);
+                enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+                enchere.setMontantEnchere(rs.getInt("montant_enchere"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ENCHERE_ECHEC);
+            throw businessException;
+        }
+        return enchere;
+    }
+
+    /**
+     * Selectionne une enchère (si elle existe) et le pseudo de l'enchérisseur à partir d'un numéro d'article
+     * @param noArt
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Enchere selectEncherePseudoByNoArticle(int noArt) throws BusinessException {
+        Enchere enchere = new Enchere();
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERE_AND_PSEUDO_BY_NO_ARTICLE);
+            pstmt.setInt(1, noArt);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Utilisateur encherisseur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"));
                 enchere.setEncherisseur(encherisseur);
                 Article article = new Article(rs.getInt("no_article"));
                 enchere.setArticle(article);

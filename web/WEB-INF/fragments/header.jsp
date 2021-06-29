@@ -41,7 +41,7 @@
                                     article</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="<%=request.getContextPath()%>/profil">Voir mon
+                                <a class="nav-link active" href="<%=request.getContextPath()%>/profil?pseudo=${sessionScope.utilisateur.pseudo}">Voir mon
                                     profil</a>
                             </li>
                             <li class="nav-item">

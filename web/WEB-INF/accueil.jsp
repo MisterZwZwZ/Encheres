@@ -138,7 +138,7 @@
                             <div class="card-body">
                                 <h5 class="card-title"><c:out value="${article.nomArticle}"/></h5>
                                 <p class="card-text"><c:out value="Description : ${article.description}"/></p>
-                                <p class="card-text"><c:out value="Prix de vente : ${article.prixInitial} points"/></p>
+                                <p class="card-text"><c:out value="Prix de vente : ${article.prixVente == 0 ? article.prixInitial : article.prixVente} points"/></p>
                                 <p class="card-text"><c:out
                                         value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
                                 <c:choose>

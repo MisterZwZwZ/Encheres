@@ -14,26 +14,10 @@ public interface ArticleDAO {
     List<Article> selectArticlesEncherissables() throws BusinessException;
     List<Article> selectArticlesByCategorie(int noCategorie) throws BusinessException;
     List<Article> selectArticlesParMotClef(String chaine) throws BusinessException;
-    Article selectArticleById(int idArt) throws BusinessException;
-    void deleteArticle(int id) throws BusinessException;
-
-    /**
-     * Selectionne les articles dont la date de début de vente est antérieure ou égale à la date en cours
-     * Par Id vendeur
-     */
     List<Article> selectAllVentesByIdUser(int idUser) throws BusinessException;
-
-    /**
-     * Selectionne les articles dont la date de début de vente est postérieure à la date en cours
-     * Par Id vendeur
-     */
-    List<Article> selectVentesNonDebuteesByIdUser(int idUser) throws BusinessException;
-
-    /**
-     * selectionne les articles sont la date de fin de vente est dépassée
-     * Par Id vendeur
-     */
-    List<Article> selectVentesTermineesByIdUser(int idUser) throws BusinessException;
+    Article selectArticleById(int idArt) throws BusinessException;
+    Article updateArticle(Article article) throws BusinessException;
+    void deleteArticle(int id) throws BusinessException;
 
     List<Article> selectArticlesParFiltre(String recherche, int noCategorie, String case1,
                                           String case2, String case3, int noUtilisateur) throws BusinessException;

@@ -79,10 +79,8 @@ public class MonProfilServlet extends HttpServlet {
             request.setAttribute("rue", rue);
         }
 
-        //TODO : verif sur le telephone ?
         String telephone = request.getParameter("telephone");
         request.setAttribute("telephone", telephone);
-
 
         String cp = request.getParameter("cp");
         if (cp == null || cp.trim().equals("")) {
@@ -135,18 +133,6 @@ public class MonProfilServlet extends HttpServlet {
             }
         }
     }
-
-    /**
-     * Vérifier que le numéro de telephone fourni est dans un format validee
-     * @param tel
-     * @return
-     */
-    //TODO ne fonctionne pas
-//    public boolean verificationTelephone(String tel){
-//        String pattern = "(0|\\+33)[1-9](*[0-9]{2}){4}";
-//        Boolean result = tel.matches(pattern);
-//        return result;
-//    }
 
     /**
      * Cette méthode vérifie que la saisie de l'utilisateur ne contient pas de caractère spécial.

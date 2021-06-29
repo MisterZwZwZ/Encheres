@@ -69,12 +69,15 @@ public class EnchereManager {
             }
             else{
                 //une enchere a déjà été faite sur cet article. On modifie l'enchere existante sur cet article
-                //TODO CG: méthode update sur une enchere ou sur un NoArticle ? (car 1 article = 1 enchere en bdd)
                 enchereDAO.updateEnchere(enchere);
             }
             //puis déduire le montant de l'enchere du credit de l'encherisseur (utilisateur connecté). Et on enregistre la modif en bdd
             utilisateur.setCredit(utilisateur.getCredit()-montantEnchere);
             userManager.modifierCreditUtilisateur(utilisateur);
+
+            //On met à jour le prix de vente suivant le montant de la dernière enchère.
+            articleEncheri.setPrixVente(montantEnchere);
+            articleManager.modifierArticle(articleEncheri);
 
             //on  recrédite le dernier encherisseur du montant de l'enchere précédente
             if (enchereTrouvee.getDateEnchere() != null){

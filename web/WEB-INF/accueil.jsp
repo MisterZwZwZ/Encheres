@@ -9,14 +9,12 @@
 
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-<p>Filtres</p>
-
 <div class="container">
 
     <form class="d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche" method="POST">
 
-        <div class="row m-6">
-            <div class="row align-items-center">
+        <div class="row m-2">
+            <div class="row align-items-center m-2">
                 <div class="col-6">
                     <input class="form-control me-2" type="search" id="recherche-article" name="rechercheParMotClef"
                            placeholder="rechercher..."
@@ -36,7 +34,7 @@
             </div>
         </div>
 
-        <div class="row m-6">
+        <div class="row m-2">
             <div class="row align-items-center">
                 <c:if test="${sessionScope.utilisateur != null}">
                 <!--radio boutons-->
@@ -50,7 +48,7 @@
                         <!-- checkboxes-->
                         <div class="form-check form-switch">
                             <input type="checkbox" class="form-check-input" id="encheresOuvertes" autocomplete="off"
-                                   name="encheresOuvertes">
+                                   name="encheresOuvertes" checked>
                             <label class="form-check-label" for="encheresOuvertes">Enchères ouvertes</label>
                         </div>
                         <div class="form-check form-switch">
@@ -68,24 +66,23 @@
                 <!--radio boutons-->
                 <div class="col-6">
                     <input type="radio" class="form-check-input" name="achatOuVente" id="vente" autocomplete="off"
-                           checkedinput
-                           value="vente">
+                           checkedinput value="vente" onclick="GestionCheckBoxVentes(vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
                     <label class="form-check-label" for="vente">Ventes</label>
                     <!-- checkboxes-->
                     <div class="form-check form-switch">
                         <input type="checkbox" class="form-check-input" id="ventesEnCours" autocomplete="off"
-                               name="ventesEnCours">
+                               name="ventesEnCours" onclick="GestionGroupBoutonsAchats(achat, vente, 'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
                         <label class="form-check-label" for="ventesEnCours">Mes ventes en cours</label>
                     </div>
                     <div class="form-check form-switch">
                         <input type="checkbox" class="form-check-input" id="ventesNonDebutees" autocomplete="off"
-                               name="ventesNonDebutees">
+                               name="ventesNonDebutees" onclick="GestionGroupBoutonsAchats(achat, vente, 'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
                         <label class="form-check-label" for="ventesNonDebutees">Ventes non débutées</label>
                     </div>
                     <div class="form-check form-switch">
                         <input type="checkbox" class="form-check-input" id="ventesTerminees" autocomplete="off"
-                               name="ventesTerminees">
-                        <label class="form-check-label" for="ventesTerminees">Mes enchères remportées</label>
+                               name="ventesTerminees" onclick="GestionGroupBoutonsAchats(achat, vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                        <label class="form-check-label" for="ventesTerminees">Ventes terminées</label>
                     </div>
                 </div>
             </div>
@@ -171,6 +168,6 @@
     </div>
 </div>
 
-<script language="JavaScript" type="text/javascript" src="scripts\app.js"></script>
+<script language="JavaScript" type="text/javascript" src="js\app.js"></script>
 </body>
 </html>

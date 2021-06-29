@@ -12,8 +12,8 @@ function GestionCheckBoxAchats(IdRadioButton,ChecBox1,ChecBox2,ChecBox3,ChecBox4
         document.getElementById(ChecBox6).checked = false;
     }
 }
-function GestionCheckBoxVentes(IdRadioButton,ChecBox1,ChecBox2,ChecBox3,ChecBox4,ChecBox5,ChecBox6){
-    if (IdRadioButton.checked){
+function GestionCheckBoxVentes(IdRadioButton,ChecBox1,ChecBox2,ChecBox3,ChecBox4,ChecBox5,ChecBox6) {
+    if (IdRadioButton.checked) {
         document.getElementById(ChecBox1).disabled = true;
         document.getElementById(ChecBox2).disabled = true;
         document.getElementById(ChecBox3).disabled = true;
@@ -25,6 +25,19 @@ function GestionCheckBoxVentes(IdRadioButton,ChecBox1,ChecBox2,ChecBox3,ChecBox4
         document.getElementById(ChecBox5).disabled = false;
         document.getElementById(ChecBox6).disabled = false;
     }
+}
+
+function GestionGroupBoutonsAchats(RadioButtonAchat, RadioButtonVente,ChecBox1,ChecBox2,ChecBox3,ChecBox4,ChecBox5,ChecBox6){
+        if (ChecBox4.checked || ChecBox5.checked || ChecBox6.checked){
+            document.getElementById(ChecBox1).disabled = true;
+            document.getElementById(ChecBox2).disabled = true;
+            document.getElementById(ChecBox3).disabled = true;
+            document.getElementById(ChecBox1).checked = false;
+            document.getElementById(ChecBox2).checked = false;
+            document.getElementById(ChecBox3).checked = false;
+            document.getElementById(RadioButtonAchat).checked = false;
+            document.getElementById(RadioButtonVente).checked = true;
+        }
 }
 
 

@@ -51,7 +51,6 @@ public class RechercheServlet extends HttpServlet {
 
         //récupération de la catégorie choisie de l'utilisateur
         String categorie = request.getParameter("rechercheParcategorie");
-        //TODO CG en jsp, réafficher la possibilité de ne pas trier par catégorie
 
         int noCategorie = 0;
         if (categorie != null && !categorie.equals("")) {

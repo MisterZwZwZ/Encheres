@@ -92,7 +92,7 @@
     </div>
     <div class="col-md-3">
         <label for="confpass" class="form-label">Confirmation mot de passe</label>
-        <input type="password" name="password" id="confpass" placeholder="mot de passe" required title="le mot de passe
+        <input type="password" name="passwordConf" id="confpass" placeholder="mot de passe" required title="le mot de passe
         doit contenir au moins 1 minuscule, 1 majuscule, 1 chiffre" class="form-control">
         <div class="invalid-feedback">
             Choisissez un mot de passe valide. Le mot de passe

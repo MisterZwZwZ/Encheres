@@ -20,7 +20,8 @@ public class ProfilServlet extends HttpServlet {
         String pseudo = req.getParameter("pseudo");
 
         if(pseudo == null || (pseudo.trim().equals(""))) {
-            //si on a pas de pseudo utilisateur, c'est que l'on souhaite afficher le profil de l'utilisateur en cours via sa session
+            //si on a pas de pseudo utilisateur, c'est qu'on est arrivé par la navbar "profil"
+            // on souhaite afficher le profil de l'utilisateur en cours via sa session
             HttpSession session = req.getSession();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
             req.setAttribute("utilisateur", utilisateur);

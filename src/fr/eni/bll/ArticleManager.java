@@ -118,7 +118,6 @@ public class ArticleManager {
      */
     public Article afficherArticleParNo(int noArt) throws BusinessException{
         Article articleTrouvé = articleDAO.selectArticleById(noArt);
-
         return articleTrouvé;
     }
 

@@ -18,37 +18,40 @@
 
 <table>
     <tbody>
+
+    <!-- cette page est accessible par 2 voies : via la navbar "mon profil" : afficher le profil de l'utilisateur connecté
+    via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisateur-->
     <tr>
         <td>Pseudo : </td>
-        <td>${utilisateur.pseudo} </td>
+        <td>${empty vendeur ? utilisateur.pseudo : vendeur.pseudo} </td>
     </tr>
     <tr>
         <td>Nom : </td>
-        <td>${utilisateur.nom} </td>
+        <td>${empty vendeur ? utilisateur.nom : vendeur.nom} </td>
     </tr>
     <tr>
         <td>Prénom : </td>
-        <td>${utilisateur.prenom}</td>
+        <td>${empty vendeur ? utilisateur.prenom : vendeur.prenom}</td>
     </tr>
     <tr>
         <td>Email : </td>
-        <td>${utilisateur.email} </td>
+        <td>${empty vendeur ? utilisateur.email : vendeur.email} </td>
     </tr>
     <tr>
         <td>Telephone : </td>
-        <td>${utilisateur.telephone} </td>
+        <td>${empty vendeur ? utilisateur.telephone : vendeur.telephone} </td>
     </tr>
     <tr>
         <td>Rue : </td>
-        <td>${utilisateur.rue} </td>
+        <td>${empty vendeur ? utilisateur.rue : vendeur.rue} </td>
     </tr>
     <tr>
         <td>Code postal : </td>
-        <td>${utilisateur.codePostal} </td>
+        <td>${empty vendeur ? utilisateur.codePostal : vendeur.codePostal} </td>
     </tr>
     <tr>
         <td>Ville : </td>
-        <td>${utilisateur.ville} </td>
+        <td>${empty vendeur ? utilisateur.ville : vendeur.ville} </td>
     </tr>
     </tbody>
 </table>

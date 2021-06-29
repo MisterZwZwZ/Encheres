@@ -3,21 +3,22 @@
 
 <html>
 <head>
+    <link type="text/css" rel="stylesheet" href="./styles/accueilStyles.css"/>
     <title>Accueil</title>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
+
 <div class="container">
-
-    <form class="d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche" method="POST">
-
-        <div class="row m-2">
-            <div class="row align-items-center m-2">
+    <p class="text-white">Filtres</p>
+    <form class="text-white d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche" method="POST">
+        <div class="row m-6">
+            <div class="row align-items-center">
                 <div class="col-6">
                     <input class="form-control me-2" type="search" id="recherche-article" name="rechercheParMotClef"
-                           placeholder="rechercher..."
+                           placeholder="rechercher par mots clefs..."
                            value="${motclef}">
                 </div>
                 <div class="col-6">
@@ -28,13 +29,13 @@
                         </c:forEach>
                     </select>
                 </div>
-                <div class="col">
+                <div class="col my-2">
                     <input class="btn btn-info" type="submit" value="Rechercher">
                 </div>
             </div>
         </div>
 
-        <div class="row m-2">
+        <div class="row m-6">
             <div class="row align-items-center">
                 <c:if test="${sessionScope.utilisateur != null}">
                 <!--radio boutons-->
@@ -124,48 +125,46 @@
     </form>
 </div>
 
-<div class="container-fluid">
-    <div class="row justify-content-center m-6">
+<div class="d-flex justify-content-center row">
+    <div class="row m-6">
         <c:choose>
             <c:when test="${listeArticles.size()>0}">
-
                 <c:forEach items="${listeArticles}" var="article">
-
-                    <div class="col-3">
-                        <div class="card" style="width: 18rem; height: 32rem">
-                            <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
-                                <img src="..." class="card-img-top" alt="photo de l'article en vente"></a>
-                            <div class="card-body">
-                                <h5 class="card-title"><c:out value="${article.nomArticle}"/></h5>
-                                <p class="card-text"><c:out value="Description : ${article.description}"/></p>
-                                <p class="card-text"><c:out value="Prix de vente : ${article.prixInitial} points"/></p>
-                                <p class="card-text"><c:out
-                                        value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
-                                <c:choose>
-                                    <c:when test="${sessionScope.utilisateur == null }">
-                                        <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
-                                    </c:when>
-
-                                    <c:when test="${sessionScope.utilisateur != null }">
-                                        <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
-                                            <p class="card-text"><c:out
-                                                    value="Vendeur : ${article.vendeur.pseudo}"/></p>
-                                        </a>
-                                    </c:when>
-                                </c:choose>
-                                <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
-                                   class="btn btn-info">Voir l'annonce</a>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </c:when>
-
-            <c:otherwise>
-                <p>Pas d'article correspondant</p>
-            </c:otherwise>
-        </c:choose>
+        <div class="col-3">
+            <div class="card my-4" style="width: 18rem; height: auto;>
+                 <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
+            <img src="..." class="card-img-top" alt="photo de l'article en vente"></a>
+            <div class="card-body">
+                <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
+                <p class="card-text"><c:out value="Description : ${article.description}"/></p>
+                <p class="card-text"><c:out value="Prix de vente : ${article.prixInitial} points"/></p>
+                <p class="card-text"><c:out
+                        value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
+                <c:choose>
+                    <c:when test="${sessionScope.utilisateur == null }">
+                        <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
+                    </c:when>
+                    <c:when test="${sessionScope.utilisateur != null }">
+                        <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
+                            <p class="card-text"><c:out
+                                    value="Vendeur : ${article.vendeur.pseudo}"/></p>
+                        </a>
+                    </c:when>
+                </c:choose>
+                <div class="text-center">
+                    <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
+                       class="btn btn-info">Voir l'annonce</a>
+                </div>
+            </div>
+        </div>
     </div>
+    </c:forEach>
+    </c:when>
+    <c:otherwise>
+        <p class="alert alert-danger" role="alert">Aucun résultat pour cette recherche</p>
+    </c:otherwise>
+    </c:choose>
+</div>
 </div>
 
 <script language="JavaScript" type="text/javascript" src="js\app.js"></script>

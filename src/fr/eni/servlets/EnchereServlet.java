@@ -84,7 +84,7 @@ public class EnchereServlet extends HttpServlet {
         //récupérer l'enchère éventuelle liée à l'article
         Enchere enchereAAfficher = null;
         try {
-            enchereAAfficher = enchereManager.afficherEnchereParNoArticle(articleAAfficher.getNoArticle());
+            enchereAAfficher = enchereManager.afficherEncherePseudoParNoArticle(articleAAfficher.getNoArticle());
             request.setAttribute("enchere", enchereAAfficher);
         } catch (BusinessException e) {
             e.printStackTrace();
@@ -97,10 +97,10 @@ public class EnchereServlet extends HttpServlet {
         if(utilisateur.getNoUtilisateur() == articleAAfficher.getVendeur().getNoUtilisateur()){
             //l'utilisateur est le vendeur de l'article
             statutUtilisateur = "vendeur";
-        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminee")){
+        } else if(meilleurEncherisseur != null && utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminee")){
             //l'utilisateur a remporté l'enchère
             statutUtilisateur = "acquereur";
-        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){
+        } else if(meilleurEncherisseur != null && utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){
             //l'utilisateur est le meilleur enchereur actuel et ne peut pas surencherir
             statutUtilisateur = "meilleurEncherisseur";
         } else {

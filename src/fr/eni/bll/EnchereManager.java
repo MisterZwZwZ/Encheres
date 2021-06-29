@@ -80,4 +80,11 @@ public class EnchereManager {
         return enchereTrouvée;
 
     }
+
+    public Enchere afficherEncherePseudoParNoArticle(int noArt) throws BusinessException{
+        Enchere enchereTrouvee = enchereDAO.selectEncherePseudoByNoArticle(noArt);
+        return enchereTrouvee;
+
+    }
+
 }

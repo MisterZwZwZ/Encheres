@@ -10,4 +10,5 @@ public interface EnchereDAO {
     void updateEnchere(Enchere enchere) throws BusinessException;
     Enchere selectEnchereByNoUser(int noUtilisateur) throws BusinessException;
     Enchere selectEnchereByNoArticle(int noArt) throws BusinessException;
+    Enchere selectEncherePseudoByNoArticle(int noArt) throws BusinessException;
 }

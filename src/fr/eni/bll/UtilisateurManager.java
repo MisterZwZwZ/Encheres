@@ -142,7 +142,15 @@ public class UtilisateurManager {
         }
     }
 
-
+    /**
+     * Retourne un objet Utilisateur correspondant à l'id passé en argument
+     * @return Utilisateur
+     * @throws BusinessException
+     */
+    public Utilisateur retournerUtilisateurParId(int noUtilisateyr) throws BusinessException {
+        Utilisateur utilisateurTrouve = userDAO.selectUserById(noUtilisateyr);
+        return  utilisateurTrouve;
+    }
 
     /**
      * Retourne un objet Utilisateur correspondant à l'email passé en argument
@@ -218,6 +226,10 @@ public class UtilisateurManager {
 
     }
 
+    /**
+     * Met à jour les données utilisateur via "mon profil".
+     * @throws BusinessException
+     */
     public void mettreAJourUtilisateur(int no_utilisateur, String pseudoUtilisateur, String email, String telephone, String rue, String cp, String ville, String password) throws BusinessException{
         BusinessException businessException = new BusinessException();
         // verif si no_utilisateur non null
@@ -229,6 +241,24 @@ public class UtilisateurManager {
                 businessException);
         if(!(businessException.hasErreurs())) {
             Utilisateur utilisateur = new Utilisateur(no_utilisateur, pseudoUtilisateur, email, telephone, rue, cp, ville, password);
+            userDAO.updateUser(utilisateur);
+        }else
+        {
+            throw businessException;
+        }
+    }
+
+    /**
+     *Met à jour le crédit utilisateur selon les encheres faites (débit) et les encheres perdues (crédit)
+     * @throws BusinessException
+     */
+    public void modifierCreditUtilisateur(Utilisateur utilisateur) throws BusinessException{
+        BusinessException businessException = new BusinessException();
+        // verif si no_utilisateur non null
+        if(utilisateur.getNoUtilisateur() == 0){
+            businessException.ajouterErreur(CodesErreurBll.NO_UTILISATEUR_INEXISTANT);
+        }
+        if(!(businessException.hasErreurs())) {
             userDAO.updateUser(utilisateur);
         }else
         {

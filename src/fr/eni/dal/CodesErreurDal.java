@@ -68,5 +68,5 @@ public abstract class CodesErreurDal {
         /**
          * Erreur lecture Retrait
          */
-        public static final int LECTURE_RETRAIT_ECHEC = 40000;
+        public static final int LECTURE_RETRAIT_ECHEC = 10008;
 }

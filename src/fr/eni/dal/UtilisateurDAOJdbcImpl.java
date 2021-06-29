@@ -12,10 +12,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String INSERT_USER = "insert into UTILISATEURS(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, administrateur) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SELECT_USER_BY_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email=?";
     private static final String SELECT_USER_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo=?";
+    private static final String SELECT_USER_BY_ID = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit FROM UTILISATEURS WHERE no_utilisateur=?";
     private static final String SELECT_ALL_PSEUDO = "SELECT pseudo FROM UTILISATEURS";
     private static final String SELECT_ALL_EMAIL = "SELECT email FROM UTILISATEURS";
     private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?";
-    private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo= ?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=? WHERE no_utilisateur=?";
+    private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo= ?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=? WHERE no_utilisateur=?";
 
     @Override
     public Utilisateur insertUser(Utilisateur utilisateur) throws BusinessException {
@@ -213,6 +214,44 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     }
 
     @Override
+    public Utilisateur selectUserById(int noUtilisateur) throws BusinessException {
+        Utilisateur utilisateur = new Utilisateur();
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(SELECT_USER_BY_ID);
+            pstmt.setInt(1, noUtilisateur);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+                utilisateur.setPseudo(rs.getString("pseudo"));
+                utilisateur.setNom(rs.getString("nom"));
+                utilisateur.setPrenom(rs.getString("prenom"));
+                utilisateur.setEmail(rs.getString("email"));
+                utilisateur.setTelephone(rs.getString("telephone"));
+                utilisateur.setRue(rs.getString("rue"));
+                utilisateur.setCodePostal(rs.getString("code_postal"));
+                utilisateur.setVille(rs.getString("ville"));
+                utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+                utilisateur.setCredit(rs.getInt("credit"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_UTILISATEUR_ECHEC);
+            throw businessException;
+        }
+        if (utilisateur.getNoUtilisateur() == 0) {
+            //gérer utilisateur inexistant
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_UTILISATEUR_INEXISTANT);
+            throw businessException;
+        }
+
+        return utilisateur;
+    }
+
+    @Override
     public void updateUser(Utilisateur utilisateur) throws BusinessException{
         try (Connection cnx = ConnectionProvider.getConnection()) {
             try {
@@ -228,9 +267,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
                     pstmt.setString(5, utilisateur.getCodePostal());
                     pstmt.setString(6, utilisateur.getVille());
                     pstmt.setString(7, utilisateur.getMotDePasse());
-                    pstmt.setInt(8, utilisateur.getNoUtilisateur());
+                    pstmt.setInt(8, utilisateur.getCredit());
+                    pstmt.setInt(9, utilisateur.getNoUtilisateur());
                     pstmt.executeUpdate();
-
                     pstmt.close();
 
                 cnx.commit();

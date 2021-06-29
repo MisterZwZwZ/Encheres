@@ -11,8 +11,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 
     private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES (no_utilisateur,no_article, date_enchere, montant_enchere) VALUES ( ?,?,?,? )";
     private static final String SELECT_ENCHERE_BY_ID_USER = "SELECT no_utilisateur,no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
-    private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT ENCHERES.no_utilisateur AS encherisseur, ENCHERES.no_article, date_enchere, montant_enchere, ARTICLES.no_utilisateur AS vendeur FROM ENCHERES INNER JOIN ARTICLES ON ENCHERES.no_article = ARTICLES.no_article INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE no_article = ?";
-    private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET no_utilisateur = ? AS encherisseur, date_enchere = ?, montant_enchere = ? WHERE no_article = ?";
+    private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT ENCHERES.no_utilisateur AS encherisseur, ENCHERES.no_article, date_enchere, montant_enchere, ARTICLES.no_utilisateur AS vendeur FROM ENCHERES INNER JOIN ARTICLES ON ENCHERES.no_article = ARTICLES.no_article INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur WHERE ARTICLES.no_article = ?";
+    private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET no_utilisateur = ?, date_enchere = ?, montant_enchere = ? WHERE no_article = ?";
 
     /**
      * Créé une enchère dans la BDD si aucune enchere sur l'article n'a déjà été faite.
@@ -96,6 +96,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
+                //FIXME CG probleme ici : ne créé pas l'enchere / passe dorectement au catch puis retourne une enchere null
                 Utilisateur encherisseur = new Utilisateur(rs.getInt("encherisseur"));
                 enchere.setEncherisseur(encherisseur);
                 Article article = new Article(rs.getInt("no_article"));

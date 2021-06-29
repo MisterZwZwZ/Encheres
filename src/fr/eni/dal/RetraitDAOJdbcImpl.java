@@ -45,7 +45,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO{
         if (retrait.getArticle() == null) {
             //gérer Article inexistant
             BusinessException businessException = new BusinessException();
-            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLE_INEXISTANT);
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_RETRAIT_ECHEC);
             throw businessException;
         }
 

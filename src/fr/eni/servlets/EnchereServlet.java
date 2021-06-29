@@ -42,7 +42,6 @@ public class EnchereServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         List<Integer> listeCodesErreur = new ArrayList<>();
 
-
         //Récupérer le numero de l'article que l'on veut afficher
         Article articleAAfficher = null;
         int noArticle = Integer.parseInt(request.getParameter("noarticle"));
@@ -97,10 +96,10 @@ public class EnchereServlet extends HttpServlet {
         if(utilisateur.getNoUtilisateur() == articleAAfficher.getVendeur().getNoUtilisateur()){
             //l'utilisateur est le vendeur de l'article
             statutUtilisateur = "vendeur";
-        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminee")){
+        } else if( meilleurEncherisseur != null && utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminee")){
             //l'utilisateur a remporté l'enchère
             statutUtilisateur = "acquereur";
-        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){
+        } else if( meilleurEncherisseur != null && utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){
             //l'utilisateur est le meilleur enchereur actuel et ne peut pas surencherir
             statutUtilisateur = "meilleurEncherisseur";
         } else {
@@ -152,17 +151,18 @@ public class EnchereServlet extends HttpServlet {
             }
         }
 
-//      TODO stocker l'enchère au cas où l'utilisateur perd l'enchère pour lui rendre les credits
-
         //S'il y a des erreurs, les afficher.
         if (listeCodesErreur.size() > 0) {
             request.setAttribute("listeCodesErreur", listeCodesErreur);
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/vente.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/enchere.jsp");
             rd.forward(request, response);
+
         //Sinon, on passe l'enchère au manager qui va effectuer les contrôles et l'envoyer en bdd.
         } else {
             try {
                 enchereManager.faireUneEnchere(montantEnchere, utilisateur, noArticle);
+                RequestDispatcher rd = request.getRequestDispatcher("accueil");
+                rd.forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());

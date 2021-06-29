@@ -13,8 +13,8 @@ import java.time.LocalDate;
 public class EnchereManager {
 
     private final EnchereDAO enchereDAO;
-    private ArticleManager articleManager;
-
+    private ArticleManager articleManager = new ArticleManager();
+    private UtilisateurManager userManager = new UtilisateurManager();
 
     public EnchereManager(){this.enchereDAO = DAOFactory.getEncheresDAO();}
 
@@ -25,7 +25,7 @@ public class EnchereManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_MONTANT_ENCHERE_ERREUR);
         }
         //Vérifier si le crédit de l'utilisateur est suffisant
-        if (montantEnchere < encherisseur.getCredit()){
+        if (montantEnchere > encherisseur.getCredit()){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ENCHERE_CREDIT_ERREUR);
         }
         //vérifier que l'encherisseur n'est pas le propriétaire de l'article
@@ -38,7 +38,7 @@ public class EnchereManager {
         BusinessException businessException = new BusinessException();
         Enchere enchereTrouvee = new Enchere();
 
-        //on récupère l'article sur lequel est faire l'enchere. Ne peut pas être null
+        //on récupère l'article sur lequel est faite l'enchere. Ne peut pas être null
         Article articleEncheri = new Article();
         articleEncheri = articleManager.afficherArticleParNo(noArticle);
 
@@ -47,8 +47,8 @@ public class EnchereManager {
 
         //on vérifie si l'article contient déjà une enchere
         enchereTrouvee = afficherEnchereParNoArticle(noArticle);
-            // si l'enchere est null : il n'a pas encore d'enchere.
-        if (enchereTrouvee != null){
+            // si l'enchere n'a pas de date : elle est nulle - il n'a pas encore d'enchere sur cet article.
+        if (enchereTrouvee.getDateEnchere() != null){
             //si l'article n'est pas null : il y a déjà une enchère dessus
             //vérifier que l'encherisseur n'est pas le dernier encherisseur
             if(articleEncheri.getVendeur().getNoUtilisateur() == utilisateur.getNoUtilisateur()){
@@ -63,21 +63,33 @@ public class EnchereManager {
         if(!businessException.hasErreurs()){
             //on créé une enchere s'il n'y a pas d'erreurs
             Enchere enchere = new Enchere(LocalDate.now(), montantEnchere, utilisateur, articleEncheri);
-            if (enchereTrouvee == null){
+            if (enchereTrouvee.getDateEnchere() == null){
                 //il n'y avait pas d'enchere sur cet article. On en créé une nouvelle.
                 enchereDAO.creerEnchere(enchere);
             }
             else{
                 //une enchere a déjà été faite sur cet article. On modifie l'enchere existante sur cet article
-                //TODO : méthode update sur une enchere ou sur un NoArticle ? (car 1 article = 1 enchere en bdd)
+                //TODO CG: méthode update sur une enchere ou sur un NoArticle ? (car 1 article = 1 enchere en bdd)
                 enchereDAO.updateEnchere(enchere);
+            }
+            //puis déduire le montant de l'enchere du credit de l'encherisseur (utilisateur connecté). Et on enregistre la modif en bdd
+            utilisateur.setCredit(utilisateur.getCredit()-montantEnchere);
+            userManager.modifierCreditUtilisateur(utilisateur);
+
+            //on  recrédite le dernier encherisseur du montant de l'enchere précédente
+            if (enchereTrouvee.getDateEnchere() != null){
+                enchereTrouvee.getEncherisseur().setCredit(enchereTrouvee.getEncherisseur().getCredit()+enchereTrouvee.getMontantEnchere());
+                userManager.modifierCreditUtilisateur(enchereTrouvee.getEncherisseur());
             }
         }
     }
 
     public Enchere afficherEnchereParNoArticle(int noArt) throws BusinessException{
-        Enchere enchereTrouvée = enchereDAO.selectEnchereByNoArticle(noArt);
-        return enchereTrouvée;
+        Enchere enchereTrouvee = enchereDAO.selectEnchereByNoArticle(noArt);
+        //modifier l'enchere avec un utilisateur complet
+        Utilisateur utilisateur = userManager.retournerUtilisateurParId(enchereTrouvee.getEncherisseur().getNoUtilisateur());
+        enchereTrouvee.setEncherisseur(utilisateur);
+        return enchereTrouvee;
 
     }
 }

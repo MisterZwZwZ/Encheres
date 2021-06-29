@@ -66,12 +66,12 @@ public class EnchereServlet extends HttpServlet {
 
         String etatVente = "";
 
-        if (LocalDate.now().isBefore(datedebutEnchere)) {
-            etatVente = "pas démarrée";
-        } else if (LocalDate.now().isAfter(datedebutEnchere) && LocalDate.now().isBefore(dateFinEnchere)) {
+        if(LocalDate.now().isBefore(datedebutEnchere)){
+            etatVente = "pas demarree";
+        }else if(LocalDate.now().isAfter(datedebutEnchere) && LocalDate.now().isBefore(dateFinEnchere)) {
             etatVente = "en cours";
-        } else if (LocalDate.now().isAfter(dateFinEnchere)) {
-            etatVente = "terminée";
+        } else if(LocalDate.now().isAfter(dateFinEnchere)){
+            etatVente = "terminee";
         }
 
         //Renvoyer l'état de l'enchère à la jsp
@@ -94,13 +94,13 @@ public class EnchereServlet extends HttpServlet {
 
         //en déduire le rôle de l'utilisateur(vendeur, encherisseur, meilleur encherisseur, acquereur )
         String statutUtilisateur = "";
-        if (utilisateur.getNoUtilisateur() == articleAAfficher.getVendeur().getNoUtilisateur()) {
+        if(utilisateur.getNoUtilisateur() == articleAAfficher.getVendeur().getNoUtilisateur()){
             //l'utilisateur est le vendeur de l'article
             statutUtilisateur = "vendeur";
-        } else if (utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminée")) {
+        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur() && etatVente.equals("terminee")){
             //l'utilisateur a remporté l'enchère
             statutUtilisateur = "acquereur";
-        } else if (utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()) {
+        } else if(utilisateur.getNoUtilisateur() == meilleurEncherisseur.getNoUtilisateur()){
             //l'utilisateur est le meilleur enchereur actuel et ne peut pas surencherir
             statutUtilisateur = "meilleurEncherisseur";
         } else {

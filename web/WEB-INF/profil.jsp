@@ -53,6 +53,12 @@
         <td>Ville : </td>
         <td>${empty vendeur ? utilisateur.ville : vendeur.ville} </td>
     </tr>
+    <c:if test="${empty vendeur}">
+    <tr>
+        <td>Crédit : </td>
+        <td>${utilisateur.credit}</td>
+    </tr>
+    </c:if>
     </tbody>
 </table>
 

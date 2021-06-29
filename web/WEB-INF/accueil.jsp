@@ -11,11 +11,11 @@
 
 <p>Filtres</p>
 
-<div class="container-fluid">
+<div class="container">
 
-    <form class="d-flex" action="${pageContext.request.contextPath}/recherche" method="POST">
+    <form class="d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche" method="POST">
 
-        <div class="container">
+        <div class="row m-6">
             <div class="row align-items-center">
                 <div class="col-6">
                     <input class="form-control me-2" type="search" id="recherche-article" name="rechercheParMotClef"
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div class="container-fluid">
+        <div class="row m-6">
             <div class="row align-items-center">
                 <c:if test="${sessionScope.utilisateur != null}">
                 <!--radio boutons-->
@@ -128,7 +128,7 @@
 </div>
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row justify-content-center m-6">
         <c:choose>
             <c:when test="${listeArticles.size()>0}">
 

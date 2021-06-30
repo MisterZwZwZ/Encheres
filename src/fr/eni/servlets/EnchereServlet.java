@@ -164,8 +164,9 @@ public class EnchereServlet extends HttpServlet {
         } else {
             try {
                 enchereManager.faireUneEnchere(montantEnchere, utilisateur, noArticle);
-                RequestDispatcher rd = request.getRequestDispatcher("accueil");
-                rd.forward(request, response);
+                String messageConfirmationEnchere = "Votre enchère a bien été prise en compte";
+                request.setAttribute("messageConf", messageConfirmationEnchere);
+                doGet(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());

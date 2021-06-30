@@ -52,17 +52,19 @@
                 <input type="hidden" name="noarticle" value="${article.noArticle}">
                 <input type="submit" value="Encherir">
             </c:if>
+            <c:if test="${!empty messageConf}">
+                <p>Votre enchère a bien été enregistrée !</p>
+            </c:if>
 
             <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'en cours'}">
                 <c:out value="Votre article est en vente et les enchères sont en cours" />
             </c:if>
 
             <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
-                <a href="<%=request.getContextPath()%>/accueil"><button disabled>modifier ma vente</button></a>
+                <a href="<%=request.getContextPath()%>/accueil"><button>Modifier ma vente</button></a>
             </c:if>
         </form>
         <a href="<%=request.getContextPath()%>/accueil"><button>Annuler</button></a>
-
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">

@@ -71,7 +71,7 @@ public class EnchereServlet extends HttpServlet {
 
         if(LocalDate.now().isBefore(datedebutEnchere)){
             etatVente = "pas demarree";
-        }else if(LocalDate.now().isAfter(datedebutEnchere) && LocalDate.now().isBefore(dateFinEnchere)) {
+        }else if(LocalDate.now().isAfter(datedebutEnchere) && (LocalDate.now().isBefore(dateFinEnchere) || LocalDate.now().equals(dateFinEnchere))) {
             etatVente = "en cours";
         } else if(LocalDate.now().isAfter(dateFinEnchere)){
             etatVente = "terminee";

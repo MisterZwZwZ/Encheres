@@ -74,18 +74,19 @@
             <form action="${pageContext.request.contextPath}/vendre" method="POST">
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <label for="nomArticle">Article</label>
+                        <label class="col-form-label" for="nomArticle">Article</label>
                         <input class="form-control" type="text" name="nomArticle" id="nomArticle" value="${nomArticle}">
                     </div>
+<%--                    TODO TL voir pour agrandir le champ de saisie--%>
                     <div class="col-sm-6">
-                        <label  for="description">Description</label>
+                        <label class="col-form-label" for="description">Description</label>
                         <input class="form-control" type="textarea" name="description" id="description"
                                value="${description}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-3">
-                        <label for="categorie">Catégorie</label>
+                        <label class="col-form-label" for="categorie">Catégorie</label>
                         <select class="form-control" name="rechercheParcategorie" id="categorie">
                             <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
                                 <option value="${categorie.key}">${categorie.value}</option>
@@ -98,7 +99,7 @@
                                value="${prixInitial}">
                     </div>
                     <div class="col-sm-3">
-                        <label class="control-label" for="dateDebutEnchere">Début de l'enchère</label>
+                        <label class="col-form-label" for="dateDebutEnchere">Début de l'enchère</label>
                         <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere">
                     </div>
                     <div class="col-sm-3">
@@ -106,6 +107,7 @@
                         <input class="form-control" name="dateFinEnchere" id="dateFinEnchere">
                     </div>
                 </div>
+<%--                TODO TL ajouter div pour encadrer et regrouper le retrait --%>
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <fieldset>
@@ -121,6 +123,7 @@
                                    value="${sessionScope.utilisateur.ville}">
                         </fieldset>
                     </div>
+<%--                    TODO TL center button --%>
                     <div class="form-group row">
                         <div class="col-sm-6">
                             <button class="btn btn-primary" type="submit" style="width:400px;">Enregistrer</button>

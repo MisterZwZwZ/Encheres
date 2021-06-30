@@ -17,11 +17,13 @@
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row">
         <div class="col md-10 mx-auto">
-            <div class="form-group row">
-                <div class="col-sm-3">
-                    <label class="col-form-label" for="pseudo">Pseudo :</label>
-                    <input class="form-control" type="text" name="pseudo" id="pseudo" placeholder="pseudo"
-                           value="${sessionScope.utilisateur.pseudo}">
+            <form action="${pageContext.request.contextPath}/monprofil" method="post">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label class="col-form-label" for="pseudo">Pseudo :</label>
+                        <input class="form-control" type="text" name="pseudo" id="pseudo" placeholder="pseudo"
+                               value="${sessionScope.utilisateur.pseudo}">
+                    </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="prenom">Prénom :</label>
                         <input class="form-control" type="text" name="prenom" id="prenom" placeholder="prenom"
@@ -33,62 +35,65 @@
                                value="${sessionScope.utilisateur.nom}" disabled>
                     </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-3">
-                    <label class="col-form-label" for="email">Email :</label>
-                    <input class="form-control" type="email" name="email" id="email" placeholder="email"
-                           value="${sessionScope.utilisateur.email}">
-                </div>
-                <div class="col-sm-3">
-                    <label class="col-form-label" for="telephone">Téléphone :</label>
-                    <input class="form-control" type="tel" name="telephone" id="telephone"
-                           placeholder="telephone" value="${sessionScope.utilisateur.telephone}">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-3">
-                    <label class="col-form-label" for="rue">Rue :</label>
-                    <input class="form-control" class="form-control" type="text" name="rue" id="rue" placeholder="rue"
-                           value="${sessionScope.utilisateur.rue}">
-                </div>
-                <div class="col-sm-3">
-                    <label class="col-form-label" for="codepostal">Code postal :</label>
-                    <input class="form-control" type="text" name="cp" id="codepostal" placeholder="code postal"
-                           value="${sessionScope.utilisateur.codePostal}">
-                </div>
-                <div class="col-sm-3">
-                    <label class="col-form-label" for="ville">Ville :</label>
-                    <input class="form-control" type="text" name="ville" id="ville" placeholder="ville"
-                           value="${sessionScope.utilisateur.ville}">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label class="col-form-label" for="email">Email :</label>
+                        <input class="form-control" type="email" name="email" id="email" placeholder="email"
+                               value="${sessionScope.utilisateur.email}">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="col-form-label" for="telephone">Téléphone :</label>
+                        <input class="form-control" type="tel" name="telephone" id="telephone"
+                               placeholder="telephone" value="${sessionScope.utilisateur.telephone}">
+                    </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-3">
-                        <label class="col-form-label" for="pass">Mot de passe :</label>
-                        <input class="form-control" type="password" name="password" id="pass" placeholder="mot de passe"
-                               value="${sessionScope.utilisateur.motDePasse}">
+                        <label class="col-form-label" for="rue">Rue :</label>
+                        <input class="form-control" class="form-control" type="text" name="rue" id="rue"
+                               placeholder="rue"
+                               value="${sessionScope.utilisateur.rue}">
                     </div>
                     <div class="col-sm-3">
-                        <label class="col-form-label" for="confpass">Confirmation :</label>
-                        <input class="form-control" type="password" name="passwordConf" id="confpass"
-                               placeholder="confirmez le mot de passe"
-                               value="${sessionScope.utilisateur.motDePasse}">
+                        <label class="col-form-label" for="codepostal">Code postal :</label>
+                        <input class="form-control" type="text" name="cp" id="codepostal" placeholder="code postal"
+                               value="${sessionScope.utilisateur.codePostal}">
                     </div>
+                    <div class="col-sm-3">
+                        <label class="col-form-label" for="ville">Ville :</label>
+                        <input class="form-control" type="text" name="ville" id="ville" placeholder="ville"
+                               value="${sessionScope.utilisateur.ville}">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label class="col-form-label" for="pass">Mot de passe :</label>
+                            <input class="form-control" type="password" name="password" id="pass"
+                                   placeholder="mot de passe"
+                                   value="${sessionScope.utilisateur.motDePasse}">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label" for="confpass">Confirmation :</label>
+                            <input class="form-control" type="password" name="passwordConf" id="confpass"
+                                   placeholder="confirmez le mot de passe"
+                                   value="${sessionScope.utilisateur.motDePasse}">
+                        </div>
+                    </div>
+                    <p>Crédit : ${sessionScope.utilisateur.credit}</p>
                 </div>
-                <p>Crédit : ${sessionScope.utilisateur.credit}</p>
-            </div>
+                <div class="col-sm-6 m-2 w-50">
+                    <button class="btn btn-primary w-50" type="submit">Valider</button>
+                </div>
+            </form>
+            <a href="${pageContext.request.contextPath}/supp">
+                <button class="btn btn-danger w-50">Supprimer mon compte</button>
+            </a>
+            <a href="${pageContext.request.contextPath}/accueil">
+                <button class="btn btn-secondary w-50">Retour</button>
+            </a>
         </div>
+    </div>
 </div>
 
-    <div class="d-flex justify-content-center">
-        <form action="${pageContext.request.contextPath}/monprofil" method="post">
-            <div class="col-sm-6 m-2 w-50">
-                <button class="btn btn-primary w-100" type="submit">Valider</button>
-            </div>
-        </form>
-        <a href="${pageContext.request.contextPath}/supp"><button class="btn btn-danger">Supprimer mon compte</button></a>
-        <a href="${pageContext.request.contextPath}/accueil"><button class="btn btn-secondary w-100">Retour</button></a>
-    </div>
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">

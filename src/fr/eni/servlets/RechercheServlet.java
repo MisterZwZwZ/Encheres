@@ -41,6 +41,7 @@ public class RechercheServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
+        List<Integer> listeCodesErreur = new ArrayList<>();
         List<Article> listeArticles = new ArrayList<>();
 
         //récupération du mot clef recherché
@@ -89,6 +90,10 @@ public class RechercheServlet extends HttpServlet {
             case3 = request.getParameter("ventesTerminees");
         }
 
+        if(case1 == null && case2 == null && case3 == null){
+            listeCodesErreur.add(CodesErreurServlet.FILTRES_NULLS);
+        }
+
 
 
             try {
@@ -106,9 +111,13 @@ public class RechercheServlet extends HttpServlet {
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
         }
+        if(listeCodesErreur.size()>0){
+            request.setAttribute("listeCodesErreur", listeCodesErreur);
+            request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
 
-
-        request.setAttribute("listeArticles",listeArticles );
-        request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
+        }else {
+            request.setAttribute("listeArticles", listeArticles);
+            request.getRequestDispatcher("WEB-INF/accueil.jsp").forward(request, response);
+        }
     }
 }

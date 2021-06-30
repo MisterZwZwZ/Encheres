@@ -61,6 +61,12 @@ public abstract class CodesErreurServlet {
     public static final Integer MDP_INCORRECT = 30012;
     public static final Integer UTILISATEUR_INEXISTANT = 30013;
 
+    /**
+     * Recherche incomplète
+     */
+    public static final Integer FILTRES_NULLS = 30016;
+
+
     //
 
 }

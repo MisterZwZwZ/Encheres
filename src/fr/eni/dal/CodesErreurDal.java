@@ -20,10 +20,11 @@ public abstract class CodesErreurDal {
          */
         public static final int UPDATE_OBJET_ECHEC=10004;
 
+        /**
+         * Echec général quand erreur non gérée à la suppression
+         */
+        public static final int DELETE_OBJET_ECHEC=10005;
 
-        //TODO personnaliser les erreurs DAL
-
-        // codes erreurs articles
         /**
          * Echec de la lecture des articles
          */

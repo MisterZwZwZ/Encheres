@@ -23,7 +23,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private static final String SELECT_ARTICLES_BY_ID = "SELECT ARTICLES.no_article, ARTICLES.nom_article, ARTICLES.description, ARTICLES.date_debut_vente, ARTICLES.date_fin_vente, ARTICLES.prix_initial, ARTICLES.prix_vente, ARTICLES.no_utilisateur, UTILISATEURS.pseudo, UTILISATEURS.telephone, ARTICLES.no_categorie, c.libelle FROM ARTICLES INNER JOIN UTILISATEURS ON ARTICLES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES C ON ARTICLES.no_categorie = C.no_categorie WHERE ARTICLES.no_article=?";
     private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article, description, date_debut_vente, date_fin_vente, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES ( ?,?,?,?,?,?,?,? )";
     private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES ( ?,?,?,? )";
-
+    private static final String UPDATE_ARTICLE = "UPDATE ARTICLES SET nom_article= ?, description=?, date_debut_vente=?, date_fin_vente=?, prix_initial=?, prix_vente=?, no_utilisateur=?, no_categorie=? WHERE no_article=?";
     private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID=?";
 
     //Requete SQL dynamique pour la recherche
@@ -51,11 +51,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     private String debutAvantDateJour = " DATEDIFF(day, date_debut_vente, GETDATE())>=0 ";
 
 
-    @Override
+
     /**
-     * ACHATS. Cette méthode sélectionne les articles selon les filtres appliquées.
+     * ACHATS. Cette méthode sélectionne les articles selon les filtres appliqués.
      * La requete sql est construite "sur mesure" suivant le contenu des paramètres en entrée.
      */
+    @Override
     public List<Article> selectArticlesParFiltre(String recherche, int noCategorie, String case1,
                                                  String case2, String case3, int noUtilisateur) throws BusinessException {
         List<Article> listeArticlesFiltres = new ArrayList<>();
@@ -69,7 +70,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             recherche = "";
         }
 
-        //FIXME CG ajouter un prametre catégorie
         if (case1 != null && case1.equals("on") && case3 != null && case3.equals("on") && case2 == null) {
             sb.append(selectArticlesJointureEncheres);
             sb.append(and);
@@ -118,9 +118,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 sb.append(and);
                 sb.append(debutAvantDateJour);
             }
-
         }
-
 
         sb.toString();
         System.out.println("affihage de la requete exécutée pour test " + sb.toString());
@@ -179,11 +177,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return listeArticlesFiltres;
     }
 
-    @Override
+
     /**
-     * MES VENTES. Cette méthode sélectionne les encheres selon les filtres appliquées.
+     * MES VENTES. Cette méthode sélectionne les ventes selon les filtres appliqués.
      * La requete sql est construite "sur mesure" suivant le contenu des paramètres en entrée.
      */
+    @Override
     public List<Article> selectVentesParFiltre(String recherche, int noCategorie, String case1,
                                                String case2, String case3, int noUtilisateur) throws BusinessException {
         List<Article> listeVentesFiltrees = new ArrayList<>();
@@ -276,6 +275,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return listeVentesFiltrees;
     }
 
+    /**
+     * Insere un article en base de données.
+     * @param article
+     * @throws BusinessException
+     */
     @Override
     public void insertArticle(Article article) throws BusinessException {
         if (article == null) {
@@ -317,7 +321,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     }
 
     /**
-     * Insère un retrait dans la BDD a l'ajout d'un article
+     * Insère un retrait dans la BDD à l'ajout d'un article
      */
     @Override
     public void insertRetrait(Retrait retrait) throws BusinessException {
@@ -347,11 +351,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         }
     }
 
-    @Override
     /**
      * Select de tous les articles pouvant être encherris : dont la date de début est antérieure ou égale à la date du jour,
      * dont la date de fin est égale ou postérieure à la date du jour
      */
+    @Override
     public List<Article> selectArticlesEncherissables() throws BusinessException {
         List<Article> listeArticlesEncherissables = new ArrayList<>();
         try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -384,6 +388,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return listeArticlesEncherissables;
     }
 
+    /**
+     * Selectionne une liste d'articles par catégorie.
+     * @param noCategorie
+     * @return
+     * @throws BusinessException
+     */
     @Override
     public List<Article> selectArticlesByCategorie(int noCategorie) throws BusinessException {
         List<Article> listeArticleCategorie = new ArrayList<>();
@@ -419,20 +429,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return listeArticleCategorie;
     }
 
-    @Override
-    public void deleteArticle(int id) throws BusinessException {
-        try (Connection cnx = ConnectionProvider.getConnection()) {
-            PreparedStatement pstmt = cnx.prepareStatement(DELETE_ARTICLE);
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            BusinessException businessException = new BusinessException();
-            businessException.ajouterErreur(CodesErreurDal.SUPPRESSION_ARTICLE_ERREUR);
-            throw businessException;
-        }
-    }
-
+    /**
+     * Selectionne une liste d'articles triés par mot clef.
+     * @param chaine
+     * @return
+     * @throws BusinessException
+     */
     @Override
     public List<Article> selectArticlesParMotClef(String chaine) throws BusinessException {
         List<Article> listeArticleEnVenteParMotClef = new ArrayList<>();
@@ -468,15 +470,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return listeArticleEnVenteParMotClef;
     }
 
-    @Override
     /**
      * Selectionne les articles dont la date de début de vente est antérieure ou égale à la date en cours,
      * dont la date de fin de vente est égale ou postérieure à la date en cours,
      * Par Id vendeur
      */
+    @Override
     public List<Article> selectAllVentesByIdUser(int idUser) throws BusinessException {
         List<Article> listeArticleEnVenteParVendeur = new ArrayList<>();
-        //TODO CG  méthode à tester
         try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(SELECT_ARTICLES_ENCHERISSABLES_BY_ID);
             pstmt.setInt(1, idUser);
@@ -508,11 +509,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         return listeArticleEnVenteParVendeur;
     }
 
-    @Override
     /**
-     * Selectionne un article en fonction de son ID
-     *
+     * Selectionne un article en fonction de son no_Article
      */
+    @Override
     public Article selectArticleById(int idArt) throws BusinessException {
         Article article = new Article();
         try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -552,29 +552,54 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLE_INEXISTANT);
             throw businessException;
         }
-
         return article;
     }
 
-
     @Override
-    /**
-     * Selectionne les articles dont la date de début de vente est postérieure à la date en cours
-     * Par Id vendeur
-     */
-    public List<Article> selectVentesNonDebuteesByIdUser(int idUser) throws BusinessException {
-        return null;
+    public Article updateArticle(Article article) throws BusinessException {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            try {
+                cnx.setAutoCommit(false);
+                PreparedStatement pstmt;
+
+                pstmt = cnx.prepareStatement(UPDATE_ARTICLE);
+                pstmt.setString(1, article.getNomArticle());
+                pstmt.setString(2, article.getDescription());
+                pstmt.setDate(3, java.sql.Date.valueOf(article.getDateDebutEnchere()));
+                pstmt.setDate(4, java.sql.Date.valueOf(article.getDateFinEnchere()));
+                pstmt.setInt(5, article.getPrixInitial());
+                pstmt.setInt(6, article.getPrixVente());
+                pstmt.setInt(7, article.getVendeur().getNoUtilisateur());
+                pstmt.setInt(8, article.getCategorie().getNoCategorie());
+                pstmt.setInt(9, article.getNoArticle());
+                pstmt.executeUpdate();
+                pstmt.close();
+
+                System.out.println("TEST affichage - article mis à jour : " + article.toString());
+
+                cnx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                cnx.rollback();
+                throw e;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.UPDATE_OBJET_ECHEC);
+            throw businessException;
+        }
+        return article;
     }
 
     @Override
     /**
-     * selectionne les articles sont la date de fin de vente est dépassée
-     * Par Id vendeur
+     * Affiche la liste des articles ouverts à la vente, selon les critères de recherche choisis par l'utilisateur.
+     * @param recherche
+     * @param noCategorie
+     * @return
+     * @throws BusinessException
      */
-    public List<Article> selectVentesTermineesByIdUser(int idUser) throws BusinessException {
-        return null;
-    }
-
     public List<Article> selectEnModeDeconnecte(String recherche, int noCategorie) throws BusinessException {
         List<Article> listeArticles = new ArrayList<>();
         Article articleEncours = new Article();
@@ -630,5 +655,24 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         }
         return listeArticles;
 
+    }
+
+    /**
+     * Supprime un article par son id.
+     * @param id
+     * @throws BusinessException
+     */
+    @Override
+    public void deleteArticle(int id) throws BusinessException {
+        try (Connection cnx = ConnectionProvider.getConnection()) {
+            PreparedStatement pstmt = cnx.prepareStatement(DELETE_ARTICLE);
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.SUPPRESSION_ARTICLE_ERREUR);
+            throw businessException;
+        }
     }
 }

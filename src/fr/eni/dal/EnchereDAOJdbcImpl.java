@@ -103,7 +103,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                //FIXME CG probleme ici : ne créé pas l'enchere / passe dorectement au catch puis retourne une enchere null
                 Utilisateur encherisseur = new Utilisateur(rs.getInt("encherisseur"));
                 enchere.setEncherisseur(encherisseur);
                 Article article = new Article(rs.getInt("no_article"));
@@ -185,6 +184,5 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             businessException.ajouterErreur(CodesErreurDal.UPDATE_OBJET_ECHEC);
             throw businessException;
         }
-
     }
 }

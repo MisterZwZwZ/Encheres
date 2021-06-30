@@ -121,4 +121,10 @@ public class ArticleManager {
         return articleTrouvé;
     }
 
+    public Article modifierArticle(Article article) throws BusinessException{
+        Article articleMisAJour = new Article();
+        articleMisAJour =  articleDAO.updateArticle(article);
+        return articleMisAJour;
+    }
+
 }

@@ -32,9 +32,9 @@ public class CategorieDAOJdbcImpl implements CategoriesDAO {
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(e.getMessage());
-            //TODO CG gestion erreur personnalisée
-            throw new BusinessException();
+            BusinessException businessException = new BusinessException();
+            businessException.ajouterErreur(CodesErreurDal.LECTURE_ARTICLES_ECHEC);
+            throw businessException;
         }
         return listeCategories;
     }

@@ -120,23 +120,8 @@ public class InscriptionServlet extends HttpServlet {
                 rd.forward(req, resp);
             }
         }
-        //redirection. Renvoie vers la servlet accueil dans la méthode doGet
-
-//        RequestDispatcher rd = req.getRequestDispatcher("accueil");
-//        rd.forward(req, resp);
     }
 
-    /**
-     * Vérifier que le numéro de telephone fourni est dans un format validee
-     * @param tel
-     * @return
-     */
-    //TODO ne fonctionne pas
-//    public boolean verificationTelephone(String tel){
-//        String pattern = "(0|\\+33)[1-9](*[0-9]{2}){4}";
-//        Boolean result = tel.matches(pattern);
-//        return result;
-//    }
 
     /**
      * Cette méthode vérifie que la saisie de l'utilisateur ne contient pas de caractère spécial.

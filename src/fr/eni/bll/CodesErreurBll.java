@@ -65,7 +65,7 @@ public abstract class CodesErreurBll {
     /**
      * Echec le pseudo ne correspond à aucun compte en bdd
      */
-    public static final int PSEUDO_INEXISTANT = 10009;
+    public static final int PSEUDO_INEXISTANT = 20018;
 
     /**
      *
@@ -142,8 +142,5 @@ public abstract class CodesErreurBll {
      * Erreur article sur enchere
      */
     public static final int REGLE_ENCHERE_ARTICLE_ERREUR = 20042;
-
-
-
 
 }

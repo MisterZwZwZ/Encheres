@@ -81,7 +81,7 @@ public class InscriptionServlet extends HttpServlet {
         String cp = req.getParameter("cp");
         if (cp == null || cp.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.CP_UTILISATEUR_OBLIGATOIRE);
-        } if(!utilitaire.rechercheChiffre(nomUtilisateur)){
+        } if(!utilitaire.rechercheChiffre(cp)){
             listeCodesErreur.add(CodesErreurServlet.CP_NON_VALIDE);
         }  else{
             req.setAttribute("cp", cp);

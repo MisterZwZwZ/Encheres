@@ -57,7 +57,7 @@ public class MonProfilServlet extends HttpServlet {
         List<Integer> listeCodesErreur = new ArrayList<>();
         UtilisateurManager utilisateurManager = new UtilisateurManager();
 
-        //réqupération des paramettres de l'utilisateur
+        //réqupération des parametres de l'utilisateur
         HttpSession session = request.getSession(false);
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
         int noUtilisateur = utilisateur.getNoUtilisateur();

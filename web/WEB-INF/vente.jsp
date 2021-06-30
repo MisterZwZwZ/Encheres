@@ -141,6 +141,10 @@
 </div>
 
 
+<c:if test="${!empty messageConfModifArticle}">
+    <strong>${messageConfModifArticle}</strong>
+</c:if>
+
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
     <strong>Erreur!</strong>

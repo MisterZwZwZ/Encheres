@@ -33,7 +33,6 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
                 ResultSet rs;
                 if (utilisateur.getNoUtilisateur() == 0) {
                     pstmt = cnx.prepareStatement(INSERT_USER, PreparedStatement.RETURN_GENERATED_KEYS);
-                    //TODO utiliser des labels pour identifier les colones ?
                     pstmt.setString(1, utilisateur.getPseudo());
                     pstmt.setString(2, utilisateur.getNom());
                     pstmt.setString(3, utilisateur.getPrenom());
@@ -259,7 +258,6 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
                 PreparedStatement pstmt;
 
                     pstmt = cnx.prepareStatement(UPDATE_USER);
-                    //TODO utiliser des labels pour identifier les colones ?
                     pstmt.setString(1, utilisateur.getPseudo());
                     pstmt.setString(2, utilisateur.getEmail());
                     pstmt.setString(3, utilisateur.getTelephone());

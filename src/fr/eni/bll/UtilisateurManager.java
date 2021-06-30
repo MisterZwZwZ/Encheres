@@ -3,11 +3,9 @@ package fr.eni.bll;
 import fr.eni.BusinessException;
 import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
-import fr.eni.dal.CodesErreurDal;
 import fr.eni.dal.DAOFactory;
 import fr.eni.dal.UtilisateurDAO;
 
-import java.io.CharConversionException;
 import java.util.List;
 
 public class UtilisateurManager {
@@ -27,8 +25,9 @@ public class UtilisateurManager {
 
         BusinessException businessException = new BusinessException();
         Utilisateur utilisateurCree = new Utilisateur();
-        this.validerDonneesUtilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse,
+        this.validerDonneesModifiablesUtilisateur(pseudo, email, telephone, rue, codePostal, ville, motDePasse,
                 businessException);
+        this.validerDonneesImmuablesUtilisateur(pseudo, email, nom, prenom, businessException);
 
         if(!(businessException.hasErreurs()))
         {
@@ -44,74 +43,36 @@ public class UtilisateurManager {
     }
 
     /**
-     * Vérifie les données saisies par l'utilisateur pour la création d'un compte.
+     * Vérifie les données modifiables liées à un compte utilisateur (à la création ou à la modification).
      */
-    public void validerDonneesUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
+    public void validerDonneesModifiablesUtilisateur(String pseudo, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
 
+        //Vérification sur le pseudo.
         if(  pseudo==null || pseudo.trim().length()>30 )
         {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
         }
-        //Vérifier si le pseudo n'existe pas déjà en bdd
-        List<String> listeDesPseudosEnBase = userDAO.selectAllPseudo();
-        if (listeDesPseudosEnBase != null) {
-            for (String p :listeDesPseudosEnBase
-                 ) {
-                if (p.equals(pseudo)){
-                    businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDOUNIQUE_ERREUR);
-                }
-            }
-        }
-
-        //Vérifier que le pseudo ne contient que des caractères alphanumériques
         boolean alphanum = utilitaire.pseudoValidation(pseudo);
         if (!alphanum) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
 
-        //vérifications sur le nom et prénom
-        if( nom==null || nom.trim().length()>30){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_NOM_ERREUR);
-        }
-        if( prenom==null || prenom.trim().length()>30 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PRENOM_ERREUR);
-        }
-
-        boolean nomValid = utilitaire.nomValidation(nom);
-        if (!nomValid) {
-            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
-        }
-        boolean prenomValid = utilitaire.nomValidation(prenom);
-        if (!prenomValid) {
-            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
-        }
-
+        //Vérification sur l'email
         if(  email==null || email.trim().length()>60 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
         }
-        //Vérifier si l'email n'existe pas déjà en bdd
-        List<String> listeDesEmailEnBase = userDAO.selectAllEmail();
-        if (listeDesEmailEnBase != null) {
-            for (String e :listeDesEmailEnBase
-            ) {
-                if (e.equals(email)){
-                    businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
-                }
-            }
-        }
-        //Vérifier le format de l'email
         boolean emailvalid = utilitaire.emailValidation(email);
         if (!emailvalid) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
         }
 
-        if(  telephone.trim().length()>15 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
-        }
-        //Vérifier le format du numéro de telephone
+        //Vérification sur le téléphone
         if (telephone != null && !telephone.equals("")){
-            boolean telvalid = utilitaire.telValidation(telephone);
-            if (!telvalid) {
+            boolean isNumbersOnly = utilitaire.telValidation(telephone);
+            if (!isNumbersOnly) {
+                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+            }
+            if(telephone.trim().length()>15 ){
                 businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
             }
         }
@@ -119,8 +80,16 @@ public class UtilisateurManager {
         if(  rue==null || rue.trim().length()>30 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
         }
+
+        //vérification sur le code postal.
         if(  codePostal==null || codePostal.trim().length()>10 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
+        }
+        int codePostal_nb = 0;
+        try {
+            codePostal_nb = Integer.parseInt(codePostal);
+        } catch (NumberFormatException e) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NB_NON_VALIDES);
         }
 
         //vérification sur la ville
@@ -128,16 +97,17 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
         }
         boolean villeValid = utilitaire.villeValidation(ville);
-        if (!prenomValid) {
+        if (!villeValid) {
             businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
 
-        if(  motDePasse==null || motDePasse.trim().length()>100 ){
+        //vérification du mot de passe
+        if(motDePasse==null || motDePasse.trim().length()>100 ){
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
         }
-        //vérification du mot de passe
-        boolean result = utilitaire.passwordValidation(motDePasse);
-        if (!result) {
+
+        boolean isGoodPassword = utilitaire.passwordValidation(motDePasse);
+        if (!isGoodPassword) {
             businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
         }
     }
@@ -237,11 +207,19 @@ public class UtilisateurManager {
             businessException.ajouterErreur(CodesErreurBll.NO_UTILISATEUR_INEXISTANT);
         }
         //verif de la validité des autres champs
-        this.validerNouvellesDonneesUtilisateur(pseudoUtilisateur, email, telephone, rue, cp, ville, password,
+        this.validerDonneesModifiablesUtilisateur(pseudoUtilisateur, email, telephone, rue, cp, ville, password,
                 businessException);
         if(!(businessException.hasErreurs())) {
-            Utilisateur utilisateur = new Utilisateur(no_utilisateur, pseudoUtilisateur, email, telephone, rue, cp, ville, password);
-            userDAO.updateUser(utilisateur);
+            //on récupère l'utilisateur par son numéro, on modifie les champs modifiables. on conserve les données non modifiables.
+            Utilisateur utilisateurAModifier = userDAO.selectUserById(no_utilisateur);
+            utilisateurAModifier.setPseudo(pseudoUtilisateur);
+            utilisateurAModifier.setEmail(email);
+            utilisateurAModifier.setTelephone(telephone);
+            utilisateurAModifier.setRue(rue);
+            utilisateurAModifier.setCodePostal(cp);
+            utilisateurAModifier.setVille(ville);
+            utilisateurAModifier.setMotDePasse(password);
+            userDAO.updateUser(utilisateurAModifier);
         }else
         {
             throw businessException;
@@ -267,58 +245,47 @@ public class UtilisateurManager {
     }
 
     /**
-     * Vérifie les données saisies par l'utilisateur pour la modification d'un compte.
+     * Vérifie les données immuables saisies par l'utilisateur à la création d'un compte.
      */
-    public void validerNouvellesDonneesUtilisateur(String pseudo, String email, String telephone, String rue, String codePostal, String ville, String motDePasse, BusinessException businessException) throws BusinessException {
+    public void validerDonneesImmuablesUtilisateur(String pseudo, String email, String nom, String prenom, BusinessException businessException) throws BusinessException {
 
-        if(  pseudo==null || pseudo.trim().length()>30 )
-        {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDO_ERREUR);
-        }
-
-        //Vérifier que le pseudo ne contient que des caractères alphanumériques
-        Boolean alphanum = utilitaire.pseudoValidation(pseudo);
-        if (!alphanum) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
-        }
-
-        if(  email==null || email.trim().length()>60 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
-        }
-
-        boolean isGoodFormat = utilitaire.emailValidation(email);
-        if (!isGoodFormat) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MAIL_ERREUR);
-        }
-
-        if (telephone != null && !telephone.equals("")){
-            boolean isNumbersOnly = utilitaire.telValidation(telephone);
-            if (!isNumbersOnly) {
-                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
-            }
-            if(telephone.trim().length()>15 ){
-                businessException.ajouterErreur(CodesErreurBll.REGLE_USER_TEL_ERREUR);
+        //Vérifier si le pseudo n'existe pas déjà en bdd
+        List<String> listeDesPseudosEnBase = userDAO.selectAllPseudo();
+        if (listeDesPseudosEnBase != null) {
+            for (String p :listeDesPseudosEnBase
+            ) {
+                if (p.equals(pseudo)){
+                    businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PSEUDOUNIQUE_ERREUR);
+                }
             }
         }
 
-        if(rue==null || rue.trim().length()>30 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
-        }
-        if(codePostal==null || codePostal.trim().length()>10 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
-        }
-        if(ville==null || ville.trim().length()>30 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
-        }
-
-        if(motDePasse==null || motDePasse.trim().length()>100 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_LONGUEUR_MDP_ERREUR);
+        //Vérifier si l'email n'existe pas déjà en bdd
+        List<String> listeDesEmailEnBase = userDAO.selectAllEmail();
+        if (listeDesEmailEnBase != null) {
+            for (String e :listeDesEmailEnBase
+            ) {
+                if (e.equals(email)){
+                    businessException.ajouterErreur(CodesErreurBll.REGLE_USER_EMAIL_ERREUR);
+                }
+            }
         }
 
-        //vérification du mot de passe
-        boolean isGoodPassword = utilitaire.passwordValidation(motDePasse);
-        if (!isGoodPassword) {
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_MDP_ERREUR);
+        //vérifications sur le nom et prénom
+        if( nom==null || nom.trim().length()>30){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_NOM_ERREUR);
+        }
+        if( prenom==null || prenom.trim().length()>30 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_PRENOM_ERREUR);
+        }
+
+        boolean nomValid = utilitaire.nomValidation(nom);
+        if (!nomValid) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
+        }
+        boolean prenomValid = utilitaire.nomValidation(prenom);
+        if (!prenomValid) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
         }
     }
 }

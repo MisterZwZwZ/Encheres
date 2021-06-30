@@ -2,6 +2,7 @@ package fr.eni.servlets;
 
 import fr.eni.BusinessException;
 import fr.eni.bll.UtilisateurManager;
+import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
 
 import javax.servlet.RequestDispatcher;
@@ -18,6 +19,9 @@ import java.util.regex.Pattern;
 
 @WebServlet("/inscription")
 public class InscriptionServlet extends HttpServlet {
+
+    Utilitaire utilitaire = new Utilitaire();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("WEB-INF/inscription.jsp").forward(request, response);
@@ -39,7 +43,7 @@ public class InscriptionServlet extends HttpServlet {
         String nomUtilisateur = req.getParameter("nom");
         if (nomUtilisateur == null || nomUtilisateur.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.NOM_UTILISATEUR_OBLIGATOIRE);
-        } if(rechercheCaracSpecial(nomUtilisateur) || rechercheChiffre(nomUtilisateur)){
+        } if(!utilitaire.rechercheCaracSpecial(nomUtilisateur) || utilitaire.rechercheChiffre(nomUtilisateur)){
             listeCodesErreur.add(CodesErreurServlet.CARAC_NON_VALIDES);
         }else{
             req.setAttribute("nom", nomUtilisateur);
@@ -48,7 +52,7 @@ public class InscriptionServlet extends HttpServlet {
         String prenomUtilisateur = req.getParameter("prenom");
         if (prenomUtilisateur == null || prenomUtilisateur.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.PRENOM_UTILISATEUR_OBLIGATOIRE);
-        } if(rechercheCaracSpecial(prenomUtilisateur) || rechercheChiffre(prenomUtilisateur)){
+        } if(!utilitaire.rechercheCaracSpecial(prenomUtilisateur) || utilitaire.rechercheChiffre(prenomUtilisateur)){
             listeCodesErreur.add(CodesErreurServlet.CARAC_NON_VALIDES);
         }else {
             req.setAttribute("prenom", prenomUtilisateur);
@@ -70,18 +74,22 @@ public class InscriptionServlet extends HttpServlet {
 
         String telephone = req.getParameter("telephone");
         req.setAttribute("telephone", telephone);
+        if (utilitaire.telValidation(telephone)){
+            listeCodesErreur.add(CodesErreurServlet.TEL_NON_VALIDE);
+        }
 
         String cp = req.getParameter("cp");
         if (cp == null || cp.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.CP_UTILISATEUR_OBLIGATOIRE);
-        } else {
+        } if(!utilitaire.rechercheChiffre(nomUtilisateur)){
+            listeCodesErreur.add(CodesErreurServlet.CP_NON_VALIDE);
+        }  else{
             req.setAttribute("cp", cp);
-
         }
         String ville = req.getParameter("ville");
         if (ville == null || ville.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.VILLE_UTILISATEUR_OBLIGATOIRE);
-        } if(rechercheCaracSpecial(ville)||rechercheChiffre(ville)){
+        } if(!utilitaire.rechercheCaracSpecial(ville) || utilitaire.rechercheChiffre(ville)){
             listeCodesErreur.add(CodesErreurServlet.CARAC_NON_VALIDES);
         }else {
             req.setAttribute("ville", ville);
@@ -121,27 +129,4 @@ public class InscriptionServlet extends HttpServlet {
             }
         }
     }
-
-
-    /**
-     * Cette méthode vérifie que la saisie de l'utilisateur ne contient pas de caractère spécial.
-     * @return true or false
-     */
-    //TODO "[^\\w]" fonctionne s'il n'y a qu'UN caractère spécial, pas s'il y en a plusieurs
-    public Boolean rechercheCaracSpecial(String chaine){
-        String p = "[^\\w]" ;
-        Boolean result = chaine.matches(p);
-        return result;
-    }
-
-    /**
-     * Cette méthode vérifie que la saisie de l'utilisateur ne contient pas de chiffre.
-     * @return true or false
-     */
-    public Boolean rechercheChiffre(String chaine){
-        String p = " *\\d+.* ";
-        Boolean result = chaine.matches(" *\\d+.*");
-        return result;
-    }
-
 }

@@ -49,12 +49,16 @@
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
-    <strong>Erreur lors de la tentative de connexion :</strong>
-    <ul>
+    <div>
+    <strong class="alert alert-danger" role="alert">Erreur lors de la tentative de connexion :</strong>
+    </div>
+    <div>
+    <ul class="alert alert-danger" role="alert">
         <c:forEach var="code" items="${listeCodesErreur}">
             <li>${LecteurErreur.getMessageErreur(code)}</li>
         </c:forEach>
     </ul>
+    </div>
 </c:if>
 </body>
 </html>

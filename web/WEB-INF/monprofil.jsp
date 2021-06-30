@@ -44,10 +44,10 @@
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
-    <strong>Erreur lors de la mise à jour des données :</strong>
+    <strong class="alert alert-danger" role="alert">Erreur lors de la mise à jour des données :</strong>
     <ul>
         <c:forEach var="code" items="${listeCodesErreur}">
-            <li>${LecteurErreur.getMessageErreur(code)}</li>
+            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
         </c:forEach>
     </ul>
 </c:if>

@@ -13,7 +13,8 @@
 
 <div class="container">
     <p class="text-white">Filtres</p>
-    <form class="text-white d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche" method="POST">
+    <form class="text-white d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche"
+          method="POST">
         <div class="row m-6">
             <div class="row align-items-center">
                 <div class="col-6">
@@ -30,7 +31,7 @@
                     </select>
                 </div>
                 <div class="col my-2">
-                    <input class="btn btn-info" type="submit" value="Rechercher">
+                    <input class="btn btn-primary" type="submit" value="Rechercher">
                 </div>
             </div>
         </div>
@@ -127,16 +128,18 @@
 <div class="d-flex justify-content-center row">
     <div class="row m-6">
         <c:choose>
-            <c:when test="${listeArticles.size()>0}">
-                <c:forEach items="${listeArticles}" var="article">
+        <c:when test="${listeArticles.size()>0}">
+        <c:forEach items="${listeArticles}" var="article">
         <div class="col-3">
             <div class="card my-4" style="width: 18rem; height: auto;>
-                 <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
+                 <a href="
+            <%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
             <img src="..." class="card-img-top" alt="photo de l'article en vente"></a>
             <div class="card-body">
                 <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
                 <p class="card-text"><c:out value="Description : ${article.description}"/></p>
-                <p class="card-text"><c:out value="Prix de vente : ${article.prixVente == 0 ? article.prixInitial : article.prixVente} points"/></p>
+                <p class="card-text"><c:out
+                        value="Prix de vente : ${article.prixVente == 0 ? article.prixInitial : article.prixVente} points"/></p>
                 <p class="card-text"><c:out
                         value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
                 <c:choose>
@@ -150,10 +153,14 @@
                         </a>
                     </c:when>
                 </c:choose>
-                <div class="text-center">
-                    <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
-                       class="btn btn-info">Voir l'annonce</a>
-                </div>
+
+                <!-- on ne peut accéder à l'annonce que si on est connecté-->
+                <c:if test="${sessionScope.utilisateur != null}">
+                    <div class="text-center">
+                        <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
+                           class="btn btn-primary text-white">Voir l'annonce</a>
+                    </div>
+                </c:if>
             </div>
         </div>
     </div>

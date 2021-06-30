@@ -3,6 +3,30 @@ import fr.eni.bll.UtilisateurManager;
 
 public class Utilitaire {
 
+    //Vérifications en servlet.
+
+    /**
+     * Cette méthode vérifie que la saisie de l'utilisateur ne contient pas de caractère spécial.
+     * @return true or false
+     */
+    public Boolean rechercheCaracSpecial(String chaine){
+        String p = "^([a-zA-Z0-9]+)([%]{0,1}|[\\*]{0,1})([a-zA-Z0-9]*)$" ;
+        Boolean result = chaine.matches(p);
+        return result;
+    }
+
+    /**
+     * Cette méthode vérifie que la saisie de l'utilisateur ne contient pas de chiffre.
+     * @return true or false
+     */
+    public Boolean rechercheChiffre(String chaine){
+        String p = " *\\d+.* ";
+        Boolean result = chaine.matches(" *\\d+.*");
+        return result;
+    }
+
+
+    //Vérifications en BLL.
 
     /**
      * Cette méthode vérifie que le pseudo choisi par l'utilisateur ne contient que des caractères alphanumériques
@@ -40,17 +64,17 @@ public class Utilitaire {
     }
 
     /**
-     * On impose des règles sur le numéro de téléphone : format +nombre
+     * On impose des règles sur le numéro de téléphone : format +nombre. "^\\+[\\p{N}]*$"
      * @param telephone
      */
     public boolean telValidation(String telephone) {
-        String pattern = "^\\+[\\p{N}]*$";
+        String pattern = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$";
         Boolean result =  telephone.matches(pattern);
         return result;
     }
 
     /**
-     * Cette méthode vérifie que le nom et le prénom saisis ne contiennent que des lettres (tirets acceptés)
+     * Cette méthode vérifie que le nom et le prénom saisis ne contiennent que des lettres (tirets et ' acceptés)
      * @param chaine
      * @return
      */
@@ -70,4 +94,5 @@ public class Utilitaire {
         boolean result =  ville.matches(pattern);
         return result;
     }
+
 }

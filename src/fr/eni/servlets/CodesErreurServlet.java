@@ -23,6 +23,8 @@ public abstract class CodesErreurServlet {
     public static final Integer MDP_IDENTIQUES = 30009;
     public static final Integer EMAIL_UTILISATEUR_OBLIGATOIRE = 30010;
     public static final Integer CARAC_NON_VALIDES = 30011;
+    public static final Integer TEL_NON_VALIDE = 30014;
+    public static final Integer CP_NON_VALIDE = 30015;
 
     /**
      * Format donnees articles incorrectes

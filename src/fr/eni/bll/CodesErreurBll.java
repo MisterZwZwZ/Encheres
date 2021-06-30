@@ -65,12 +65,17 @@ public abstract class CodesErreurBll {
     /**
      * Echec le pseudo ne correspond à aucun compte en bdd
      */
-    public static final int PSEUDO_INEXISTANT = 20018;
+    public static final int PSEUDO_INEXISTANT = 20019;
 
     /**
      *
      */
     public static final int MOT_DE_PASSE_INCORRECT = 20014;
+
+    /**
+     * ID utilisateur non valide
+     */
+    public static final int ID_INEXISTANT = 20015;
 
     /**
      * Echec aucun utilisateur identifié sur la session (no_utilisateur inexistant)
@@ -84,9 +89,10 @@ public abstract class CodesErreurBll {
     public static final int CARACTERES_NON_VALIDES = 20017;
 
     /**
-     * ID utilisateur non valide
+     * les caractères saisis ne sont pas valides dans le champ concernés.Seuls les chiffres sont acceptés.
      */
-    public static final int ID_INEXISTANT = 20015;
+    public static final int CARACTERES_NB_NON_VALIDES = 20018;
+
 
 
     /**

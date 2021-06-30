@@ -32,12 +32,15 @@ public class VenteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        //Si on souhaite mettre en vente un article.
         try{
             List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
             Map listeDesCategories = new HashMap();
             listeDesCategories = cm.afficherCategories();
             this.getServletContext().setAttribute("listeDesCategories", listeDesCategories);
             request.setAttribute("listeArticles", articlesEncherissables);
+
         } catch (BusinessException e) {
             e.printStackTrace();
             request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
@@ -69,7 +72,7 @@ public class VenteServlet extends HttpServlet {
 
 
         int categorie = 0;
-        if(!request.getParameter("rechercheParcategorie").equals(" ")){
+        if(request.getParameter("rechercheParcategorie") != null && !request.getParameter("rechercheParcategorie").equals(" ")){
             categorie = Integer.parseInt(request.getParameter("rechercheParcategorie"));
             if(categorie < 0){
                 listeCodesErreur.add(CodesErreurServlet.CATEGORIE_ARTICLE_ERREUR);
@@ -79,7 +82,7 @@ public class VenteServlet extends HttpServlet {
 
 
         int prixInitial = 0;
-        if (!request.getParameter("prixInitial").equals("")) {
+        if (request.getParameter("prixInitial") != null && !request.getParameter("prixInitial").equals("")) {
             prixInitial = Integer.parseInt(request.getParameter("prixInitial"));
             if (prixInitial <= 0) {
                 listeCodesErreur.add(CodesErreurServlet.PRIX_INITIAL_ARTICLE_ERREUR);
@@ -88,7 +91,7 @@ public class VenteServlet extends HttpServlet {
         }
 
         LocalDate debutEnchere = null;
-        if (!request.getParameter("dateDebutEnchere").equals("")) {
+        if (request.getParameter("dateDebutEnchere") != null && !request.getParameter("dateDebutEnchere").equals("")) {
             debutEnchere = LocalDate.parse(request.getParameter("dateDebutEnchere"));
             if (debutEnchere == null) {
                 listeCodesErreur.add(CodesErreurServlet.DATE_DEBUT_ENCHERE_ARTICLE_ERREUR);
@@ -97,7 +100,7 @@ public class VenteServlet extends HttpServlet {
         }
 
         LocalDate finEnchere = null;
-        if (!request.getParameter("dateFinEnchere").equals("")) {
+        if (request.getParameter("dateFinEnchere") != null && !request.getParameter("dateFinEnchere").equals("")) {
             finEnchere = LocalDate.parse(request.getParameter("dateFinEnchere"));
             if (finEnchere == null) {
                 listeCodesErreur.add(CodesErreurServlet.DATE_FIN_ENCHERE_ARTICLE_ERREUR);
@@ -131,7 +134,7 @@ public class VenteServlet extends HttpServlet {
             rd.forward(request, response);
         } else {
             try {
-
+                //si on veut créer un article
                 articleManager.insererArticle(nomArticle, description, debutEnchere, finEnchere, prixInitial, categorie, utilisateur, rue, codePostal, ville);
                 request.getRequestDispatcher("accueil").forward(request, response);
 

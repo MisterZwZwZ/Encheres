@@ -5,4 +5,5 @@ import fr.eni.bo.Retrait;
 
 public interface RetraitDAO {
     Retrait selectRetraitById(int idArt) throws BusinessException;
+    void updateRetrait(Retrait retrait) throws BusinessException;
 }

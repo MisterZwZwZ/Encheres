@@ -33,7 +33,6 @@ public class VenteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        //Si on souhaite mettre en vente un article.
         try{
             List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
             Map listeDesCategories = new HashMap();
@@ -93,19 +92,19 @@ public class VenteServlet extends HttpServlet {
         LocalDate debutEnchere = null;
         if (request.getParameter("dateDebutEnchere") != null && !request.getParameter("dateDebutEnchere").equals("")) {
             debutEnchere = LocalDate.parse(request.getParameter("dateDebutEnchere"));
-            if (debutEnchere == null) {
-                listeCodesErreur.add(CodesErreurServlet.DATE_DEBUT_ENCHERE_ARTICLE_ERREUR);
-            }
             request.setAttribute("dateDebutEnchere", debutEnchere);
+        }
+        if (debutEnchere == null) {
+            listeCodesErreur.add(CodesErreurServlet.DATE_DEBUT_ENCHERE_ARTICLE_ERREUR);
         }
 
         LocalDate finEnchere = null;
         if (request.getParameter("dateFinEnchere") != null && !request.getParameter("dateFinEnchere").equals("")) {
             finEnchere = LocalDate.parse(request.getParameter("dateFinEnchere"));
-            if (finEnchere == null) {
-                listeCodesErreur.add(CodesErreurServlet.DATE_FIN_ENCHERE_ARTICLE_ERREUR);
-            }
             request.setAttribute("dateFinEnchere", finEnchere);
+        }
+        if (finEnchere == null) {
+            listeCodesErreur.add(CodesErreurServlet.DATE_FIN_ENCHERE_ARTICLE_ERREUR);
         }
 
         String rue = request.getParameter("rue");
@@ -134,9 +133,20 @@ public class VenteServlet extends HttpServlet {
             rd.forward(request, response);
         } else {
             try {
-                //si on veut créer un article
-                articleManager.insererArticle(nomArticle, description, debutEnchere, finEnchere, prixInitial, categorie, utilisateur, rue, codePostal, ville);
-                request.getRequestDispatcher("accueil").forward(request, response);
+                //On veut modifier un article
+                if (request.getParameter("noArticle") != null || !request.getParameter("noArticle").equals("")){
+                    int noArticle = Integer.parseInt(request.getParameter("noArticle"));
+                    articleManager.insererArticle(noArticle, nomArticle, description, debutEnchere, finEnchere, prixInitial, categorie, utilisateur, rue, codePostal, ville);
+                    String msgConfModifArticle = "La modification de l'article a bien été enregistrée";
+                    request.setAttribute("msgConfirmation", msgConfModifArticle);
+
+                }else{
+                    //on veut créer un article
+                    articleManager.insererArticle(0, nomArticle, description, debutEnchere, finEnchere, prixInitial, categorie, utilisateur, rue, codePostal, ville);
+                    String msgConfCreationArticle = "Votre annonce a bien été enregistrée";
+                    request.setAttribute("msgConfirmation", msgConfCreationArticle);
+                }
+                request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
 
             } catch (BusinessException e) {
                 e.printStackTrace();

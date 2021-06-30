@@ -9,7 +9,6 @@ import fr.eni.bo.Enchere;
 import fr.eni.bo.Retrait;
 import fr.eni.bo.Utilisateur;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,8 +26,6 @@ public class EnchereServlet extends HttpServlet {
     private EnchereManager enchereManager;
     private ArticleManager articleManager;
     private RetraitManager retraitManager;
-    Enchere enchere = new Enchere();
-    Article article = new Article();
 
     @Override
     public void init() throws ServletException {
@@ -142,36 +139,53 @@ public class EnchereServlet extends HttpServlet {
         //Récupération de l'objet concerné par l'enchère
         int noArticle = Integer.parseInt(request.getParameter("noarticle"));
 
-        //récupération de la proposition d'enchere de l'utilisateur et vérification par rapport à son crédit
-        int montantEnchere = 0;
-        if (request.getParameter("prix") != null && !request.getParameter("prix").equals("")) {
-            montantEnchere = Integer.parseInt(request.getParameter("prix"));
-            request.setAttribute("montantEnchere", montantEnchere);
-            if (montantEnchere <= 0) { //|| montantEnchere <= enchere.getMontantEnchere()
-                listeCodesErreur.add(CodesErreurServlet.ENCHERE_MONTANT_ERREUR);
-            }
-            if (montantEnchere > utilisateur.getCredit()) {
-                listeCodesErreur.add(CodesErreurServlet.ENCHERE_CREDIT_ERREUR);
-            }
-        }
-
-        //S'il y a des erreurs, les afficher.
-        if (listeCodesErreur.size() > 0) {
-            request.setAttribute("listeCodesErreur", listeCodesErreur);
-            doGet(request, response);
-
-        //Sinon, on passe l'enchère au manager qui va effectuer les contrôles et l'envoyer en bdd.
-        } else {
+        //Fonctionnalité modifier. On récupère l'article à modifier, et on le renvoie vers vente.jsp pour afficher ses informations
+        Article articleAModifier = null;
+        if (request.getParameter("modifier") != null && !request.getParameter("modifier").equals("")){
             try {
-                enchereManager.faireUneEnchere(montantEnchere, utilisateur, noArticle);
-                String messageConfirmationEnchere = "Votre enchère a bien été prise en compte";
-                request.setAttribute("messageConf", messageConfirmationEnchere);
-                doGet(request, response);
+                articleAModifier = articleManager.afficherArticleParNo(noArticle);
+                request.setAttribute("articleAModifier", articleAModifier);
+
+                request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
         }
+
+        if (request.getParameter("modifier") == null || request.getParameter("modifier").equals("")){
+            //récupération de la proposition d'enchere de l'utilisateur et vérification par rapport à son crédit
+            int montantEnchere = 0;
+            if (request.getParameter("prix") != null && !request.getParameter("prix").equals("")) {
+                montantEnchere = Integer.parseInt(request.getParameter("prix"));
+                request.setAttribute("montantEnchere", montantEnchere);
+                if (montantEnchere <= 0) { //|| montantEnchere <= enchere.getMontantEnchere()
+                    listeCodesErreur.add(CodesErreurServlet.ENCHERE_MONTANT_ERREUR);
+                }
+                if (montantEnchere > utilisateur.getCredit()) {
+                    listeCodesErreur.add(CodesErreurServlet.ENCHERE_CREDIT_ERREUR);
+                }
+            }
+
+            //S'il y a des erreurs, les afficher.
+            if (listeCodesErreur.size() > 0) {
+                request.setAttribute("listeCodesErreur", listeCodesErreur);
+                doGet(request, response);
+
+                //Sinon, on passe l'enchère au manager qui va effectuer les contrôles et l'envoyer en bdd.
+            } else {
+                try {
+                    enchereManager.faireUneEnchere(montantEnchere, utilisateur, noArticle);
+                    String messageConfirmationEnchere = "Votre enchère a bien été prise en compte";
+                    request.setAttribute("messageConf", messageConfirmationEnchere);
+                    doGet(request, response);
+                } catch (BusinessException e) {
+                    e.printStackTrace();
+                    request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+                }
+            }
+        }
+
     }
 }
 

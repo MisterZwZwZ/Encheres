@@ -7,6 +7,7 @@ import fr.eni.bo.Retrait;
 import fr.eni.bo.Utilisateur;
 import fr.eni.dal.ArticleDAO;
 import fr.eni.dal.DAOFactory;
+import fr.eni.dal.RetraitDAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Objects;
 public class ArticleManager {
 
     private final ArticleDAO articleDAO;
+    private final RetraitManager retraitManager = new RetraitManager();
 
     public ArticleManager(){
         this.articleDAO = DAOFactory.getArticleDAO();
@@ -50,21 +52,29 @@ public class ArticleManager {
     /**
      * Insere un article et son addresse de retrait en BDD une fois les contrôles effectués
      */
-    public void insererArticle(String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, Utilisateur vendeur, String rue, String codePostal, String ville) throws BusinessException {
+    public void insererArticle(int noArticle, String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, Utilisateur vendeur, String rue, String codePostal, String ville) throws BusinessException {
 
         BusinessException businessException = new BusinessException();
         //vérifications des données de l'article
         this.validerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, noCategorie, businessException);
 
         if(!(businessException.hasErreurs())){
-            //créer le numéro de catégorie
+            //créer la catégorie à partir du numéro
             Categorie categorie = new Categorie(noCategorie);
-            //créer l'article
-            Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, categorie, vendeur);
-            //créer le retrait
-            Retrait retrait = new Retrait(rue, codePostal, ville, article);
-            articleDAO.insertArticle(article);
-            articleDAO.insertRetrait(retrait);
+
+            if (noArticle == 0){
+                //créer l'article
+                Article article = new Article(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, categorie, vendeur);
+                Retrait retrait = new Retrait(rue, codePostal, ville, article);
+                articleDAO.insertArticle(article);
+                articleDAO.insertRetrait(retrait);
+            }else{
+                //modifier l'article
+                Article article = new Article(noArticle, nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, categorie, vendeur);
+                articleDAO.updateArticle(article);
+                Retrait retrait = new Retrait(rue, codePostal, ville, article);
+                retraitManager.modifierRetrait(retrait);
+            }
         }
         else {
             throw businessException;

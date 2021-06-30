@@ -60,11 +60,18 @@
         <c:out value="Votre article est en vente et les enchères sont en cours"/>
     </c:if>
 
+    <!-- je veux modifier un article -->
+<c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
+    <input type="hidden" name="noarticle" value="${article.noArticle}">
+    <input type="submit" value="Modifier l'article" name="modifier">
+</c:if>
+
 </form>
 
+<!-- ancien bouton qui mene vers servlet modif-->
 <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
     <a href="<%=request.getContextPath()%>/modifierVente?noArticle=${article.noArticle}">
-        <button>Modifier ma vente</button>
+        <button>Modifier</button>
     </a>
 </c:if>
 

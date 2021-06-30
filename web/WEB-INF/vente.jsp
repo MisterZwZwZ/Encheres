@@ -11,57 +11,7 @@
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $(function () {
-            $("#dateDebutEnchere").datepicker({
-                altField: "#datepicker",
-                closeText: 'Fermer',
-                prevText: 'Précédent',
-                nextText: 'Suivant',
-                currentText: 'Aujourd\'hui',
-                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-                minDate: 0,
-                firstDay: 1,
-                dateFormat: "yy-mm-dd",
-                changeMonth: true,
-                numberOfMonths: 1,
-                changeYear: true,
-                onClose: function (selectedDate, inst) {
-                    var minDate = new Date(Date.parse(selectedDate));
-                    minDate.setDate(minDate.getDate() + 1);
-                    $("#dateFinEnchere").datepicker("option", "minDate", minDate);
-                }
-            });
 
-            $("#dateFinEnchere").datepicker({
-                altField: "#datepicker",
-                closeText: 'Fermer',
-                prevText: 'Précédent',
-                nextText: 'Suivant',
-                currentText: 'Aujourd\'hui',
-                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-                minDate: "+1D",
-                firstDay: 1,
-                dateFormat: "yy-mm-dd",
-                changeMonth: true,
-                numberOfMonths: 1,
-                changeYear: true,
-                onClose: function (selectedDate, inst) {
-                    var maxDate = new Date(Date.parse(selectedDate));
-                    maxDate.setDate(maxDate.getDate() - 1);
-                    $("#dateDebutEnchere").datepicker("option", "maxDate", maxDate);
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
@@ -74,12 +24,13 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label class="col-form-label" for="nomArticle">Article</label>
-                        <input class="form-control" type="text" name="nomArticle" id="nomArticle" value="${nomArticle}">
+                        <input class="form-control" type="text" name="nomArticle" id="nomArticle" value="${empty articleAModifier ? nomArticle : articleAModifier.nomArticle}" required>
                     </div>
+
                     <div class="col-sm-6">
                         <label class="col-form-label" for="description">Description</label>
                         <textarea class="form-control" rows="5" cols="33" name="description" id="description"
-                               value="${description}"></textarea>
+                      >${empty articleAModifier ? description : articleAModifier.description}</textarea>
                     </div>
                 </div>
                 <div class="form-group row py-3">
@@ -87,29 +38,28 @@
                         <label class="col-form-label" for="categorie">Catégorie</label>
                         <select class="form-control" name="rechercheParcategorie" id="categorie">
                             <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
-                                <option value="${categorie.key}">${categorie.value}</option>
+                                <option required value="${categorie.key}">${categorie.value} </option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="prixInitial">Mise à prix</label>
                         <input class="form-control" type="number" name="prixInitial" id="prixInitial"
-                               value="${prixInitial}">
+                               value="${empty articleAModifier ? prixInitial : articleAModifier.prixInitial}" required>
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateDebutEnchere">Début de l'enchère</label>
-                        <div class="input-group has-validation">
-                            <span class="input-group-addon"><i class="far fa-calendar-check"></i></span>
-                            <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere">
-                        </div>
-
+                            <span class="input-group-addon"><i class="fas fa-calendar-check"></i></span>
+                            <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere" required>
+                            <p>${empty articleAModifier ? ""  :  articleAModifier.dateDebutEnchere}</p>
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateFinEnchere">Fin de l'enchère</label>
-                        <input class="form-control" name="dateFinEnchere" id="dateFinEnchere">
+                        <input class="form-control" name="dateFinEnchere" id="dateFinEnchere" required>
+                        <p>${empty articleAModifier ? ""  :  articleAModifier.dateFinEnchere}</p>
                     </div>
                 </div>
-<%--                TODO TL ajouter div pour encadrer et regrouper le retrait --%>
+
                 <div class="form-group row py-3">
                     <div class="col-sm-6">
                         <fieldset>
@@ -122,17 +72,24 @@
                                    value="${sessionScope.utilisateur.codePostal}"><br/>
                             <label class="col-form-label" for="ville">Ville :</label>
                             <input class="form-control" type="text" name="ville" id="ville"
-                                   value="${sessionScope.utilisateur.ville}">
+                                   value="${empty articleAModifier ? sessionScope.utilisateur.ville : ville}">
                         </fieldset>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="col-sm-6 m-2 w-50">
-                        <button class="btn btn-primary w-100" type="submit">Valider</button>
+                        <c:if test="${empty articleAModifier}">
+                            <button class="btn btn-primary w-100" type="submit" ${!empty msgConfirmation ? "disabled" : ""}>Valider</button>
+                        </c:if>
+                        <c:if test="${!empty articleAModifier}">
+                            <input type="hidden" value="${articleAModifier.noArticle}" name="noArticle">
+                            <button class="btn btn-primary w-100" type="submit">Valider la modification</button>
+                        </c:if>
+
                     </div>
                     <div class="col-sm-6 m-2 w-50">
                         <a href="<%=request.getContextPath()%>/accueil">
-                            <button class="btn btn-secondary w-100">Annuler</button>
+                            <button class="btn btn-secondary w-100">Retour</button>
                         </a>
                     </div>
                 </div>
@@ -141,9 +98,11 @@
     </div>
 </div>
 
-
-<c:if test="${!empty messageConfModifArticle}">
-    <strong>${messageConfModifArticle}</strong>
+<!-- affichage du message de confirmation -->
+<c:if test="${!empty msgConfirmation}">
+    <div class="alert alert-success" role="alert">
+        <strong >${msgConfirmation}</strong>
+    </div>
 </c:if>
 
 <!-- affichage des messages d'erreur éventuels -->
@@ -155,6 +114,58 @@
         </c:forEach>
     </ul>
 </c:if>
+
+<script>
+    $(function () {
+        $("#dateDebutEnchere").datepicker({
+            altField: "#datepicker",
+            closeText: 'Fermer',
+            prevText: 'Précédent',
+            nextText: 'Suivant',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+            minDate: 0,
+            firstDay: 1,
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            numberOfMonths: 1,
+            changeYear: true,
+            onClose: function (selectedDate, inst) {
+                var minDate = new Date(Date.parse(selectedDate));
+                minDate.setDate(minDate.getDate() + 1);
+                $("#dateFinEnchere").datepicker("option", "minDate", minDate);
+            }
+        });
+
+        $("#dateFinEnchere").datepicker({
+            altField: "#datepicker",
+            closeText: 'Fermer',
+            prevText: 'Précédent',
+            nextText: 'Suivant',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+            minDate: "+1D",
+            firstDay: 1,
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            numberOfMonths: 1,
+            changeYear: true,
+            onClose: function (selectedDate, inst) {
+                var maxDate = new Date(Date.parse(selectedDate));
+                maxDate.setDate(maxDate.getDate() - 1);
+                $("#dateDebutEnchere").datepicker("option", "maxDate", maxDate);
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

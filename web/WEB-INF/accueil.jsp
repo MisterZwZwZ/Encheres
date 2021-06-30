@@ -132,10 +132,15 @@
                                 </a>
                             </c:when>
                         </c:choose>
-                        <div class="text-center py-2">
-                            <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
-                               class="btn btn-primary">Voir l'annonce</a>
-                        </div>
+
+                        <!-- on ne peut accéder à l'annonce que si on est connecté-->
+                        <c:if test="${sessionScope.utilisateur != null}">
+                            <div class="text-center py-2">
+                                <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
+                                   class="btn btn-primary">Voir l'annonce</a>
+                            </div>
+                        </c:if>
+
                     </div>
                 </div>
             </div>

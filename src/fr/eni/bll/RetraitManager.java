@@ -20,4 +20,9 @@ public class RetraitManager {
         return retrait;
     }
 
+    public void modifierRetrait(Retrait retrait) throws BusinessException {
+        retraitDAO.updateRetrait(retrait);
+    }
+
+
 }

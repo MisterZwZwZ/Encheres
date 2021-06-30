@@ -89,6 +89,8 @@ public class RechercheServlet extends HttpServlet {
             case3 = request.getParameter("ventesTerminees");
         }
 
+
+
             try {
                 listeArticles = am.rechercheParfiltre(motclef, noCategorie, achatOuVente, case1, case2, case3, noUtilisateur);
             } catch (BusinessException e) {

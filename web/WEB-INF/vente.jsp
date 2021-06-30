@@ -7,7 +7,6 @@
     <link type="text/css" rel="stylesheet" href="./styles/venteStyles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -66,9 +65,9 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
-<h1>Nouvelle vente</h1>
+<h1 class="text-white text-center">Vendre un article</h1>
 
-<div class="d-flex justify-content-center text-white py-5">
+<div class="d-flex justify-content-center text-white py-2">
     <div class="row">
         <div class="col md-10 mx-auto">
             <form action="${pageContext.request.contextPath}/vendre" method="POST">
@@ -77,14 +76,13 @@
                         <label class="col-form-label" for="nomArticle">Article</label>
                         <input class="form-control" type="text" name="nomArticle" id="nomArticle" value="${nomArticle}">
                     </div>
-<%--                    TODO TL voir pour agrandir le champ de saisie--%>
                     <div class="col-sm-6">
                         <label class="col-form-label" for="description">Description</label>
-                        <input class="form-control" type="textarea" name="description" id="description"
-                               value="${description}">
+                        <textarea class="form-control" rows="5" cols="33" name="description" id="description"
+                               value="${description}"></textarea>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row py-3">
                     <div class="col-sm-3">
                         <label class="col-form-label" for="categorie">Catégorie</label>
                         <select class="form-control" name="rechercheParcategorie" id="categorie">
@@ -100,7 +98,11 @@
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateDebutEnchere">Début de l'enchère</label>
-                        <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere">
+                        <div class="input-group has-validation">
+                            <span class="input-group-addon"><i class="far fa-calendar-check"></i></span>
+                            <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere">
+                        </div>
+
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateFinEnchere">Fin de l'enchère</label>
@@ -108,7 +110,7 @@
                     </div>
                 </div>
 <%--                TODO TL ajouter div pour encadrer et regrouper le retrait --%>
-                <div class="form-group row">
+                <div class="form-group row py-3">
                     <div class="col-sm-6">
                         <fieldset>
                             <legend>Retrait</legend>
@@ -123,16 +125,15 @@
                                    value="${sessionScope.utilisateur.ville}">
                         </fieldset>
                     </div>
-<%--                    TODO TL center button --%>
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <button class="btn btn-primary" type="submit" style="width:400px;">Enregistrer</button>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="<%=request.getContextPath()%>/accueil">
-                                <button class="btn btn-secondary" style="width:400px;">Annuler</button>
-                            </a>
-                        </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="col-sm-6 m-2 w-50">
+                        <button class="btn btn-primary w-100" type="submit">Valider</button>
+                    </div>
+                    <div class="col-sm-6 m-2 w-50">
+                        <a href="<%=request.getContextPath()%>/accueil">
+                            <button class="btn btn-secondary w-100">Annuler</button>
+                        </a>
                     </div>
                 </div>
             </form>

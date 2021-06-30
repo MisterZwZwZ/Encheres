@@ -3,7 +3,9 @@ package fr.eni.servlets;
 import fr.eni.BusinessException;
 import fr.eni.bll.ArticleManager;
 import fr.eni.bll.CategorieManager;
+import fr.eni.bll.EnchereManager;
 import fr.eni.bo.Article;
+import fr.eni.bo.Enchere;
 import org.eclipse.jdt.internal.compiler.env.ISourceType;
 
 import javax.servlet.ServletException;
@@ -25,6 +27,7 @@ import java.util.Map;
 public class AccueilServlet extends HttpServlet {
     CategorieManager cm = new CategorieManager();
     ArticleManager articleManager = new ArticleManager();
+    EnchereManager enchereManager = new EnchereManager();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,6 +40,7 @@ public class AccueilServlet extends HttpServlet {
         // affichage de la liste des articles encherissables et de la liste des catégories qui est passée en attributs de portée application
         try{
             List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
+
             Map listeDesCategories = new HashMap();
             listeDesCategories = cm.afficherCategories();
             this.getServletContext().setAttribute("listeDesCategories", listeDesCategories);

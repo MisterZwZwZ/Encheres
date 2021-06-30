@@ -43,8 +43,7 @@
                     <div class="form-check form-check-inline">
                         <input type="radio" class="form-check-input" name="achatOuVente" id="achat" autocomplete="off"
                                checked
-                               value="achat" onclick=
-                                       "GestionCheckBoxAchats(achat,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                               value="achat">
                         <label class="form-check-label" for="achat">Achats</label>
                         <!-- checkboxes-->
                         <div class="form-check form-switch">
@@ -67,22 +66,22 @@
                 <!--radio boutons-->
                 <div class="col-6">
                     <input type="radio" class="form-check-input" name="achatOuVente" id="vente" autocomplete="off"
-                           checkedinput value="vente" onclick="GestionCheckBoxVentes(vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                           checkedinput value="vente">
                     <label class="form-check-label" for="vente">Ventes</label>
                     <!-- checkboxes-->
                     <div class="form-check form-switch">
                         <input type="checkbox" class="form-check-input" id="ventesEnCours" autocomplete="off"
-                               name="ventesEnCours" onclick="GestionGroupBoutonsAchats(achat, vente, 'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                               name="ventesEnCours">
                         <label class="form-check-label" for="ventesEnCours">Mes ventes en cours</label>
                     </div>
                     <div class="form-check form-switch">
                         <input type="checkbox" class="form-check-input" id="ventesNonDebutees" autocomplete="off"
-                               name="ventesNonDebutees" onclick="GestionGroupBoutonsAchats(achat, vente, 'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                               name="ventesNonDebutees">
                         <label class="form-check-label" for="ventesNonDebutees">Ventes non débutées</label>
                     </div>
                     <div class="form-check form-switch">
                         <input type="checkbox" class="form-check-input" id="ventesTerminees" autocomplete="off"
-                               name="ventesTerminees" onclick="GestionGroupBoutonsAchats(achat, vente,'encheresOuvertes','mesEncheresEnCours','encheresRemportees','ventesEnCours','ventesNonDebutees','ventesTerminees')">
+                               name="ventesTerminees">
                         <label class="form-check-label" for="ventesTerminees">Ventes terminées</label>
                     </div>
                 </div>
@@ -167,6 +166,6 @@
 </div>
 </div>
 
-<script language="JavaScript" type="text/javascript" src="js\app.js"></script>
+<script language="JavaScript" type="text/javascript" src="js\searchButtons.js"></script>
 </body>
 </html>

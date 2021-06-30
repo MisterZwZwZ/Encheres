@@ -44,16 +44,12 @@
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
-    <div>
-    <strong class="alert alert-danger" role="alert">Erreur lors de la tentative de connexion :</strong>
-    </div>
-    <div>
-    <ul class="alert alert-danger" role="alert">
+    <p class="alert alert-danger" role="alert"><strong>Erreur lors de la tentative de connexion :</strong></p>
+    <ul>
         <c:forEach var="code" items="${listeCodesErreur}">
-            <li>${LecteurErreur.getMessageErreur(code)}</li>
+            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
         </c:forEach>
     </ul>
-    </div>
 </c:if>
 </body>
 </html>

@@ -3,6 +3,9 @@
 <%@ page import="fr.eni.messages.LecteurErreur" %>
 <html>
 <head>
+    <link type="text/css" rel="stylesheet" href="./styles/enchereStyles.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Enchère</title>
 </head>
 <body>
@@ -10,70 +13,74 @@
 
 <c:choose>
     <c:when test="${etatVente == 'en cours'}">
-        <h1>Détail vente</h1>
+        <h1 class="text-white text-center">Détail vente</h1>
     </c:when>
     <c:when test="${etatVente == 'terminee'}">
         <c:if test="${statutUtilisateur == 'acquereur'}">
-            <h1>Vous avez remporté l'enchère</h1>
+            <h1>Vous avez remporté l'enchère !</h1>
         </c:if>
         <c:if test="${statutUtilisateur == 'vendeur'}">
             <h1>${enchere.encherisseur.pseudo} a remporté la vente</h1>
         </c:if>
     </c:when>
 </c:choose>
-<form action="${pageContext.request.contextPath}/enchere" method="POST">
-    <p><c:out value="${article.nomArticle}"/></p>
-    <p><c:out value="Description : ${article.description}"/></p>
-    <p><c:out value="Catégorie : ${article.categorie.libelle}"/></p>
-    <p><c:out value="Meilleure offre : ${enchere.montantEnchere} par ${enchere.encherisseur.pseudo}"/></p>
-    <p><c:out value="Mise à prix : ${article.prixInitial} points"/></p>
-    <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
-        <c:out value="l'enchère débutera le : ${article.dateDebutEnchere}"></c:out>
-    </c:if>
-    <p><c:out value="Fin de l'enchère : ${article.dateFinEnchere}"/></p>
-    <p><c:out value="Retrait : ${retrait.rue} "/></p>
-    <p><c:out value="${retrait.codePostal} ${retrait.ville}"/></p>
-    <p><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
-    <c:choose>
-        <c:when test="${etatVente == 'terminee'}">
-            <c:if test="${statutUtilisateur == 'acquereur'}">
-                <p><c:out value="Tel : ${article.vendeur.telephone}"/></p>
-            </c:if>
-        </c:when>
-    </c:choose>
 
-    <c:if test="${statutUtilisateur == 'meilleurEncherisseur' && etatVente == 'en cours'}">
-        <c:out value="Vous êtes le meilleur encherisseur pour le moment"/>
-    </c:if>
+<div class="d-flex justify-content-center py-2">
+    <div class="row">
+        <div class="col-6">
+            <div class="card my-4" style="width: 30rem; height: auto;">
+                <div class="card-body">
+                    <form action="${pageContext.request.contextPath}/enchere" method="POST">
+                        <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
+                        <p class="card-text"><c:out value="Description : ${article.description}"/></p>
+                        <p class="card-text"><c:out value="Catégorie : ${article.categorie.libelle}"/></p>
+                        <p class="card-text"><c:out value="Meilleure offre : ${enchere.montantEnchere} par ${enchere.encherisseur.pseudo}"/></p>
+                        <p class="card-text"><c:out value="Mise à prix : ${article.prixInitial} points"/></p>
+                        <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
+                            <c:out value="l'enchère débutera le : ${article.dateDebutEnchere}"></c:out>
+                        </c:if>
+                        <p class="card-text"><c:out value="Fin de l'enchère : ${article.dateFinEnchere}"/></p>
+                        <p class="card-text"><c:out value="Retrait : ${retrait.rue} "/></p>
+                        <p class="card-text"><c:out value="${retrait.codePostal} ${retrait.ville}"/></p>
+                        <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
+                        <c:choose>
+                            <c:when test="${etatVente == 'terminee'}">
+                                <c:if test="${statutUtilisateur == 'acquereur'}">
+                                    <p class="card-text"><c:out value="Tel : ${article.vendeur.telephone}"/></p>
+                                </c:if>
+                            </c:when>
+                        </c:choose>
 
-    <c:if test="${statutUtilisateur == 'encherisseur' && etatVente == 'en cours'}">
-        <label for="prix">Ma proposition :</label>
-        <input type="number" id="prix" name="prix">
-        <input type="hidden" name="noarticle" value="${article.noArticle}">
-        <input type="submit" value="Encherir">
-    </c:if>
-    <c:if test="${!empty messageConf}">
-        <p>Votre enchère a bien été enregistrée !</p>
-    </c:if>
+                        <c:if test="${statutUtilisateur == 'meilleurEncherisseur' && etatVente == 'en cours'}">
+                            <p><c:out value="Vous êtes le meilleur encherisseur pour le moment"/></p>
+                        </c:if>
 
-    <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'en cours'}">
-        <c:out value="Votre article est en vente et les enchères sont en cours"/>
-    </c:if>
+                        <c:if test="${statutUtilisateur == 'encherisseur' && etatVente == 'en cours'}">
+                            <label class="col-form-label" for="prix">Ma proposition :</label>
+                            <input class="form-control" type="number" id="prix" name="prix">
+                            <input type="hidden" name="noarticle" value="${article.noArticle}">
+                            <button class="btn btn-primary w-100" type="submit">Encherir</button>
+                        </c:if>
+                        <c:if test="${!empty messageConf}">
+                            <p>Votre enchère a bien été enregistrée !</p>
+                        </c:if>
 
-    <!-- je veux modifier un article -->
-<c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
-    <input type="hidden" name="noarticle" value="${article.noArticle}">
-    <input type="submit" value="Modifier l'article" name="modifier">
-</c:if>
+                        <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'en cours'}">
+                            <c:out value="Votre article est en vente et les enchères sont en cours"/>
+                        </c:if>
 
-</form>
-
-<!-- ancien bouton qui mene vers servlet modif-->
-<c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
-    <a href="<%=request.getContextPath()%>/modifierVente?noArticle=${article.noArticle}">
-        <button>Modifier</button>
-    </a>
-</c:if>
+                        <!-- je veux modifier un article -->
+                        <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
+                            <input type="hidden" name="noarticle" value="${article.noArticle}">
+                            <input type="submit" value="Modifier l'article" name="modifier">
+                        </c:if>
+                    </form>
+                </div>
+                <a href="<%=request.getContextPath()%>/accueil"><button class="btn btn-secondary w-100">Annuler</button></a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <a href="<%=request.getContextPath()%>/accueil">
@@ -82,10 +89,10 @@
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
-    <strong>Erreur!</strong>
+    <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>
     <ul>
         <c:forEach var="code" items="${listeCodesErreur}">
-            <li>${LecteurErreur.getMessageErreur(code)}</li>
+            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
         </c:forEach>
     </ul>
 </c:if>

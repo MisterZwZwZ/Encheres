@@ -53,7 +53,7 @@
         <td>Ville : </td>
         <td>${empty vendeur ? utilisateur.ville : vendeur.ville} </td>
     </tr>
-    <c:if test="${empty vendeur}">
+    <c:if test="${(vendeur.pseudo).equals(utilisateur.pseudo) || empty vendeur}">
     <tr>
         <td>Crédit : </td>
         <td>${utilisateur.credit}</td>

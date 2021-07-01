@@ -1,5 +1,6 @@
 package fr.eni.bll.util;
-import fr.eni.bll.UtilisateurManager;
+import fr.eni.BusinessException;
+import fr.eni.bll.CodesErreurBll;
 
 public class Utilitaire {
 
@@ -95,4 +96,26 @@ public class Utilitaire {
         return result;
     }
 
+    public void verifierAdresse(String rue, String codePostal, String ville, BusinessException businessException) {
+        //verif sur la rue
+        if(  rue==null || rue.trim().length()>30 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
+        }
+
+        //vérification sur le code postal.
+        if(  codePostal==null || codePostal.trim().length()>10 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
+        }
+        int codePostal_nb = 0;
+        try {
+            codePostal_nb = Integer.parseInt(codePostal);
+        } catch (NumberFormatException e) {
+            businessException.ajouterErreur(CodesErreurBll.CARACTERES_CP_NON_VALIDE);
+        }
+
+        //vérification sur la ville
+        if(  ville==null || ville.trim().length()>30 ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
+        }
+    }
 }

@@ -139,13 +139,15 @@ public class EnchereServlet extends HttpServlet {
         //Récupération de l'objet concerné par l'enchère
         int noArticle = Integer.parseInt(request.getParameter("noarticle"));
 
-        //Fonctionnalité modifier. On récupère l'article à modifier, et on le renvoie vers vente.jsp pour afficher ses informations
+        //Fonctionnalité modifier. On récupère l'article et le retrait à modifier, et on les renvoie à la jsp pour afficher les informations
         Article articleAModifier = null;
+        Retrait retraitAModifier = null;
         if (request.getParameter("modifier") != null && !request.getParameter("modifier").equals("")){
             try {
                 articleAModifier = articleManager.afficherArticleParNo(noArticle);
                 request.setAttribute("articleAModifier", articleAModifier);
-
+                retraitAModifier = retraitManager.afficherRetraitParNoArticle(noArticle);
+                request.setAttribute("retraitAModifier", retraitAModifier);
                 request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();

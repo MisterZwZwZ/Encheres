@@ -1,6 +1,7 @@
 package fr.eni.bll;
 
 import fr.eni.BusinessException;
+import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Article;
 import fr.eni.bo.Categorie;
 import fr.eni.bo.Retrait;
@@ -20,6 +21,7 @@ public class ArticleManager {
 
     private final ArticleDAO articleDAO;
     private final RetraitManager retraitManager = new RetraitManager();
+    private Utilitaire utilitaire = new Utilitaire();
 
     public ArticleManager(){
         this.articleDAO = DAOFactory.getArticleDAO();
@@ -55,8 +57,13 @@ public class ArticleManager {
     public void insererArticle(int noArticle, String nomArticle, String description, LocalDate dateDebutEnchere, LocalDate dateFinEnchere, int prixInitial, int noCategorie, Utilisateur vendeur, String rue, String codePostal, String ville) throws BusinessException {
 
         BusinessException businessException = new BusinessException();
-        //vérifications des données de l'article
+        //vérifications des données
         this.validerArticle(nomArticle, description, dateDebutEnchere, dateFinEnchere, prixInitial, noCategorie, businessException);
+        utilitaire.verifierAdresse(rue, codePostal, ville, businessException);
+
+        if( utilitaire.rechercheChiffre(ville) ){
+            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
+        }
 
         if(!(businessException.hasErreurs())){
             //créer la catégorie à partir du numéro

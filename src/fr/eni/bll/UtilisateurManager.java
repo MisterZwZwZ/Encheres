@@ -77,29 +77,8 @@ public class UtilisateurManager {
             }
         }
 
-        if(  rue==null || rue.trim().length()>30 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_RUE_ERREUR);
-        }
-
-        //vérification sur le code postal.
-        if(  codePostal==null || codePostal.trim().length()>10 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_CP_ERREUR);
-        }
-        int codePostal_nb = 0;
-        try {
-            codePostal_nb = Integer.parseInt(codePostal);
-        } catch (NumberFormatException e) {
-            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NB_NON_VALIDES);
-        }
-
-        //vérification sur la ville
-        if(  ville==null || ville.trim().length()>30 ){
-            businessException.ajouterErreur(CodesErreurBll.REGLE_USER_VILLE_ERREUR);
-        }
-        boolean villeValid = utilitaire.villeValidation(ville);
-        if (!villeValid) {
-            businessException.ajouterErreur(CodesErreurBll.CARACTERES_NON_VALIDES);
-        }
+        //vérifier l'adresse
+        utilitaire.verifierAdresse(rue, codePostal, ville, businessException);
 
         //vérification du mot de passe
         if(motDePasse==null || motDePasse.trim().length()>100 ){

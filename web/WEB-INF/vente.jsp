@@ -66,13 +66,13 @@
                             <legend>Retrait</legend>
                             <label class="col-form-label" for="rue">Rue :</label>
                             <input class="form-control" type="text" name="rue" id="rue"
-                                   value="${sessionScope.utilisateur.rue}"><br/>
+                                   value="${empty retraitAModifier ? sessionScope.utilisateur.rue : retraitAModifier.rue }"><br/>
                             <label class="col-form-label" for="codePostal">Code Postal :</label>
                             <input class="form-control" type="text" name="codePostal" id="codePostal"
-                                   value="${sessionScope.utilisateur.codePostal}"><br/>
+                                   value="${empty retraitAModifier ? sessionScope.utilisateur.codePostal : retraitAModifier.codePostal }"><br/>
                             <label class="col-form-label" for="ville">Ville :</label>
                             <input class="form-control" type="text" name="ville" id="ville"
-                                   value="${empty articleAModifier ? sessionScope.utilisateur.ville : ville}">
+                                   value="${empty retraitAModifier ? sessionScope.utilisateur.ville : retraitAModifier.ville }">
                         </fieldset>
                     </div>
                 </div>
@@ -87,18 +87,23 @@
                         </c:if>
 
                     </div>
-                    <div class="col-sm-6 m-2 w-50">
-                        <a href="<%=request.getContextPath()%>/accueil">
-                            <button class="btn btn-secondary w-100">Retour</button>
-                        </a>
-                    </div>
                 </div>
             </form>
+
+            <!-- mettre en page  du bouton -->
+            <div class="col-sm-12 m-2 w-50">
+                <a href="<%=request.getContextPath()%>/accueil">
+                    <button class="btn btn-secondary w-100">Retour</button>
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
 
-<!-- affichage du message de confirmation -->
+
+
+<!-- affichage du message de confirmation pour l'insertion de l'article-->
 <c:if test="${!empty msgConfirmation}">
     <div class="alert alert-success" role="alert">
         <strong >${msgConfirmation}</strong>
@@ -107,10 +112,10 @@
 
 <!-- affichage des messages d'erreur éventuels -->
 <c:if test="${!empty listeCodesErreur}">
-    <strong>Erreur!</strong>
+    <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>
     <ul>
         <c:forEach var="code" items="${listeCodesErreur}">
-            <li>${LecteurErreur.getMessageErreur(code)}</li>
+            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
         </c:forEach>
     </ul>
 </c:if>

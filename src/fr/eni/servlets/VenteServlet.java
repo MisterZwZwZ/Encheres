@@ -69,16 +69,14 @@ public class VenteServlet extends HttpServlet {
         }
         request.setAttribute("description", description);
 
-
         int categorie = 0;
-        if(request.getParameter("rechercheParcategorie") != null && !request.getParameter("rechercheParcategorie").equals(" ")){
+        if(request.getParameter("rechercheParcategorie") != null && !request.getParameter("rechercheParcategorie").equals("")){
             categorie = Integer.parseInt(request.getParameter("rechercheParcategorie"));
             if(categorie < 0){
                 listeCodesErreur.add(CodesErreurServlet.CATEGORIE_ARTICLE_ERREUR);
             }
             request.setAttribute("rechercheParcategorie", categorie);
         }
-
 
         int prixInitial = 0;
         if (request.getParameter("prixInitial") != null && !request.getParameter("prixInitial").equals("")) {
@@ -127,31 +125,31 @@ public class VenteServlet extends HttpServlet {
 
         if (listeCodesErreur.size() > 0) {
             request.setAttribute("listeCodesErreur", listeCodesErreur);
-            String test = "test";
-            request.setAttribute("test", test);
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/vente.jsp");
             rd.forward(request, response);
         } else {
             try {
                 //On veut modifier un article
-                if (request.getParameter("noArticle") != null || !request.getParameter("noArticle").equals("")){
+                if (request.getParameter("noArticle") != null && !request.getParameter("noArticle").equals("")){
                     int noArticle = Integer.parseInt(request.getParameter("noArticle"));
                     articleManager.insererArticle(noArticle, nomArticle, description, debutEnchere, finEnchere, prixInitial, categorie, utilisateur, rue, codePostal, ville);
                     String msgConfModifArticle = "La modification de l'article a bien été enregistrée";
-                    request.setAttribute("msgConfirmation", msgConfModifArticle);
+                    request.setAttribute("msgConfirmationModif", msgConfModifArticle);
+                    request.getRequestDispatcher("WEB-INF/confirmation.jsp").forward(request, response);
 
                 }else{
                     //on veut créer un article
                     articleManager.insererArticle(0, nomArticle, description, debutEnchere, finEnchere, prixInitial, categorie, utilisateur, rue, codePostal, ville);
                     String msgConfCreationArticle = "Votre annonce a bien été enregistrée";
                     request.setAttribute("msgConfirmation", msgConfCreationArticle);
+                    request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
                 }
-                request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
 
             } catch (BusinessException e) {
                 e.printStackTrace();
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
-                doGet(request, response);
+                request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
+//                doGet(request, response);
             }
         }
     }

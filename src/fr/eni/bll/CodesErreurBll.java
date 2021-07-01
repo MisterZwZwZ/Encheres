@@ -68,6 +68,11 @@ public abstract class CodesErreurBll {
     public static final int PSEUDO_INEXISTANT = 20019;
 
     /**
+     * Echec le pseudo ne correspond à aucun compte en bdd
+     */
+    public static final int REGLE_ADRESSE = 20020;
+
+    /**
      *
      */
     public static final int MOT_DE_PASSE_INCORRECT = 20014;
@@ -91,7 +96,7 @@ public abstract class CodesErreurBll {
     /**
      * les caractères saisis ne sont pas valides dans le champ concernés.Seuls les chiffres sont acceptés.
      */
-    public static final int CARACTERES_NB_NON_VALIDES = 20018;
+    public static final int CARACTERES_CP_NON_VALIDE = 20018;
 
 
 

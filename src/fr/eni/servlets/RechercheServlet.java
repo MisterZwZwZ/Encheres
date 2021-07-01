@@ -95,7 +95,6 @@ public class RechercheServlet extends HttpServlet {
         }
 
 
-
             try {
                 listeArticles = am.rechercheParfiltre(motclef, noCategorie, achatOuVente, case1, case2, case3, noUtilisateur);
             } catch (BusinessException e) {

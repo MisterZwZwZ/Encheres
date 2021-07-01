@@ -20,7 +20,7 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
           <div class="row">
               <div class="card my-4 bg-light" style="width: 30rem; height: auto;">
                   <div class="card-body">
-                      <h5 class="card-title text-center">Mon profil</h5>
+                      <h5 class="card-title text-center">Profil Utilisateur</h5>
                       <ul class="list-group list-group-flush">
                           <li class="list-group-item">
                               <p class="card-text">Pseudo<p>
@@ -70,13 +70,13 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
 <div class="d-flex justify-content-center">
     <a href="accueil"><button class="btn btn-secondary w-100">Retour vers l'accueil</button></a>
     <!-- gérer le bouton modifier si on est connecté / problème lors de l'affichage du profil de quelqu'un d'autre-->
-    <c:if test="${sessionScope.utilisateur == vendeur}">
-        <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
-    </c:if>
 
     <c:if test="${sessionScope.utilisateur.pseudo == vendeur.pseudo }">
         <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
     </c:if>
+    <c:if test="${empty vendeur}">
+        <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
+    </c:if></if>
 </div>
 </body>
 </html>

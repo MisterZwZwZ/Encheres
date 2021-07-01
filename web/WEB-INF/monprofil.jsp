@@ -19,8 +19,8 @@
         <div class="d-flex justify-content-center row py-2">
             <!-- affichage des messages d'erreur éventuels -->
             <c:if test="${!empty listeCodesErreur}">
-                <p class="alert alert-danger" role="alert"><strong>Erreur lors de la mise à jour des données :</strong></p>
-                <ul class="alert alert-danger" role="alert">
+                <p class="alert alert-danger" role="alert"><strong>Erreur(s) lors de la mise à jour des données :</strong></p>
+                <ul class="alert alert-danger text-center" role="alert">
                     <c:forEach var="code" items="${listeCodesErreur}">
                         <li>${LecteurErreur.getMessageErreur(code)}</li>
                     </c:forEach>

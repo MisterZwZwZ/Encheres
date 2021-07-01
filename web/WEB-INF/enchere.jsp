@@ -17,7 +17,7 @@
                     <!-- affichage des messages d'erreur éventuels -->
                     <c:if test="${!empty listeCodesErreur}">
                         <p class="alert alert-danger" role="alert"><strong>Erreur(s)!</strong></p>
-                        <ul class="alert alert-danger" role="alert">
+                        <ul class="alert alert-danger text-center" role="alert">
                             <c:forEach var="code" items="${listeCodesErreur}">
                                 <li>${LecteurErreur.getMessageErreur(code)}</li>
                             </c:forEach>

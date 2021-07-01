@@ -54,7 +54,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                                                  String case2, String case3, int noUtilisateur) throws BusinessException {
         List<Article> listeArticlesFiltres = new ArrayList<>();
         Article articleEncours = new Article();
-        ;
+
         StringBuffer sb = null;
         sb = new StringBuffer();
 
@@ -79,8 +79,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 sb.append(and);
                 sb.append(parCate);
             }
-        } else if ((case1 != null && case1.equals("on") && case2 == null && case3 == null) || (case1 != null && case1.equals("on") && case2 != null && case2.equals("on"))) {
-
+        } else if ((case1 != null && case1.equals("on") && case2 == null && case3 == null) || (case1 != null && case1.equals("on") && case2 != null && case2.equals("on") && case3 == null)) {
             sb.append(selectArticles);
             sb.append(and);
             sb.append(enCours);
@@ -89,28 +88,46 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 sb.append(parCate);
             }
         } else {
-            sb.append(selectEncheres);
-            sb.append(and);
-            sb.append(enchereByIdUser);
-            if (noCategorie != 0) {
-                sb.append(and);
-                sb.append(parCate);
-            }
 
-            if (case2 != null && case2.equals("on") && case1 == null && case3 == null) {
+            if(case1 != null && case1.equals("on") && case2 != null && case2.equals("on") && case3 != null && case3.equals("on")){
+                sb.append(selectArticlesJointureEncheres);
                 sb.append(and);
+                sb.append("(");
                 sb.append(enCours);
-            }
-
-            if (case3 != null && case3.equals("on") && case1 == null && case2 == null) {
+                sb.append(")");
+                sb.append(or);
+                sb.append("(");
+                sb.append(enchereByIdUser);
                 sb.append(and);
                 sb.append(termine);
+                sb.append(")");
+
+            }else
+            {
+                sb.append(selectEncheres);
+                sb.append(and);
+                sb.append(enchereByIdUser);
+                if (noCategorie != 0) {
+                    sb.append(and);
+                    sb.append(parCate);
+                }
+
+                if (case2 != null && case2.equals("on") && case1 == null && case3 == null) {
+                    sb.append(and);
+                    sb.append(enCours);
+                }
+
+                if (case3 != null && case3.equals("on") && case1 == null && case2 == null) {
+                    sb.append(and);
+                    sb.append(termine);
+                }
+
+                if (case2 != null && case2.equals("on") && case3 != null && case3.equals("on")) {
+                    sb.append(and);
+                    sb.append(debutAvantDateJour);
+                }
             }
 
-            if (case2 != null && case2.equals("on") && case3 != null && case3.equals("on")) {
-                sb.append(and);
-                sb.append(debutAvantDateJour);
-            }
         }
 
         sb.toString();

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.jar.Attributes;
 
 @WebFilter(urlPatterns = {"/profil",
         "/monprofil",
@@ -33,10 +34,10 @@ public class connexionFiltre implements Filter {
          * Si l'objet utilisateur n'existe pas dans la session en cours, alors
          * l'utilisateur n'est pas connecté.
          */
-        if ( session.getAttribute( ATT_SESSION_USER ) == null ) {
+        if ( session.getAttribute( ATT_SESSION_USER ) == null || session.getAttribute(ATT_SESSION_USER).equals("")) {
             /* Redirection vers la page publique */
-            RequestDispatcher dispatcher = servletRequest.getRequestDispatcher(ACCES_CONNEXION);
-            dispatcher.forward(servletRequest, servletResponse);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(ACCES_CONNEXION);
+            dispatcher.forward(request, response);
 
         } else {
             /* Affichage de la page restreinte */

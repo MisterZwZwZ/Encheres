@@ -112,10 +112,7 @@
                 <c:when test="${listeArticles.size()>0}">
                 <c:forEach items="${listeArticles}" var="article">
                 <div class="col-3">
-                    <div class="card my-4" style="width: 18rem; height: auto;>
-                     <a href="
-                    <%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}">
-                        <%--            <img src="..." class="card-img-top" alt="photo de l'article en vente"></a>--%>
+                    <div class="card my-4" style="width: 18rem; height: auto">
                     <div class="card-body">
                         <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
                         <p class="card-text"><c:out value="Description : ${article.description}"/></p>

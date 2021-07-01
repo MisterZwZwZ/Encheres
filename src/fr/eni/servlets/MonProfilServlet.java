@@ -2,13 +2,9 @@ package fr.eni.servlets;
 
 import fr.eni.BusinessException;
 import fr.eni.bll.UtilisateurManager;
-
-import fr.eni.BusinessException;
-import fr.eni.bll.UtilisateurManager;
 import fr.eni.bll.util.Utilitaire;
 import fr.eni.bo.Utilisateur;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

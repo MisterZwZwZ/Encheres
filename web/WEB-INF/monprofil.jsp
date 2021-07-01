@@ -77,8 +77,10 @@
                                    placeholder="confirmez le mot de passe"
                                    value="${sessionScope.utilisateur.motDePasse}">
                         </div>
+                        <div class="col-sm-3">
+                            <p>Crédit : ${sessionScope.utilisateur.credit}</p>
+                        </div>
                     </div>
-                    <p>Crédit : ${sessionScope.utilisateur.credit}</p>
                 </div>
                 <div class="col-sm-6 m-2 w-50">
                     <button class="btn btn-primary w-50" type="submit">Valider</button>

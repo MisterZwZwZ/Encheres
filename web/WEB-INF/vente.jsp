@@ -36,7 +36,8 @@
                 <div class="form-group row py-3">
                     <div class="col-sm-3">
                         <label class="col-form-label" for="categorie">Catégorie</label>
-                        <select class="form-control" name="rechercheParcategorie" id="categorie">
+                        <select class="form-control" aria-label="Default select example" name="rechercheParcategorie" id="categorie">
+                            <option value="0" selected>Choisissez une catégorie</option>
                             <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
                                 <option required value="${categorie.key}">${categorie.value} </option>
                             </c:forEach>

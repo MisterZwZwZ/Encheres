@@ -184,10 +184,10 @@ public class EnchereServlet extends HttpServlet {
                 } catch (BusinessException e) {
                     e.printStackTrace();
                     request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+                    doGet(request, response);
                 }
             }
         }
-
     }
 }
 

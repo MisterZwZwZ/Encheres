@@ -72,7 +72,7 @@ public class VenteServlet extends HttpServlet {
         int categorie = 0;
         if(request.getParameter("rechercheParcategorie") != null && !request.getParameter("rechercheParcategorie").equals("")){
             categorie = Integer.parseInt(request.getParameter("rechercheParcategorie"));
-            if(categorie < 0){
+            if(categorie <= 0){
                 listeCodesErreur.add(CodesErreurServlet.CATEGORIE_ARTICLE_ERREUR);
             }
             request.setAttribute("rechercheParcategorie", categorie);

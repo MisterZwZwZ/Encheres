@@ -18,7 +18,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/enchere")
 public class EnchereServlet extends HttpServlet {
@@ -148,6 +150,18 @@ public class EnchereServlet extends HttpServlet {
                 request.setAttribute("articleAModifier", articleAModifier);
                 retraitAModifier = retraitManager.afficherRetraitParNoArticle(noArticle);
                 request.setAttribute("retraitAModifier", retraitAModifier);
+
+                String valeurCatePrecedente = articleAModifier.getCategorie().getLibelle();
+                int numCatePrecedente = articleAModifier.getCategorie().getNoCategorie();
+                LocalDate dateDebutEnchere = articleAModifier.getDateDebutEnchere();
+                LocalDate dateFinEnchere = articleAModifier.getDateFinEnchere();
+
+                request.setAttribute("dateDebutEnchere", dateDebutEnchere);
+                request.setAttribute("dateFinEnchere", dateFinEnchere);
+                request.setAttribute("rechercheParcategorie", numCatePrecedente);
+                request.setAttribute("valeurCatePrecedente", valeurCatePrecedente);
+
+
                 request.getRequestDispatcher("WEB-INF/vente.jsp").forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();

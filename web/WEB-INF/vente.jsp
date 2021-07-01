@@ -37,7 +37,14 @@
                     <div class="col-sm-3">
                         <label class="col-form-label" for="categorie">Catégorie</label>
                         <select class="form-control" aria-label="Default select example" name="rechercheParcategorie" id="categorie">
-                            <option value="0" selected>Choisissez une catégorie</option>
+                            <c:choose>
+                                <c:when test="${!empty (rechercheParcategorie)}">
+                                    <option value="${rechercheParcategorie}" selected>${valeurCatePrecedente}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="0" selected>Choisissez une catégorie</option>
+                                </c:otherwise>
+                            </c:choose>
                             <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
                                 <option required value="${categorie.key}">${categorie.value} </option>
                             </c:forEach>
@@ -51,12 +58,12 @@
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateDebutEnchere">Début de l'enchère</label>
                             <span class="input-group-addon"><i class="fas fa-calendar-check"></i></span>
-                            <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere" required>
+                            <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere" required value="${dateDebutEnchere}">
                             <p>${empty articleAModifier ? ""  :  articleAModifier.dateDebutEnchere}</p>
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateFinEnchere">Fin de l'enchère</label>
-                        <input class="form-control" name="dateFinEnchere" id="dateFinEnchere" required>
+                        <input class="form-control" name="dateFinEnchere" id="dateFinEnchere" required value="${dateDebutEnchere}">
                         <p>${empty articleAModifier ? ""  :  articleAModifier.dateFinEnchere}</p>
                     </div>
                 </div>

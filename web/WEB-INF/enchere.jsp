@@ -35,7 +35,7 @@
                         <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
                         <p class="card-text"><c:out value="Description : ${article.description}"/></p>
                         <p class="card-text"><c:out value="Catégorie : ${article.categorie.libelle}"/></p>
-                        <p class="card-text"><c:out value="Meilleure offre : ${enchere.montantEnchere} par ${enchere.encherisseur.pseudo}"/></p>
+                        <p class="card-text"><c:out value="Meilleure offre : ${enchere.montantEnchere} ${enchere.montantEnchere != 0 ? 'par' : ''} ${enchere.encherisseur.pseudo}"/></p>
                         <p class="card-text"><c:out value="Mise à prix : ${article.prixInitial} points"/></p>
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
                             <c:out value="l'enchère débutera le : ${article.dateDebutEnchere}"></c:out>

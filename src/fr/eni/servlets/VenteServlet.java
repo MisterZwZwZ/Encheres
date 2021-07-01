@@ -5,6 +5,7 @@ import fr.eni.bll.ArticleManager;
 import fr.eni.bll.CategorieManager;
 import fr.eni.bo.Article;
 import fr.eni.bo.Utilisateur;
+import javafx.application.Application;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -72,6 +73,14 @@ public class VenteServlet extends HttpServlet {
         int categorie = 0;
         if(request.getParameter("rechercheParcategorie") != null && !request.getParameter("rechercheParcategorie").equals("")){
             categorie = Integer.parseInt(request.getParameter("rechercheParcategorie"));
+
+            Map listeDesCategories = new HashMap();
+            listeDesCategories = (Map) this.getServletContext().getAttribute("listeDesCategories");
+
+            String valeurCatePrecedente = (String) listeDesCategories.get(categorie);
+            System.out.println(valeurCatePrecedente);
+            request.setAttribute("valeurCatePrecedente", valeurCatePrecedente);
+
             if(categorie <= 0){
                 listeCodesErreur.add(CodesErreurServlet.CATEGORIE_ARTICLE_ERREUR);
             }

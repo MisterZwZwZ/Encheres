@@ -13,45 +13,50 @@
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-<div class="d-flex justify-content-center text-white">
-    <form class="w-25 py-4" action="${pageContext.request.contextPath}/login" method="POST">
-        <div class="form-outline mb-4 w-100">
-            <label class="form-label" for="identifiant">Identifiant :</label>
-            <input class="form-control" type="email" id="identifiant" name="email" value="${email}" placeholder="email" required>
-        </div>
-        <div class="form-outline mb-4 w-100">
-            <label class="form-label" for="password">Mot de passe :</label>
-            <input class="form-control" type="password" id="password" name="motDePasse" placeholder="mot de passe" required>
-        </div>
-        <div class="form-outline mb-4 w-100">
-            <div class="col d-flex justify-content-center">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberMe"/>
-                </div>
-                <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
+<h1 class="text-white text-center">Connexion</h1>
+
+<div class="d-flex justify-content-center text-white py-4">
+    <div class="row w-25">
+        <form action="${pageContext.request.contextPath}/login" method="POST">
+            <div class="form-outline mb-4 w-100">
+                <label class="form-label" for="identifiant">Identifiant :</label>
+                <input class="form-control" type="email" id="identifiant" name="email" value="${email}"
+                       placeholder="email" required>
             </div>
+            <div class="form-outline mb-4 w-100">
+                <label class="form-label" for="password">Mot de passe :</label>
+                <input class="form-control" type="password" id="password" name="motDePasse" placeholder="mot de passe"
+                       required>
+            </div>
+            <div class="form-outline mb-4 w-100">
+                <div class="col d-flex justify-content-center">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe" disabled/>
+                    </div>
+                    <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
+                </div>
+            </div>
+            <div class="mb-4">
+                <button class="btn btn-primary w-100" type="submit">Se connecter</button>
+            </div>
+        </form>
+        <div>
+            <!-- affichage des messages d'erreur éventuels -->
+            <c:if test="${!empty listeCodesErreur}">
+                <ul class="alert alert-danger" role="alert">
+                    <p class="alert alert-danger" role="alert"><strong>Erreur(s) lors de la tentative de connexion :</strong></p>
+                    <c:forEach var="code" items="${listeCodesErreur}">
+                        <li>${LecteurErreur.getMessageErreur(code)}</li>
+                    </c:forEach>
+                </ul>
+            </c:if>
         </div>
-        <div class="mb-4">
-            <button class="btn btn-primary w-100" type="submit">Se connecter</button>
-        </div>
-    </form>
+    </div>
 </div>
 <div class="d-flex justify-content-center">
     <a href="${pageContext.request.contextPath}/accueil">
         <button class="btn btn-secondary w-100">Retour</button>
     </a>
-</div>
-
-<div class="d-flex justify-content-center">
-    <!-- affichage des messages d'erreur éventuels -->
-    <c:if test="${!empty listeCodesErreur}">
-        <p class="alert alert-danger" role="alert"><strong>Erreur lors de la tentative de connexion :</strong></p>
-        <ul>
-            <c:forEach var="code" items="${listeCodesErreur}">
-                <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-            </c:forEach>
-        </ul>
-    </c:if>
 </div>
 </body>
 </html>

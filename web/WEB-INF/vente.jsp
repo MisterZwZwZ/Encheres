@@ -19,6 +19,26 @@
 
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row">
+        <div>
+            <!-- affichage du message de confirmation pour l'insertion-->
+            <c:if test="${!empty msgConfirmation}">
+                <div class="alert alert-success" role="alert">
+                    <strong >${msgConfirmation}</strong>
+                </div>
+            </c:if>
+
+            <!-- affichage des messages d'erreur éventuels -->
+            <c:if test="${!empty listeCodesErreur}">
+                <div class="alert alert-danger" role="alert">
+                    <p><strong>Erreur(s) !</strong></p>
+                    <ul>
+                        <c:forEach var="code" items="${listeCodesErreur}">
+                            <li>${LecteurErreur.getMessageErreur(code)}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </c:if>
+        </div>
         <div class="col md-10 mx-auto">
             <form action="${pageContext.request.contextPath}/vendre" method="POST">
                 <div class="form-group row">
@@ -28,7 +48,7 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label class="col-form-label" for="description">Description</label>
+                        <label class="col-form-label overflow-auto" for="description">Description</label>
                         <textarea class="form-control" rows="5" cols="33" name="description" id="description"
                       >${empty articleAModifier ? description : articleAModifier.description}</textarea>
                     </div>
@@ -68,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row py-3">
+                <div class="form-group row py-2">
                     <div class="col-sm-6">
                         <fieldset>
                             <legend>Retrait</legend>
@@ -93,42 +113,18 @@
                             <input type="hidden" value="${articleAModifier.noArticle}" name="noArticle">
                             <button class="btn btn-primary w-100" type="submit">Valider la modification</button>
                         </c:if>
-
                     </div>
                 </div>
             </form>
-
-            <!-- mettre en page  du bouton -->
-            <div class="col-sm-12 m-2 w-50">
-                <a href="<%=request.getContextPath()%>/accueil">
-                    <button class="btn btn-secondary w-100">Retour</button>
-                </a>
+            <div class="d-flex justify-content-center">
+                <div class="col-sm-12 m-2 w-50">
+                    <a href="<%=request.getContextPath()%>/accueil">
+                        <button class="btn btn-secondary w-100">Retour</button>
+                    </a>
+                </div>
             </div>
-
         </div>
     </div>
-</div>
-
-
-<div class="d-flex justify-content-center">
-    <!-- affichage du message de confirmation pour l'insertion-->
-    <c:if test="${!empty msgConfirmation}">
-        <div class="alert alert-success" role="alert">
-            <strong >${msgConfirmation}</strong>
-        </div>
-    </c:if>
-
-    <!-- affichage des messages d'erreur éventuels -->
-<c:if test="${!empty listeCodesErreur}">
-    <div class="alert alert-danger" role="alert">
-            <p><strong>Erreur!</strong></p>
-            <ul>
-                <c:forEach var="code" items="${listeCodesErreur}">
-                    <li>${LecteurErreur.getMessageErreur(code)}</li>
-                </c:forEach>
-            </ul>
-    </div>
-</c:if>
 </div>
 <script>
     $(function () {

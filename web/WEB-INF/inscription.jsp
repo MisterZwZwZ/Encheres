@@ -13,14 +13,25 @@
 
 <h2 class="text-white text-center py-4">Inscription</h2>
 
+
 <!--Formulaire d'inscription mis en page avec Boostrap-->
 <div class="d-flex justify-content-center text-white py-2">
-    <div class="row">
+    <div class="row w-75">
+        <div class="d-flex justify-content-center row py-2">
+            <c:if test="${!empty listeCodesErreur}">
+                <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>
+                <ul class="alert alert-danger" role="alert">
+                    <c:forEach var="code" items="${listeCodesErreur}">
+                        <li>${LecteurErreur.getMessageErreur(code)}</li>
+                    </c:forEach>
+                </ul>
+            </c:if>
+        </div>
         <div class="col md-10 mx-auto">
             <form action="${pageContext.request.contextPath}/inscription" method="post" class="needs-validation"
                   novalidate>
                 <div class="form-group row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="pseudo" class="form-label">Pseudo</label>
                         <input type="text" name="pseudo" id="pseudo" placeholder="pseudo" value="${pseudo}" required
                                class="form-control" required>
@@ -28,7 +39,7 @@
                             Choisissez un pseudo.
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label for="prenom" class="form-label">Prénom</label>
                         <input type="text" name="prenom" id="prenom" placeholder="prenom" value="${prenom}" required
                                class="form-control">
@@ -36,7 +47,7 @@
                             Looks good !
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label for="nom" class="form-label">Nom</label>
                         <input type="text" name="nom" id="nom" placeholder="nom" value="${nom}" required class="form-control">
                         <div class="invalid-feedback">
@@ -45,14 +56,14 @@
                     </div>
                 </div>
                 <div class="form-group row py-2">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="rue" class="form-label">Rue</label>
                         <input type="text" name="rue" id="rue" placeholder="rue" value="${rue}" required class="form-control">
                         <div class="invalid-feedback">
                             Veuillez renseigner une rue valide.
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label for="codepostal" class="form-label">Code postal </label>
                         <input type="text" name="cp" id="codepostal" placeholder="code postal" value="${cp}" required
                                class="form-control">
@@ -60,7 +71,7 @@
                             Choisissez un code postal valide.
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label for="ville" class="form-label">Ville</label>
                         <input type="text" name="ville" id="ville" placeholder="ville" value="${ville}" required
                                class="form-control">
@@ -70,7 +81,7 @@
                     </div>
                 </div>
                 <div class="form-group row py-2">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="email" class="form-label">Email</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text" id="inputGroupPrepend">@</span>
@@ -118,16 +129,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="d-flex justify-content-center py-4">
-        <c:if test="${!empty listeCodesErreur}">
-            <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>
-            <ul>
-                <c:forEach var="code" items="${listeCodesErreur}">
-                    <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-                </c:forEach>
-            </ul>
-        </c:if>
 </div>
 </body>
 </html>

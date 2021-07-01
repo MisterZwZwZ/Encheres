@@ -6,6 +6,7 @@ import fr.eni.bll.CategorieManager;
 import fr.eni.bll.EnchereManager;
 import fr.eni.bo.Article;
 import fr.eni.bo.Enchere;
+import fr.eni.bo.Utilisateur;
 import org.eclipse.jdt.internal.compiler.env.ISourceType;
 
 import javax.servlet.ServletException;
@@ -37,14 +38,24 @@ public class AccueilServlet extends HttpServlet {
             session.invalidate();
         }
 
-        // affichage de la liste des articles encherissables et de la liste des catégories qui est passée en attributs de portée application
+        // affichage de la liste des articles encherissables et de la liste des catégories qui est passée en attribut de portée application
         try{
-            List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
 
-            Map listeDesCategories = new HashMap();
-            listeDesCategories = cm.afficherCategories();
-            this.getServletContext().setAttribute("listeDesCategories", listeDesCategories);
-            request.setAttribute("listeArticles", articlesEncherissables);
+            //Si l'utilisateur est connecté, les articles ne sont pas affichés : il faut
+            HttpSession session = request.getSession();
+            Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+            if (utilisateur != null) {
+            //TODO faire un choix : qu'affiche t-on si l'utilisateur est connecté ? scahant que les boutons cliqués sont gardés en mémoire
+
+            }
+            else{ // si l'utilisateur n'est pas connecté, on affiche les articles ouverts à la vente.
+                List<Article> articlesEncherissables = articleManager.afficherArticlesEncherissables();
+                Map listeDesCategories = new HashMap();
+                listeDesCategories = cm.afficherCategories();
+                this.getServletContext().setAttribute("listeDesCategories", listeDesCategories);
+                request.setAttribute("listeArticles", articlesEncherissables);
+            }
+
         } catch (BusinessException e) {
             e.printStackTrace();
             request.setAttribute("listeCodesErreur", e.getListeCodesErreur());

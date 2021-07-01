@@ -144,9 +144,9 @@
             <c:when test="${!empty listeCodesErreur}">
                 <!-- affichage des messages d'erreur éventuels -->
                 <p class="alert alert-danger" role="alert"><strong>Erreur lors de la recherche :</strong></p>
-                <ul>
+                <ul class="alert alert-danger" role="alert">
                     <c:forEach var="code" items="${listeCodesErreur}">
-                        <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
+                        <li>${LecteurErreur.getMessageErreur(code)}</li>
                     </c:forEach>
                 </ul>
             </c:when>

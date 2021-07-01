@@ -14,8 +14,7 @@
     <title>Page non trouvée</title>
 </head>
 <div>
-<p style="color: white; text-align: center; font-size: 24px; font-family: 'Calibri Light'; font-style: italic">
-    Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
+<p>Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
 </div>
 </body>
 </html>

@@ -88,7 +88,7 @@
                         </c:if>
                     </form>
                 </div>
-                <a href="<%=request.getContextPath()%>/accueil"><button class="btn btn-secondary w-100">Annuler</button></a>
+                <a href="<%=request.getContextPath()%>/accueil"><button class="btn btn-secondary w-100">Retour</button></a>
             </div>
         </div>
     </div>

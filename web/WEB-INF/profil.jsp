@@ -75,7 +75,7 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
         <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
     </c:if>
     <c:if test="${empty vendeur}">
-        <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
+        <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-primary">Modifier mon profil</button></a>
     </c:if></if>
 </div>
 </body>

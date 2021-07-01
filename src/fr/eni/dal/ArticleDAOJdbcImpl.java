@@ -91,6 +91,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
             if(case1 != null && case1.equals("on") && case2 != null && case2.equals("on") && case3 != null && case3.equals("on")){
                 sb.append(selectArticlesJointureEncheres);
+                if (noCategorie != 0) {
+                    sb.append(and);
+                    sb.append(parCate);
+                }
                 sb.append(and);
                 sb.append("(");
                 sb.append(enCours);

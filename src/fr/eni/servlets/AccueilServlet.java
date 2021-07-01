@@ -45,7 +45,7 @@ public class AccueilServlet extends HttpServlet {
             HttpSession session = request.getSession();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
             if (utilisateur != null) {
-            //TODO faire un choix : qu'affiche t-on si l'utilisateur est connecté ? scahant que les boutons cliqués sont gardés en mémoire
+            //si l'utilisateur est connecté : on lui demande de sélectionner des critères de recherche.
 
             }
             else{ // si l'utilisateur n'est pas connecté, on affiche les articles ouverts à la vente.

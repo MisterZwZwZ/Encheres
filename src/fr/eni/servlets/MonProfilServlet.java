@@ -131,7 +131,7 @@ public class MonProfilServlet extends HttpServlet {
                 utilisateur = utilisateurManager.retournerUtilisateurParEmail(email);
                 session.setAttribute("utilisateur", utilisateur);
                 messageConfirmation = "Votre profil a bien été mis à jour";
-                session.setAttribute("message", messageConfirmation);
+                request.setAttribute("message", messageConfirmation);
                 request.getRequestDispatcher("WEB-INF/monprofil.jsp").forward(request, response);
             } catch (BusinessException e) {
                 e.printStackTrace();

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="fr.eni.messages.LecteurErreur" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <html>
 <head>
@@ -120,6 +122,7 @@
                                 value="Prix de vente : ${article.prixVente == 0 ? article.prixInitial : article.prixVente} points"/></p>
                         <p class="card-text"><c:out
                                 value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
+
                         <c:choose>
                             <c:when test="${sessionScope.utilisateur == null }">
                                 <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
@@ -151,7 +154,7 @@
                 </ul>
             </c:when>
             <c:otherwise>
-                <p class="alert alert-danger" role="alert">Aucun résultat pour cette recherche</p>
+                <p class="alert alert-info" role="alert">Choisissez les articles à afficher</p>
             </c:otherwise>
             </c:choose>
         </div>

@@ -13,8 +13,9 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Page non trouvée</title>
 </head>
-<div>
-<p>Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
+<body>
+<div class="p-20">
+<p class="pt-12 text-center text-white">Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
 </div>
 </body>
 </html>

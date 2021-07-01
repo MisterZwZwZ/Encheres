@@ -11,6 +11,7 @@ import fr.eni.dal.DAOFactory;
 import fr.eni.dal.RetraitDAO;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -93,7 +94,7 @@ public class ArticleManager {
      * Renvoie la liste des articles encherissables
      */
     public List<Article> afficherArticlesEncherissables() throws BusinessException {
-        return articleDAO.selectArticlesEncherissables();
+            return articleDAO.selectArticlesEncherissables();
     }
 
     /**

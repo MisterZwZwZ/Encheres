@@ -11,19 +11,6 @@
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-<c:choose>
-    <c:when test="${etatVente == 'en cours'}">
-        <h1 class="text-white text-center">Détail vente</h1>
-    </c:when>
-    <c:when test="${etatVente == 'terminee'}">
-        <c:if test="${statutUtilisateur == 'acquereur'}">
-            <h1>Vous avez remporté l'enchère !</h1>
-        </c:if>
-        <c:if test="${statutUtilisateur == 'vendeur'}">
-            <h1>${enchere.encherisseur.pseudo} a remporté la vente</h1>
-        </c:if>
-    </c:when>
-</c:choose>
 
 <div class="d-flex justify-content-center py-2">
     <div class="row">
@@ -31,6 +18,20 @@
             <div class="card my-4" style="width: 30rem; height: auto;">
                 <div class="card-body">
                     <form action="${pageContext.request.contextPath}/enchere" method="POST">
+                        <c:choose>
+                            <c:when test="${etatVente == 'en cours'}">
+                                <h3 class="text-center">Détail vente</h3>
+                            </c:when>
+                            <c:when test="${etatVente == 'terminee'}">
+                                <c:if test="${statutUtilisateur == 'acquereur'}">
+                                    <h3 class="text-center">Vous avez remporté l'enchère !</h3>
+                                </c:if>
+                                <c:if test="${statutUtilisateur == 'vendeur'}">
+                                    <h3 class="text-center">${enchere.encherisseur.pseudo} a remporté la vente</h3>
+                                </c:if>
+                            </c:when>
+                        </c:choose>
+
                         <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
                         <p class="card-text"><c:out value="Description : ${article.description}"/></p>
                         <p class="card-text"><c:out value="Catégorie : ${article.categorie.libelle}"/></p>

@@ -15,7 +15,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
-<h1 class="text-white text-center">Vendre un article</h1>
+<h1 class="text-white text-center">${!empty msgConfirmation ? "Vendre un article" : "Modifier un article"}</h1>
 
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row">

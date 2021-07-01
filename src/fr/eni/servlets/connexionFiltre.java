@@ -1,5 +1,7 @@
 package fr.eni.servlets;
 
+import fr.eni.BusinessException;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -34,14 +36,18 @@ public class connexionFiltre implements Filter {
          * Si l'objet utilisateur n'existe pas dans la session en cours, alors
          * l'utilisateur n'est pas connecté.
          */
-        if ( session.getAttribute( ATT_SESSION_USER ) == null || session.getAttribute(ATT_SESSION_USER).equals("")) {
-            /* Redirection vers la page publique */
+        try {
+            if (session.getAttribute(ATT_SESSION_USER) == null) {
+                /* Redirection vers la page publique */
+                RequestDispatcher dispatcher = request.getRequestDispatcher(ACCES_CONNEXION);
+                dispatcher.forward(request, response);
+            } else {
+                /* Affichage de la page restreinte */
+                filterChain.doFilter(request, response);
+            }
+        }catch(Exception e){
             RequestDispatcher dispatcher = request.getRequestDispatcher(ACCES_CONNEXION);
             dispatcher.forward(request, response);
-
-        } else {
-            /* Affichage de la page restreinte */
-            filterChain.doFilter( request, response );
         }
     }
 

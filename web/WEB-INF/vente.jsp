@@ -102,24 +102,26 @@
 </div>
 
 
+<div class="d-flex justify-content-center">
+    <!-- affichage du message de confirmation pour l'insertion-->
+    <c:if test="${!empty msgConfirmation}">
+        <div class="alert alert-success" role="alert">
+            <strong >${msgConfirmation}</strong>
+        </div>
+    </c:if>
 
-<!-- affichage du message de confirmation pour l'insertion de l'article-->
-<c:if test="${!empty msgConfirmation}">
-    <div class="alert alert-success" role="alert">
-        <strong >${msgConfirmation}</strong>
+    <!-- affichage des messages d'erreur éventuels -->
+    <div class="alert alert-danger" role="alert">
+        <c:if test="${!empty listeCodesErreur}">
+            <p><strong>Erreur!</strong></p>
+            <ul>
+                <c:forEach var="code" items="${listeCodesErreur}">
+                    <li>${LecteurErreur.getMessageErreur(code)}</li>
+                </c:forEach>
+            </ul>
+        </c:if>
     </div>
-</c:if>
-
-<!-- affichage des messages d'erreur éventuels -->
-<c:if test="${!empty listeCodesErreur}">
-    <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>
-    <ul>
-        <c:forEach var="code" items="${listeCodesErreur}">
-            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-        </c:forEach>
-    </ul>
-</c:if>
-
+</div>
 <script>
     $(function () {
         $("#dateDebutEnchere").datepicker({

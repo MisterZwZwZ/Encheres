@@ -146,19 +146,21 @@
             </div>
             </c:forEach>
             </c:when>
-            <c:otherwise>
-                <p class="alert alert-danger" role="alert">Aucun résultat pour cette recherche</p>
-            </c:otherwise>
-            </c:choose>
-            <!-- affichage des messages d'erreur éventuels -->
-            <c:if test="${!empty listeCodesErreur}">
+            <c:when test="${!empty listeCodesErreur}">
+                <!-- affichage des messages d'erreur éventuels -->
                 <p class="alert alert-danger" role="alert"><strong>Erreur lors de la recherche :</strong></p>
                 <ul>
                     <c:forEach var="code" items="${listeCodesErreur}">
                         <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
                     </c:forEach>
                 </ul>
-            </c:if>
+            </c:when>
+            <c:otherwise>
+                <p class="alert alert-danger" role="alert">Aucun résultat pour cette recherche</p>
+            </c:otherwise>
+            </c:choose>
+
+
         </div>
     </div>
 </div>

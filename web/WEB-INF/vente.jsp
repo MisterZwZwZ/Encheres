@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Vente</title>
+    <link rel="stylesheet" href="styles/initialize.min.css">
     <link type="text/css" rel="stylesheet" href="./styles/venteStyles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -16,7 +17,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
-<h1 class="text-white text-center">${!empty msgConfirmation ? "Vendre un article" : "Modifier un article"}</h1>
+<h1 class="text-white text-center">${!empty msgConfirmation ? "Modifier un article" : "Vendre un article"}</h1>
 
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row">

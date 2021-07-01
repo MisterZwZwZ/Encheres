@@ -10,10 +10,10 @@
 
 <html>
 <head>
-    <title>Login</title>
+    <title>header</title>
+    <link rel="stylesheet" href="styles/initialize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
 </head>
 <header>
 
@@ -22,8 +22,8 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="<%=request.getContextPath()%>/accueil">
-                        <img src="https://mstdn.social/system/cache/media_attachments/files/004/206/362/original/6d1b98bdce042dfa.png"
-                             height="100px" width="100px" alt="Logo du site encheres" width="30" height="24"></a>
+                        <img src="<%=request.getContextPath()%>/images/Logo_TrocAchat.png"
+                             height="auto" width="120px" alt="Logo du site encheres" ></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -31,23 +31,23 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page"
+                            <li class="nav-item active">
+                                <a class="nav-link h5" aria-current="page"
                                    href="<%=request.getContextPath()%>/accueil">Enchères</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="<%=request.getContextPath()%>/vendre">Vendre un
+                            <li class="nav-item active">
+                                <a class="nav-link h5" href="<%=request.getContextPath()%>/vendre">Vendre un
                                     article</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="<%=request.getContextPath()%>/profil">Voir mon
+                            <li class="nav-item active">
+                                <a class="nav-link h5" href="<%=request.getContextPath()%>/profil">Voir mon
                                     profil</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="<%=request.getContextPath()%>/monprofil">Modifier mon
+                            <li class="nav-item active">
+                                <a class="nav-link h5" href="<%=request.getContextPath()%>/monprofil">Modifier mon
                                     profil</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a class="nav-link" href="<%=request.getContextPath()%>/deconnexion">Se déconnecter</a>
                             </li>
 
@@ -66,8 +66,8 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="<%=request.getContextPath()%>/accueil">
-                        <img src="https://mstdn.social/system/cache/media_attachments/files/004/206/362/original/6d1b98bdce042dfa.png"
-                             height="100px" width="100px" alt="Logo du site encheres" width="30" height="24"></a>
+                        <img src="<%=request.getContextPath()%>/images/Logo_TrocAchat.png"
+                             height="auto" width="120px" alt="Logo du site encheres" ></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">

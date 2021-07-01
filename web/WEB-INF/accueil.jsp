@@ -6,13 +6,21 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="styles/initialize.min.css">
     <link type="text/css" rel="stylesheet" href="./styles/accueilStyles.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
     <title>Accueil</title>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
-<h1 class="text-white text-center">Bienvenue sur TrocA'Chat</h1>
+
+<div class="mt-50">
+    <h1 class="text-white text-center display-2 mt-32" style="font-family:'Chewy', cursive;">Bienvenue sur TrocA'Chat</h1>
+</div>
 
 <div class="container py-2">
     <div class="row align-items-center">
@@ -20,14 +28,14 @@
               method="POST">
             <div class="row m-6 py-4">
                 <div class="col-6">
-                    <label class="text-white form-check-label py-2" for="recherche-article">Recherche par mots
+                    <label class="text-white form-check-label py-2 h4" for="recherche-article" style="font-family:'Chewy', cursive;">Recherche par mots
                         clés</label>
                     <input class="form-control me-2" type="search" id="recherche-article" name="rechercheParMotClef"
                            placeholder="que recherchez vous ?..."
                            value="${motclef}">
                 </div>
                 <div class="col-6">
-                    <label class="text-white form-check-label py-2" for="categorie">Catégories</label>
+                    <label class="text-white form-check-label py-2 h4" for="categorie" style="font-family:'Chewy', cursive;">Catégories</label>
                     <select class="form-select" name="rechercheParcategorie" id="categorie">
                         <option value="">--"Toutes"--</option>
                         <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">

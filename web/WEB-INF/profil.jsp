@@ -54,27 +54,29 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
                               <p class="card-text">Ville<p>
                               ${empty vendeur ? utilisateur.ville : vendeur.ville}
                           </li>
+                          <li class="list-group-item">
+                              <c:if test="${(vendeur.pseudo).equals(utilisateur.pseudo) || empty vendeur}">
+                                  <p class="card-text">Crédit : </p>
+                                  <p>${utilisateur.credit}</p>
+                              </c:if>
+                          </li>
                       </ul>
-                      <c:if test="${(vendeur.pseudo).equals(utilisateur.pseudo) || empty vendeur}">
-                          <p class="card-text">Crédit : </p>
-                          <p>${utilisateur.credit}</p>
-                      </c:if>
                   </div>
               </div>
           </div>
         </div>
     </div>
 </div>
+<div class="d-flex justify-content-center">
+    <a href="accueil"><button class="btn btn-secondary w-100">Retour vers l'accueil</button></a>
+    <!-- gérer le bouton modifier si on est connecté / problème lors de l'affichage du profil de quelqu'un d'autre-->
+    <c:if test="${sessionScope.utilisateur == vendeur}">
+        <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
+    </c:if>
 
-<a href="accueil"><button class="btn btn-secondary w-100">Retour vers l'accueil</button></a>
-<!-- gérer le bouton modifier si on est connecté / problème lors de l'affichage du profil de quelqu'un d'autre-->
-<c:if test="${sessionScope.utilisateur == vendeur}">
-    <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary w-100">Modifier mon profil</button></a>
-</c:if>
-
-<c:if test="${sessionScope.utilisateur.pseudo == vendeur.pseudo }">
-    <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary w-100">Modifier mon profil</button></a>
-</c:if>
-
+    <c:if test="${sessionScope.utilisateur.pseudo == vendeur.pseudo }">
+        <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-secondary">Modifier mon profil</button></a>
+    </c:if>
+</div>
 </body>
 </html>

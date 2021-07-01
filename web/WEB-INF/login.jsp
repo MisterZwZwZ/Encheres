@@ -14,7 +14,7 @@
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
 <div class="d-flex justify-content-center text-white">
-    <form class="w-25" action="${pageContext.request.contextPath}/login" method="POST">
+    <form class="w-25 py-4" action="${pageContext.request.contextPath}/login" method="POST">
         <div class="form-outline mb-4 w-100">
             <label class="form-label" for="identifiant">Identifiant :</label>
             <input class="form-control" type="email" id="identifiant" name="email" value="${email}" placeholder="email" required>

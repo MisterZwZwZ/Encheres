@@ -15,7 +15,7 @@
     <div class="row align-items-center">
         <form class="d-flex justify-content-center row" action="${pageContext.request.contextPath}/recherche"
               method="POST">
-            <div class="row m-6">
+            <div class="row m-6 py-4">
                 <div class="col-6">
                     <label class="text-white form-check-label py-2" for="recherche-article">Recherche par mots
                         clés</label>

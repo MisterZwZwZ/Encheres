@@ -77,7 +77,7 @@
                                    placeholder="confirmez le mot de passe"
                                    value="${sessionScope.utilisateur.motDePasse}">
                         </div>
-                        <div class="col-sm-3 bg-warning">
+                        <div class="col-sm-3">
                             <p class="col-form-label"> Crédit : </p>
                             <p>${sessionScope.utilisateur.credit}</p>
                         </div>

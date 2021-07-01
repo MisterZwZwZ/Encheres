@@ -22,7 +22,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="<%=request.getContextPath()%>/accueil">
-                        <img src="https://img2.freepng.fr/20180420/xrq/kisspng-cat-spacecraft-drawing-outer-space-clip-art-spaceship-5adaadfe72c5c1.7562180915242808304701.jpg"
+                        <img src="https://mstdn.social/system/cache/media_attachments/files/004/206/362/original/6d1b98bdce042dfa.png"
                              height="100px" width="100px" alt="Logo du site encheres" width="30" height="24"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -66,7 +66,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="<%=request.getContextPath()%>/accueil">
-                        <img src="https://img2.freepng.fr/20180420/xrq/kisspng-cat-spacecraft-drawing-outer-space-clip-art-spaceship-5adaadfe72c5c1.7562180915242808304701.jpg"
+                        <img src="https://mstdn.social/system/cache/media_attachments/files/004/206/362/original/6d1b98bdce042dfa.png"
                              height="100px" width="100px" alt="Logo du site encheres" width="30" height="24"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

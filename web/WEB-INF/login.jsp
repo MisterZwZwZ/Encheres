@@ -36,15 +36,15 @@
                     <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
                 </div>
             </div>
-            <div class="mb-4">
+            <div>
                 <button class="btn btn-primary w-100" type="submit">Se connecter</button>
             </div>
         </form>
         <div>
             <!-- affichage des messages d'erreur éventuels -->
             <c:if test="${!empty listeCodesErreur}">
-                <ul class="alert alert-danger" role="alert">
-                    <p class="alert alert-danger" role="alert"><strong>Erreur(s) lors de la tentative de connexion :</strong></p>
+                <p class="alert alert-danger" role="alert"><strong>Erreur(s) lors de la tentative de connexion :</strong></p>
+                <ul class="alert alert-danger text-center" role="alert">
                     <c:forEach var="code" items="${listeCodesErreur}">
                         <li>${LecteurErreur.getMessageErreur(code)}</li>
                     </c:forEach>

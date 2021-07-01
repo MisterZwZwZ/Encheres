@@ -12,6 +12,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
+<h1 class="text-white text-center">Bienvenue sur TrocA'Chat</h1>
 
 <div class="container py-2">
     <div class="row align-items-center">

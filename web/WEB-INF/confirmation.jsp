@@ -14,19 +14,23 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+<jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-<!-- affichage du message de confirmation pour la modification de l'article-->
-<c:if test="${!empty msgConfirmationModif}">
-    <div class="alert alert-success d-flex justify-content-center" role="alert">
-        <p class="mx-auto">${msgConfirmationModif}</p>
+<div class="d-flex justify-content-center py-4">
+    <div class="row">
+        <!-- affichage du message de confirmation pour la modification de l'article-->
+        <c:if test="${!empty msgConfirmationModif}">
+            <div class="alert alert-success d-flex justify-content-center" role="alert">
+                <p class="mx-auto">${msgConfirmationModif}</p>
+            </div>
+        </c:if>
+
+        <div class="col-sm-12 m-2 w-50">
+            <a href="<%=request.getContextPath()%>/accueil">
+                <button class="btn btn-secondary">Retour</button>
+            </a>
+        </div>
     </div>
-</c:if>
-
-<div class="col-sm-12 m-2 w-50">
-    <a href="<%=request.getContextPath()%>/accueil">
-        <button class="btn btn-secondary w-100">Retour</button>
-    </a>
 </div>
-
 </body>
 </html>

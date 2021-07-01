@@ -98,23 +98,26 @@
     </div>
 </div>
 
-<!-- affichage du message de confirmation -->
-<c:if test="${!empty msgConfirmation}">
-    <div class="alert alert-success" role="alert">
-        <strong >${msgConfirmation}</strong>
+<div class="d-flex justify-content-center">
+    <!-- affichage du message de confirmation -->
+    <c:if test="${!empty msgConfirmation}">
+        <div class="alert alert-success" role="alert">
+            <strong >${msgConfirmation}</strong>
+        </div>
+    </c:if>
+
+    <!-- affichage des messages d'erreur éventuels -->
+    <div class="alert alert-danger" role="alert">
+        <c:if test="${!empty listeCodesErreur}">
+            <p><strong>Erreur!</strong></p>
+            <ul>
+                <c:forEach var="code" items="${listeCodesErreur}">
+                    <li>${LecteurErreur.getMessageErreur(code)}</li>
+                </c:forEach>
+            </ul>
+        </c:if>
     </div>
-</c:if>
-
-<!-- affichage des messages d'erreur éventuels -->
-<c:if test="${!empty listeCodesErreur}">
-    <strong>Erreur!</strong>
-    <ul>
-        <c:forEach var="code" items="${listeCodesErreur}">
-            <li>${LecteurErreur.getMessageErreur(code)}</li>
-        </c:forEach>
-    </ul>
-</c:if>
-
+</div>
 <script>
     $(function () {
         $("#dateDebutEnchere").datepicker({

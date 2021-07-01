@@ -77,8 +77,9 @@
                                    placeholder="confirmez le mot de passe"
                                    value="${sessionScope.utilisateur.motDePasse}">
                         </div>
-                        <div class="col-sm-3">
-                            <p>Crédit : ${sessionScope.utilisateur.credit}</p>
+                        <div class="col-sm-3 bg-warning">
+                            <p class="col-form-label"> Crédit : </p>
+                            <p>${sessionScope.utilisateur.credit}</p>
                         </div>
                     </div>
                 </div>
@@ -96,20 +97,20 @@
     </div>
 </div>
 
-
-<!-- affichage des messages d'erreur éventuels -->
-<c:if test="${!empty listeCodesErreur}">
-    <p class="alert alert-danger" role="alert"><strong>Erreur lors de la mise à jour des données :</strong></p>
-    <ul>
-        <c:forEach var="code" items="${listeCodesErreur}">
-            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-        </c:forEach>
-    </ul>
-</c:if>
-
-<!-- affichage message de confirmation -->
-<c:if test="${!empty message}">
-    <strong>${message}</strong>
-</c:if>
+<div class="d-flex justify-content-center">
+    <!-- affichage des messages d'erreur éventuels -->
+    <c:if test="${!empty listeCodesErreur}">
+        <p class="alert alert-danger" role="alert"><strong>Erreur lors de la mise à jour des données :</strong></p>
+        <ul>
+            <c:forEach var="code" items="${listeCodesErreur}">
+                <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
+            </c:forEach>
+        </ul>
+    </c:if>
+    <!-- affichage message de confirmation -->
+    <c:if test="${!empty message}">
+        <p class="alert alert-success" role="alert"><strong>${message}</strong></p>
+    </c:if>
+</div>
 </body>
 </html>

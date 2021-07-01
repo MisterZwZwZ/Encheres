@@ -11,7 +11,8 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<h1>ENI-Enchères</h1>
+<jsp:include page="/WEB-INF/fragments/header.jsp"/>
+
 <div class="d-flex justify-content-center text-white">
     <form class="w-25" action="${pageContext.request.contextPath}/login" method="POST">
         <div class="form-outline mb-4 w-100">
@@ -41,15 +42,16 @@
     </a>
 </div>
 
-
-<!-- affichage des messages d'erreur éventuels -->
-<c:if test="${!empty listeCodesErreur}">
-    <p class="alert alert-danger" role="alert"><strong>Erreur lors de la tentative de connexion :</strong></p>
-    <ul>
-        <c:forEach var="code" items="${listeCodesErreur}">
-            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-        </c:forEach>
-    </ul>
-</c:if>
+<div class="d-flex justify-content-center">
+    <!-- affichage des messages d'erreur éventuels -->
+    <c:if test="${!empty listeCodesErreur}">
+        <p class="alert alert-danger" role="alert"><strong>Erreur lors de la tentative de connexion :</strong></p>
+        <ul>
+            <c:forEach var="code" items="${listeCodesErreur}">
+                <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
+            </c:forEach>
+        </ul>
+    </c:if>
+</div>
 </body>
 </html>

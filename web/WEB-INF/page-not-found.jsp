@@ -8,9 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link type="text/css" rel="stylesheet" href="./styles/404Styles.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Page non trouvée</title>
 </head>
-<body style="background-image: url('https://cdn.wallpapersafari.com/17/21/hx5Fdt.jpg'); background-repeat: space; justify-content: center">
 <div>
 <p style="color: white; text-align: center; font-size: 24px; font-family: 'Calibri Light'; font-style: italic">
     Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>

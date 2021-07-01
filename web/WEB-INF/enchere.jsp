@@ -84,7 +84,7 @@
                         <!-- je veux modifier un article -->
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
                             <input type="hidden" name="noarticle" value="${article.noArticle}">
-                            <button class="btn btn-primary" type="submit" name="modifier">Modifier l'article</button>
+                            <button value="Modifier l'article" class="btn btn-primary" name="modifier">Modifier l'article</button>
                         </c:if>
                     </form>
                 </div>

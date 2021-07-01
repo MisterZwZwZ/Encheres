@@ -78,7 +78,6 @@ public class VenteServlet extends HttpServlet {
             listeDesCategories = (Map) this.getServletContext().getAttribute("listeDesCategories");
 
             String valeurCatePrecedente = (String) listeDesCategories.get(categorie);
-            System.out.println(valeurCatePrecedente);
             request.setAttribute("valeurCatePrecedente", valeurCatePrecedente);
 
             if(categorie <= 0){

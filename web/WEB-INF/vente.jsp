@@ -79,12 +79,10 @@
                         <label class="col-form-label" for="dateDebutEnchere">Début de l'enchère</label>
                             <span class="input-group-addon"><i class="fas fa-calendar-check"></i></span>
                             <input class="form-control" name="dateDebutEnchere" id="dateDebutEnchere" required value="${dateDebutEnchere}">
-                            <p>${empty articleAModifier ? ""  :  articleAModifier.dateDebutEnchere}</p>
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label" for="dateFinEnchere">Fin de l'enchère</label>
-                        <input class="form-control" name="dateFinEnchere" id="dateFinEnchere" required value="${dateDebutEnchere}">
-                        <p>${empty articleAModifier ? ""  :  articleAModifier.dateFinEnchere}</p>
+                        <input class="form-control" name="dateFinEnchere" id="dateFinEnchere" required value="${dateFinEnchere}">
                     </div>
                 </div>
 

@@ -11,10 +11,19 @@
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-
 <div class="d-flex justify-content-center py-2">
-    <div class="row">
-        <div class="col-6">
+        <div class="row-6">
+                <div>
+                    <!-- affichage des messages d'erreur éventuels -->
+                    <c:if test="${!empty listeCodesErreur}">
+                        <p class="alert alert-danger" role="alert"><strong>Erreur(s)!</strong></p>
+                        <ul class="alert alert-danger" role="alert">
+                            <c:forEach var="code" items="${listeCodesErreur}">
+                                <li>${LecteurErreur.getMessageErreur(code)}</li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                </div>
             <div class="card my-4" style="width: 30rem; height: auto;">
                 <div class="card-body">
                     <form action="${pageContext.request.contextPath}/enchere" method="POST">
@@ -24,16 +33,16 @@
                             </c:when>
                             <c:when test="${etatVente == 'terminee'}">
                                 <c:if test="${statutUtilisateur == 'acquereur'}">
-                                    <h3 class="text-center">Vous avez remporté l'enchère !</h3>
+                                    <h3 class="text-center alert alert-success" role="alert">Vous avez remporté l'enchère !</h3>
                                 </c:if>
                                 <c:if test="${statutUtilisateur == 'vendeur'}">
-                                    <h3 class="text-center">${enchere.encherisseur.pseudo} a remporté la vente</h3>
+                                    <h3 class="text-center alert alert-primary" role="alert">${enchere.encherisseur.pseudo} a remporté la vente.</h3>
                                 </c:if>
                             </c:when>
                         </c:choose>
 
                         <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
-                        <p class="card-text"><c:out value="Description : ${article.description}"/></p>
+                        <p class="card-text overflow-auto"><c:out value="Description : ${article.description}"/></p>
                         <p class="card-text"><c:out value="Catégorie : ${article.categorie.libelle}"/></p>
                         <p class="card-text"><c:out value="Meilleure offre : ${enchere.montantEnchere} par ${enchere.encherisseur.pseudo}"/></p>
                         <p class="card-text"><c:out value="Mise à prix : ${article.prixInitial} points"/></p>
@@ -53,7 +62,7 @@
                         </c:choose>
 
                         <c:if test="${statutUtilisateur == 'meilleurEncherisseur' && etatVente == 'en cours'}">
-                            <p><c:out value="Vous êtes le meilleur encherisseur pour le moment"/></p>
+                            <p class="alert alert-info" role="alert"><c:out value="Vous êtes le meilleur encherisseur pour le moment"/></p>
                         </c:if>
 
                         <c:if test="${statutUtilisateur == 'encherisseur' && etatVente == 'en cours'}">
@@ -69,13 +78,13 @@
                         </c:if>
 
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'en cours'}">
-                            <c:out value="Votre article est en vente et les enchères sont en cours"/>
+                            <p class="alert alert-info" role="alert"><c:out value="Votre article est en vente et les enchères sont en cours"/></p>
                         </c:if>
 
                         <!-- je veux modifier un article -->
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
                             <input type="hidden" name="noarticle" value="${article.noArticle}">
-                            <input type="submit" value="Modifier l'article" name="modifier">
+                            <button class="btn btn-primary" type="submit" name="modifier">Modifier l'article</button>
                         </c:if>
                     </form>
                 </div>
@@ -84,20 +93,5 @@
         </div>
     </div>
 </div>
-
-
-<a href="<%=request.getContextPath()%>/accueil">
-    <button>Retour</button>
-</a>
-
-<!-- affichage des messages d'erreur éventuels -->
-<c:if test="${!empty listeCodesErreur}">
-    <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>
-    <ul>
-        <c:forEach var="code" items="${listeCodesErreur}">
-            <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-        </c:forEach>
-    </ul>
-</c:if>
 </body>
 </html>

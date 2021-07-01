@@ -16,8 +16,23 @@
 
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row">
+        <div class="d-flex justify-content-center row py-2">
+            <!-- affichage des messages d'erreur éventuels -->
+            <c:if test="${!empty listeCodesErreur}">
+                <p class="alert alert-danger" role="alert"><strong>Erreur lors de la mise à jour des données :</strong></p>
+                <ul class="alert alert-danger" role="alert">
+                    <c:forEach var="code" items="${listeCodesErreur}">
+                        <li>${LecteurErreur.getMessageErreur(code)}</li>
+                    </c:forEach>
+                </ul>
+            </c:if>
+            <!-- affichage message de confirmation -->
+            <c:if test="${!empty message}">
+                <p class="alert alert-success" role="alert"><strong>${message}</strong></p>
+            </c:if>
+        </div>
         <div class="col md-10 mx-auto">
-            <form action="${pageContext.request.contextPath}/monprofil" method="post">
+            <form class="w-100" action="${pageContext.request.contextPath}/monprofil" method="post">
                 <div class="form-group row">
                     <div class="col-sm-3">
                         <label class="col-form-label" for="pseudo">Pseudo :</label>
@@ -79,7 +94,7 @@
                         </div>
                         <div class="col-sm-3">
                             <p class="col-form-label"> Crédit : </p>
-                            <p>${sessionScope.utilisateur.credit}</p>
+                            <p class="form-control">${sessionScope.utilisateur.credit}</p>
                         </div>
                     </div>
                 </div>
@@ -87,30 +102,14 @@
                     <button class="btn btn-primary w-50" type="submit">Valider</button>
                 </div>
             </form>
-            <a href="${pageContext.request.contextPath}/supp">
-                <button class="btn btn-danger w-50">Supprimer mon compte</button>
-            </a>
-            <a href="${pageContext.request.contextPath}/accueil">
-                <button class="btn btn-secondary w-50">Retour</button>
-            </a>
+            <div class="d-flex justify-content-center">
+                <div class="px-2">
+                    <a href="${pageContext.request.contextPath}/supp"><button class="btn btn-danger w-100">Supprimer mon compte</button></a>
+                    <a href="${pageContext.request.contextPath}/accueil"><button class="btn btn-secondary w-100">Retour</button></a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="d-flex justify-content-center">
-    <!-- affichage des messages d'erreur éventuels -->
-    <c:if test="${!empty listeCodesErreur}">
-        <p class="alert alert-danger" role="alert"><strong>Erreur lors de la mise à jour des données :</strong></p>
-        <ul>
-            <c:forEach var="code" items="${listeCodesErreur}">
-                <li class="alert alert-danger" role="alert">${LecteurErreur.getMessageErreur(code)}</li>
-            </c:forEach>
-        </ul>
-    </c:if>
-    <!-- affichage message de confirmation -->
-    <c:if test="${!empty message}">
-        <p class="alert alert-success" role="alert"><strong>${message}</strong></p>
-    </c:if>
 </div>
 </body>
 </html>

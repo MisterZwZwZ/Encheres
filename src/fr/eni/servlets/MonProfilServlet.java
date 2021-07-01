@@ -85,8 +85,10 @@ public class MonProfilServlet extends HttpServlet {
 
         String telephone = request.getParameter("telephone");
         request.setAttribute("telephone", telephone);
-        if (!utilitaire.telValidation(telephone)){
-            listeCodesErreur.add(CodesErreurServlet.TEL_NON_VALIDE);
+        if (telephone != null && !telephone.equals("")){
+            if (!utilitaire.telValidation(telephone)){
+                listeCodesErreur.add(CodesErreurServlet.TEL_NON_VALIDE);
+            }
         }
 
         String cp = request.getParameter("cp");
@@ -99,7 +101,8 @@ public class MonProfilServlet extends HttpServlet {
         String ville = request.getParameter("ville");
         if (ville == null || ville.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.VILLE_UTILISATEUR_OBLIGATOIRE);
-        } if(!utilitaire.rechercheCaracSpecial(ville) || utilitaire.rechercheChiffre(ville)){
+        } else
+            if (!utilitaire.rechercheCaracSpecial(ville) || utilitaire.rechercheChiffre(ville)){
             listeCodesErreur.add(CodesErreurServlet.CARAC_NON_VALIDES);
         }else {
             request.setAttribute("ville", ville);

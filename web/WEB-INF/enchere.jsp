@@ -62,7 +62,9 @@
                             <button class="btn btn-primary w-100" type="submit">Encherir</button>
                         </c:if>
                         <c:if test="${!empty messageConf}">
-                            <p>Votre enchère a bien été enregistrée !</p>
+                            <div class="alert alert-success" role="alert">
+                                <p>Votre enchère a bien été enregistrée !</p>
+                            </div>
                         </c:if>
 
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'en cours'}">

@@ -17,7 +17,7 @@
 
 <!-- affichage du message de confirmation pour la modification de l'article-->
 <c:if test="${!empty msgConfirmationModif}">
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success d-flex justify-content-center" role="alert">
         <p class="mx-auto">${msgConfirmationModif}</p>
     </div>
 </c:if>

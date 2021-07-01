@@ -85,6 +85,10 @@ public class EnchereManager {
                 userManager.modifierCreditUtilisateur(enchereTrouvee.getEncherisseur());
             }
         }
+        else
+        {
+            throw businessException;
+        }
     }
 
     public Enchere afficherEnchereParNoArticle(int noArt) throws BusinessException{

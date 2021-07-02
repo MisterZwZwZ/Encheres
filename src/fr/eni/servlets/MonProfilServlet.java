@@ -41,8 +41,9 @@ public class MonProfilServlet extends HttpServlet {
                 e.printStackTrace();
                 request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
             }
+        }else{
+            request.getRequestDispatcher("WEB-INF/monprofil.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("WEB-INF/monprofil.jsp").forward(request, response);
     }
 
     @Override

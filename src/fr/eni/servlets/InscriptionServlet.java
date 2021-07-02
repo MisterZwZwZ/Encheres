@@ -68,8 +68,6 @@ public class InscriptionServlet extends HttpServlet {
         String rue = req.getParameter("rue");
         if (rue == null || rue.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.RUE_UTILISATEUR_OBLIGATOIRE);
-        } else if (!utilitaire.rechercheCaracSpecial(rue)) {
-            listeCodesErreur.add(CodesErreurServlet.CARAC_RUE_NON_VALIDES);
         }
             else {
             req.setAttribute("rue", rue);
@@ -77,7 +75,7 @@ public class InscriptionServlet extends HttpServlet {
 
         String telephone = req.getParameter("telephone");
         req.setAttribute("telephone", telephone);
-        if (utilitaire.telValidation(telephone)){
+        if (!utilitaire.telValidation(telephone)){
             listeCodesErreur.add(CodesErreurServlet.TEL_NON_VALIDE);
         }
 

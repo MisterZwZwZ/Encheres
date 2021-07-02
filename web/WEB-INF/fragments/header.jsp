@@ -50,13 +50,14 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="<%=request.getContextPath()%>/deconnexion">Se déconnecter</a>
                             </li>
-
                         </ul>
 
                         <div class="d-flex">
-                            <p class="nav-link disabled">Bonjour ${utilisateur.pseudo}</p>
+                            <ul>
+                                <li class="nav-link disabled text-end"><strong>Bonjour ${utilisateur.pseudo}</strong></li>
+                                <li class="nav-link disabled text-end">Crédit : ${utilisateur.credit}</li>
+                            </ul>
                         </div>
-
                     </div>
                 </div>
             </nav>

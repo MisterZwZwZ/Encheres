@@ -68,7 +68,10 @@ public class InscriptionServlet extends HttpServlet {
         String rue = req.getParameter("rue");
         if (rue == null || rue.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.RUE_UTILISATEUR_OBLIGATOIRE);
-        } else {
+        } else if (!utilitaire.rechercheCaracSpecial(rue)) {
+            listeCodesErreur.add(CodesErreurServlet.CARAC_RUE_NON_VALIDES);
+        }
+            else {
             req.setAttribute("rue", rue);
         }
 

@@ -7,17 +7,20 @@
     <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
     <title>Inscription</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-<h2 class="text-white text-center py-4">Inscription</h2>
+<h1 class="text-white text-center py-4" style="font-family:'Chewy', cursive;">Inscription</h1>
 
-
-<!--Formulaire d'inscription mis en page avec Boostrap-->
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row w-75">
+        <!-- affichage des messages d'erreur éventuels -->
         <div class="d-flex justify-content-center row py-2">
             <c:if test="${!empty listeCodesErreur}">
                 <p class="alert alert-danger" role="alert"><strong>Erreur !</strong></p>

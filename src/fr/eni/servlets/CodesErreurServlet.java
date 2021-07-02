@@ -34,7 +34,7 @@ public abstract class CodesErreurServlet {
     public static final Integer DATE_DEBUT_ENCHERE_ARTICLE_ERREUR = 30033;
     public static final Integer DATE_FIN_ENCHERE_ARTICLE_ERREUR = 30034;
     public static final Integer PRIX_INITIAL_ARTICLE_ERREUR = 30035;
-    public static final Integer PRIX_VENTE_ARTICLE_ERREUR = 30036;
+    public static final Integer CARAC_RUE_NON_VALIDES = 30036;
     public static final Integer CATEGORIE_ARTICLE_ERREUR = 30037;
     public static final Integer CLIC_ARTICLE_ERREUR = 30038;
 

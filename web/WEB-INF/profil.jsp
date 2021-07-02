@@ -70,15 +70,15 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
                   </div>
                   <div class="d-flex justify-content-center">
                       <div class="row">
-                          <a href="accueil"><button class="btn btn-secondary">Retour vers l'accueil</button></a>
+                          <a href="accueil"><button class="btn btn-secondary" style="margin: 20px">Retour vers l'accueil</button></a>
                       </div>
                       <!-- gérer le bouton modifier si on est connecté / problème lors de l'affichage du profil de quelqu'un d'autre-->
                       <div class="row">
                           <c:if test="${sessionScope.utilisateur.pseudo == vendeur.pseudo }">
-                              <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-primary">Modifier mon profil</button></a>
+                              <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-primary" style="margin: 20px">Modifier mon profil</button></a>
                           </c:if>
                           <c:if test="${empty vendeur}">
-                              <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-primary">Modifier mon profil</button></a>
+                              <a href="<%=request.getContextPath()%>/monprofil"><button class="btn btn-primary" style="margin: 20px">Modifier mon profil</button></a>
                           </c:if>
                       </div>
                   </div>

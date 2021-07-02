@@ -7,8 +7,9 @@
 <%--</footer>--%>
 
 
-<footer class="py-2 fixed-bottom">
-    <div class="container">
-        <p class="m-0 text-left text-white">Footer</p>
+<footer>
+    <div class="displa">
+    <br>
+        <p class="m-0 text-left text-white">&copy; 2021 Copyright - TrocA'Chat</p>
     </div>
 </footer>

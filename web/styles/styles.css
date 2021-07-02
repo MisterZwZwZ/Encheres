@@ -3,7 +3,7 @@ body{
     background-repeat: repeat;
 }
 
-h1, h2{
+h1, h2, footer{
     font-family: 'Chewy', cursive;
 }
 
@@ -11,3 +11,6 @@ ul{
     list-style-type: none;
     list-style : none;
 }
+
+body {position: relative;}
+footer {position: absolute; bottom: 0;}

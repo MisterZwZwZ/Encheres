@@ -67,7 +67,7 @@
 
 <div class="d-flex justify-content-center"  style="padding: 50px">
     <a href="${pageContext.request.contextPath}/inscription">
-        <button class="btn btn-primary btn-lg disabled">Pas encore de compte ? M'inscrire</button>
+        <button  class="btn btn-dark">Pas encore de compte ? M'inscrire</button>
     </a>
 </div>
 

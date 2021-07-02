@@ -98,7 +98,6 @@ public class MonProfilServlet extends HttpServlet {
         if (ville == null || ville.trim().equals("")) {
             listeCodesErreur.add(CodesErreurServlet.VILLE_UTILISATEUR_OBLIGATOIRE);
         } else
-            //TODO FIXME : la modifi du profil permet de mettre des chiffres dans la ville
             if (!utilitaire.rechercheCaracSpecial(ville) || utilitaire.rechercheChiffre(ville)){
             listeCodesErreur.add(CodesErreurServlet.CARAC_NON_VALIDES);
         }else {

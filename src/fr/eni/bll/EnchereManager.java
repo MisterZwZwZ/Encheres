@@ -20,15 +20,15 @@ public class EnchereManager {
 
     public void validerEnchere(int montantEnchere, Utilisateur encherisseur, Article article, BusinessException businessException) throws BusinessException {
 
-        //vérifier que le montant saisi est positif et supérieur au prix fixé
-        if(montantEnchere <= 0 || montantEnchere <= article.getPrixInitial()){
+        //vérifier que le montant saisi est positif et égal ou supérieur au prix intial.
+        if(montantEnchere <= 0 || montantEnchere < article.getPrixInitial()){
             businessException.ajouterErreur(CodesErreurBll.REGLE_MONTANT_ENCHERE_ERREUR);
         }
-        //Vérifier si le crédit de l'utilisateur est suffisant
+        //Vérifier si le crédit de l'utilisateur est suffisant.
         if (montantEnchere > encherisseur.getCredit()){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ENCHERE_CREDIT_ERREUR);
         }
-        //vérifier que l'encherisseur n'est pas le propriétaire de l'article
+        //vérifier que l'encherisseur n'est pas le propriétaire de l'article.
         if(article.getVendeur().getNoUtilisateur() == encherisseur.getNoUtilisateur()){
             businessException.ajouterErreur(CodesErreurBll.REGLE_ENCHERE_UTILISATEUR_ERREUR);
         }

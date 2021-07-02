@@ -4,7 +4,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="styles/initialize.min.css">
-    <link type="text/css" rel="stylesheet" href="./styles/enchereStyles.css"/>
+    <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Enchère</title>
@@ -83,10 +83,12 @@
                         </c:if>
 
                         <!-- je veux modifier un article -->
+                        <div class="text-center py-2">
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
                             <input type="hidden" name="noarticle" value="${article.noArticle}">
                             <button value="Modifier l'article" class="btn btn-primary" name="modifier">Modifier l'article</button>
                         </c:if>
+                        </div>
                     </form>
                 </div>
                 <a href="<%=request.getContextPath()%>/accueil"><button class="btn btn-secondary w-100">Retour</button></a>

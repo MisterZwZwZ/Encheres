@@ -7,7 +7,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="styles/initialize.min.css">
-    <link type="text/css" rel="stylesheet" href="./styles/accueilStyles.css"/>
+    <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">

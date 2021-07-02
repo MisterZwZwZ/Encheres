@@ -123,7 +123,11 @@ public class ArticleManager {
         return listeArticlesParFiltres;
     }
 
-    //TODO connection à l'IHM - TL
+    /**
+     * Cette méthode n'est pas connectée à l'IHM - à faire.
+     * @param id
+     * @throws BusinessException
+     */
     public void supprimerArticle(int id) throws BusinessException {
         articleDAO.deleteArticle(id);
     }

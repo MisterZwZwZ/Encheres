@@ -175,7 +175,7 @@ public class EnchereServlet extends HttpServlet {
             if (request.getParameter("prix") != null && !request.getParameter("prix").equals("")) {
                 montantEnchere = Integer.parseInt(request.getParameter("prix"));
                 request.setAttribute("montantEnchere", montantEnchere);
-                if (montantEnchere <= 0) { //|| montantEnchere <= enchere.getMontantEnchere()
+                if (montantEnchere <= 0) {
                     listeCodesErreur.add(CodesErreurServlet.ENCHERE_MONTANT_ERREUR);
                 }
                 if (montantEnchere > utilisateur.getCredit()) {

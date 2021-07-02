@@ -3,7 +3,8 @@
 <%@ page import="fr.eni.messages.LecteurErreur" %>
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="./styles/enchereStyles.css"/>
+    <link rel="stylesheet" href="styles/initialize.min.css">
+    <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Enchère</title>
@@ -44,7 +45,7 @@
                         <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
                         <p class="card-text overflow-auto"><c:out value="Description : ${article.description}"/></p>
                         <p class="card-text"><c:out value="Catégorie : ${article.categorie.libelle}"/></p>
-                        <p class="card-text"><c:out value="Meilleure offre : ${enchere.montantEnchere} ${enchere.montantEnchere != 0 ? 'par' : ''} ${enchere.encherisseur.pseudo}"/></p>
+                        <p class="card-text"><strong><c:out value="Meilleure offre : ${enchere.montantEnchere} ${enchere.montantEnchere != 0 ? 'par' : ''} ${enchere.encherisseur.pseudo}"/></strong></p>
                         <p class="card-text"><c:out value="Mise à prix : ${article.prixInitial} points"/></p>
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
                             <c:out value="l'enchère débutera le : ${article.dateDebutEnchere}"></c:out>
@@ -82,10 +83,12 @@
                         </c:if>
 
                         <!-- je veux modifier un article -->
+                        <div class="text-center py-2">
                         <c:if test="${statutUtilisateur == 'vendeur' && etatVente == 'pas demarree'}">
                             <input type="hidden" name="noarticle" value="${article.noArticle}">
                             <button value="Modifier l'article" class="btn btn-primary" name="modifier">Modifier l'article</button>
                         </c:if>
+                        </div>
                     </form>
                 </div>
                 <a href="<%=request.getContextPath()%>/accueil"><button class="btn btn-secondary w-100">Retour</button></a>

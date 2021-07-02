@@ -3,9 +3,14 @@
 
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="./styles/profileStyles.css"/>
+    <link rel="stylesheet" href="styles/initialize.min.css">
+    <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
     <title>Profil utilisateur</title>
 </head>
 <body>
@@ -15,12 +20,13 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
 
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
+<h1 class="text-center text-white" style="font-family:'Chewy', cursive;">Profil utilisateur</h1>
+
 <div class="d-flex justify-content-center">
     <div class="row m-6">
           <div class="row">
               <div class="card my-4 bg-light" style="width: 30rem; height: auto;">
                   <div class="card-body">
-                      <h5 class="card-title text-center">Profil Utilisateur</h5>
                       <ul class="list-group list-group-flush">
                           <li class="list-group-item">
                               <p class="card-text">Pseudo<p>

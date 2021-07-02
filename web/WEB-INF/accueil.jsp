@@ -6,15 +6,21 @@
 
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="./styles/accueilStyles.css"/>
+    <link rel="stylesheet" href="styles/initialize.min.css">
+    <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
     <title>Accueil</title>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
 
-
-<h1 class="text-white text-center">Bienvenue sur TrocA'Chat</h1>
+<div class="mt-50">
+    <h1 class="text-white text-center display-2 mt-32" style="font-family:'Chewy', cursive;">Bienvenue sur TrocA'Chat</h1>
+</div>
 
 <div class="container py-2">
     <div class="row align-items-center">
@@ -22,14 +28,14 @@
               method="POST">
             <div class="row m-6 py-4">
                 <div class="col-6">
-                    <label class="text-white form-check-label py-2" for="recherche-article">Recherche par mots
+                    <label class="text-white form-check-label py-2 h4" for="recherche-article" style="font-family:'Chewy', cursive;">Recherche par mots
                         clés</label>
                     <input class="form-control me-2" type="search" id="recherche-article" name="rechercheParMotClef"
                            placeholder="que recherchez vous ?..."
                            value="${motclef}">
                 </div>
                 <div class="col-6">
-                    <label class="text-white form-check-label py-2" for="categorie">Catégories</label>
+                    <label class="text-white form-check-label py-2 h4" for="categorie" style="font-family:'Chewy', cursive;">Catégories</label>
                     <select class="form-select" name="rechercheParcategorie" id="categorie">
                         <option value="">--"Toutes"--</option>
                         <c:forEach items="${applicationScope.listeDesCategories}" var="categorie">
@@ -114,58 +120,57 @@
         <div class="d-flex justify-content-center row">
             <div class="row m-6">
                 <c:choose>
-                    <c:when test="${listeArticles.size()>0}">
-                        <c:forEach items="${listeArticles}" var="article">
-                            <div class="col-3">
-                                <div class="card my-4" style="width: 18rem; height: auto">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
-                                        <p class="card-text"><c:out value="Description : ${article.description}"/></p>
-                                        <p class="card-text"><c:out
-                                                value="Prix de vente : ${article.prixVente == 0 ? article.prixInitial : article.prixVente} points"/></p>
-                                        <p class="card-text"><c:out
-                                                value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
+                <c:when test="${listeArticles.size()>0}">
+                <c:forEach items="${listeArticles}" var="article">
+                <div class="col-3">
+                    <div class="card my-4" style="width: 18rem; height: auto">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><c:out value="${article.nomArticle}"/></h5>
+                        <p class="card-text"><c:out value="Description : ${article.description}"/></p>
+                        <p class="card-text"><c:out
+                                value="Prix de vente : ${article.prixVente == 0 ? article.prixInitial : article.prixVente} points"/></p>
+                        <p class="card-text"><c:out
+                                value="Date de fin d'enchère : ${article.dateFinEnchere}"/></p>
 
-                                        <c:choose>
-                                            <c:when test="${sessionScope.utilisateur == null }">
-                                                <p class="card-text"><c:out
-                                                        value="Vendeur : ${article.vendeur.pseudo}"/></p>
-                                            </c:when>
-                                            <c:when test="${sessionScope.utilisateur != null }">
-                                                <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
-                                                    <p class="card-text"><c:out
-                                                            value="Vendeur : ${article.vendeur.pseudo}"/></p>
-                                                </a>
-                                            </c:when>
-                                        </c:choose>
+                        <c:choose>
+                            <c:when test="${sessionScope.utilisateur == null }">
+                                <p class="card-text"><c:out value="Vendeur : ${article.vendeur.pseudo}"/></p>
+                            </c:when>
+                            <c:when test="${sessionScope.utilisateur != null }">
+                                <a href="${pageContext.request.contextPath}/profil?pseudo=${article.vendeur.pseudo}">
+                                    <p class="card-text"><c:out
+                                            value="Vendeur : ${article.vendeur.pseudo}"/></p>
+                                </a>
+                            </c:when>
+                        </c:choose>
 
-                                        <div class="text-center py-2">
-                                            <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
-                                               class="btn btn-primary">Voir l'annonce</a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="text-center py-2">
+                                <a href="<%=request.getContextPath()%>/enchere?noarticle=${article.noArticle}"
+                                   class="btn btn-primary">Voir l'annonce</a>
                             </div>
-                        </c:forEach>
-                    </c:when>
-                    <c:when test="${!empty listeCodesErreur}">
-                        <!-- affichage des messages d'erreur éventuels -->
-                        <p class="alert alert-danger" role="alert"><strong>Erreur lors de la recherche :</strong></p>
-                        <ul class="alert alert-danger" role="alert">
-                            <c:forEach var="code" items="${listeCodesErreur}">
-                                <li>${LecteurErreur.getMessageErreur(code)}</li>
-                            </c:forEach>
-                        </ul>
-                    </c:when>
-                    <c:otherwise>
-                        <p class="alert alert-info" role="alert">Choisissez les articles à afficher</p>
-                    </c:otherwise>
-                </c:choose>
+                    </div>
+                </div>
             </div>
+            </c:forEach>
+            </c:when>
+            <c:when test="${!empty listeCodesErreur}">
+                <!-- affichage des messages d'erreur éventuels -->
+                <p class="alert alert-danger" role="alert"><strong>Erreur lors de la recherche :</strong></p>
+                <ul class="alert alert-danger" role="alert">
+                    <c:forEach var="code" items="${listeCodesErreur}">
+                        <li>${LecteurErreur.getMessageErreur(code)}</li>
+                    </c:forEach>
+                </ul>
+            </c:when>
+            <c:otherwise>
+                <p class="alert alert-info" role="alert">Choisissez les articles à afficher</p>
+            </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>
-<jsp:include page="/WEB-INF/fragments/footer.jsp"/>
+</div>
+
 <script language="JavaScript" type="text/javascript" src="js\searchButtons.js"></script>
 </body>
 </html>

@@ -5,18 +5,22 @@
 <html>
 <head>
     <title>Vente</title>
-    <link type="text/css" rel="stylesheet" href="./styles/venteStyles.css"/>
+    <link rel="stylesheet" href="styles/initialize.min.css">
+    <link type="text/css" rel="stylesheet" href="./styles/styles.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
 
 </head>
 <body>
 <jsp:include page="/WEB-INF/fragments/header.jsp"/>
-<h1 class="text-white text-center">${!empty msgConfirmation ? "Vendre un article" : "Modifier un article"}</h1>
+<h1 class="text-white text-center" style="font-family:'Chewy', cursive;">${!empty msgConfirmation ? "Modifier un article" : "Vendre un article"}</h1>
 
 <div class="d-flex justify-content-center text-white py-2">
     <div class="row">

@@ -238,6 +238,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             sb.append(and);
             sb.append(programme);
             sb.append(or);
+            sb.append(achatByIdUser);
+            sb.append(and);
             sb.append(termine);
         }
 
@@ -252,10 +254,19 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         //on lance la connexion et on exécute la requete
         try (Connection cnx = ConnectionProvider.getConnection()) {
             PreparedStatement pstmt = cnx.prepareStatement(sb.toString());
-            pstmt.setString(1, recherche);
-            pstmt.setInt(2, noUtilisateur);
-            if (noCategorie != 0) {
-                pstmt.setInt(3, noCategorie);
+            if(case2 != null && case2.equals("on") && (case3 != null && case3.equals("on")) && case1 == null){
+                pstmt.setString(1, recherche);
+                pstmt.setInt(2, noUtilisateur);
+                pstmt.setInt(3, noUtilisateur);
+                if (noCategorie != 0) {
+                    pstmt.setInt(4, noCategorie);
+                }
+            }else {
+                pstmt.setString(1, recherche);
+                pstmt.setInt(2, noUtilisateur);
+                if (noCategorie != 0) {
+                    pstmt.setInt(3, noCategorie);
+                }
             }
 
             ResultSet rs = pstmt.executeQuery();

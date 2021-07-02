@@ -81,5 +81,6 @@ via un lien sur le pseudo d'un vendeur : afficher le profil d'un autre utilisate
         </div>
     </div>
 </div>
+<jsp:include page="/WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>

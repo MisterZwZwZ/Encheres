@@ -58,5 +58,6 @@
         <button class="btn btn-secondary w-100">Retour</button>
     </a>
 </div>
+<jsp:include page="/WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>

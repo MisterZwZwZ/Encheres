@@ -129,6 +129,7 @@
         </div>
     </div>
 </div>
+<jsp:include page="/WEB-INF/fragments/footer.jsp"/>
 <script>
     $(function () {
         $("#dateDebutEnchere").datepicker({
@@ -180,6 +181,5 @@
         });
     });
 </script>
-
 </body>
 </html>

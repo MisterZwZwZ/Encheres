@@ -130,6 +130,6 @@
         </div>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>

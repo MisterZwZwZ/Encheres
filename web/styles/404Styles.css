@@ -9,4 +9,8 @@ body{
     background-image: url("https://cdn.wallpapersafari.com/17/21/hx5Fdt.jpg");
     background-size: cover;
     background-repeat: repeat;
+    padding: 50px;
 }
+
+body {position: relative;}
+footer {position: absolute; bottom: 0;}

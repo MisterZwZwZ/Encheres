@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="p-20">
-<p class="pt-12 text-center text-white display-5" style="font-family: 'Press Start 2P', cursive;">Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
+<p class="pt-12 text-center text-white display-5 py-4" style="font-family: 'Press Start 2P', cursive;">Oups ! La page demandée n'existe ni dans cet univers ni dans un autre...</p>
 </div>
 <jsp:include page="/WEB-INF/fragments/footer.jsp"/>
 </body>

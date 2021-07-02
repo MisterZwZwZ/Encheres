@@ -170,10 +170,8 @@
     </div>
 </div>
 </div>
-
-<script language="JavaScript" type="text/javascript" src="js\searchButtons.js"></script>
-
 <jsp:include page="/WEB-INF/fragments/footer.jsp"/>
+<script language="JavaScript" type="text/javascript" src="js\searchButtons.js"></script>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-# Enchères
+# Encheres
 Here is an auction/trading website made with Java EE at ENI School.
 
 ## What is it ?

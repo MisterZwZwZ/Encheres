@@ -1,4 +1,4 @@
-﻿CREATE DATABASE BDD_ENCHERES;
+CREATE DATABASE BDD_ENCHERES;
 
 GO;
 
@@ -88,15 +88,9 @@ ALTER TABLE ARTICLES
     ADD CONSTRAINT FK_VENTES_UTILISATEURS FOREIGN KEY ( no_utilisateur ) REFERENCES UTILISATEURS ( no_utilisateur )
 ON DELETE no action 
     ON UPDATE no action
-
-USE BDD_ENCHERES;
-
-INSERT INTO UTILISATEURS VALUES ('chaton-spatial', 'Dupont', 'Jean', 'jeandupont@eni.fr', '0230524520', '2 rue du port', '44000', 'Nantes', 'chaton', 0, 0);
-
-INSERT INTO CATEGORIES VALUES ('Informatique');
-INSERT INTO CATEGORIES VALUES ('Ameublement');
-INSERT INTO CATEGORIES VALUES ('Vêtements');
-INSERT INTO CATEGORIES VALUES ('Sport & Loisirs');
-
-
-INSERT INTO ARTICLES(nom_article, description, date_debut_vente, date_fin_vente, prix_initial, no_utilisateur, no_categorie) VALUES('Pc', 'un beau pc', '2021-06-21','2021-06-27', 230, 1, 1);
+	
+	ALTER TABLE UTILISATEURS
+    ADD CONSTRAINT SECONDARY_KEY_UTILISATEURS_PSEUDO UNIQUE ( pseudo ) ;
+	
+		ALTER TABLE UTILISATEURS
+    ADD CONSTRAINT SECONDARY_KEY_UTILISATEURS_MAIL UNIQUE ( email ) ;

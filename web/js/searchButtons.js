@@ -11,15 +11,15 @@ let checkboxVentesTerminees = document.getElementById("ventesTerminees");
 //gestion radio bouton Achat
 document.addEventListener("DOMContentLoaded", function(){
         radioBtnAchat.addEventListener("click", function(){
-            localStorage.sRadioAchat ? // verification qu'un localStorage existe
-                localStorage.sRadioAchat = localStorage.sRadioAchat.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? localStorage.sRadioAchat+this.id+"," // n'existe pas : ajout de l'id au localStorage
-                    : localStorage.sRadioAchat+this.id+","  :
-                localStorage.sRadioAchat = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
+            sessionStorage.sRadioAchat ? // verification qu'un localStorage existe
+                sessionStorage.sRadioAchat = sessionStorage.sRadioAchat.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
+                    ? sessionStorage.sRadioAchat+this.id+"," // n'existe pas : ajout de l'id au localStorage
+                    : sessionStorage.sRadioAchat+this.id+","  :
+                sessionStorage.sRadioAchat = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
-    if(localStorage.sRadioAchat){ // verification que le localStorage existe
+    if(sessionStorage.sRadioAchat){ // verification que le localStorage existe
       // existe, parcourir les checkbox
-            radioBtnAchat.checked = localStorage.sRadioAchat.indexOf(radioBtnAchat.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+            radioBtnAchat.checked = sessionStorage.sRadioAchat.indexOf(radioBtnAchat.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
 
     }
 });
@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", function(){
 document.addEventListener("DOMContentLoaded", function(){
     radioBtnvente.addEventListener("click", function(){
             localStorage.sRadioVente ? // verification qu'un localStorage existe
-                localStorage.sRadioVente = localStorage.sRadioVente.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? localStorage.sRadioVente+this.id+"," // n'existe pas : ajout de l'id au localStorage
-                    : localStorage.sRadioVente+this.id+"," :
-                localStorage.sRadioVente = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
+                localStorage.sRadioVente = sessionStorage.sRadioVente.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
+                    ? sessionStorage.sRadioVente+this.id+"," // n'existe pas : ajout de l'id au localStorage
+                    : sessionStorage.sRadioVente+this.id+"," :
+                sessionStorage.sRadioVente = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
-    if(localStorage.sRadioVente){ // verification que le localStorage existe
+    if(sessionStorage.sRadioVente){ // verification que le localStorage existe
       // existe, parcourir les checkbox
-        radioBtnvente.checked = localStorage.sRadioVente.indexOf(radioBtnvente.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+        radioBtnvente.checked = sessionStorage.sRadioVente.indexOf(radioBtnvente.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
 
     }
 });
@@ -45,17 +45,17 @@ document.addEventListener("DOMContentLoaded", function(){
     let checkboxEncheres = document.querySelectorAll("#encheresOuvertes, #mesEncheresEnCours, #encheresRemportees");
     for(let item of checkboxEncheres){
         item.addEventListener("click", function(){
-            localStorage.sEncheres ? // verification qu'un localStorage existe
-                localStorage.sEncheres = localStorage.sEncheres.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? localStorage.sEncheres+this.id+"," // n'existe pas : ajout de l'id au localStorage
-                    : localStorage.sEncheres.replace(this.id+",","") : // existe, supprimer l'id du localStorage
-                localStorage.sEncheres = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
+            sessionStorage.sEncheres ? // verification qu'un localStorage existe
+                sessionStorage.sEncheres = sessionStorage.sEncheres.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
+                    ? sessionStorage.sEncheres+this.id+"," // n'existe pas : ajout de l'id au localStorage
+                    : sessionStorage.sEncheres.replace(this.id+",","") : // existe, supprimer l'id du localStorage
+                sessionStorage.sEncheres = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
     }
 
-    if(localStorage.sEncheres){ // verification que le localStorage existe
+    if(sessionStorage.sEncheres){ // verification que le localStorage existe
         for(let item of checkboxEncheres){ // existe, parcourir les checkbox
-            item.checked = localStorage.sEncheres.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+            item.checked = sessionStorage.sEncheres.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
         }
     }
 });
@@ -65,23 +65,23 @@ document.addEventListener("DOMContentLoaded", function(){
     let checkboxVentes = document.querySelectorAll("#ventesEnCours, #ventesNonDebutees, #ventesTerminees");
     for(let item of checkboxVentes){
         item.addEventListener("click", function(){
-            localStorage.sVentes ? // verification qu'un localStorage existe
-                localStorage.sVentes = localStorage.sVentes.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? localStorage.sVentes+this.id+"," // n'existe pas : ajout de l'id au localStorage
-                    : localStorage.sVentes.replace(this.id+",","") : // existe, supprimer l'id du localStorage
-                localStorage.sVentes = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
+            sessionStorage.sVentes ? // verification qu'un localStorage existe
+                sessionStorage.sVentes = sessionStorage.sVentes.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
+                    ? sessionStorage.sVentes+this.id+"," // n'existe pas : ajout de l'id au localStorage
+                    : sessionStorage.sVentes.replace(this.id+",","") : // existe, supprimer l'id du localStorage
+                sessionStorage.sVentes = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
     }
 
-    if(localStorage.sVentes){ // verification que le localStorage existe
+    if(sessionStorage.sVentes){ // verification que le localStorage existe
         for(let item of checkboxVentes){ // existe, parcourir les checkbox
-            item.checked = localStorage.sVentes.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+            item.checked = sessionStorage.sVentes.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
         }
     }
 });
 
 document.addEventListener("DOMContentLoaded", function(){
-    if(localStorage.getItem("sEncheres")){
+    if(sessionStorage.getItem("sEncheres")){
         desactiveVentes();
     }else{
         desactiveAchat();
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 //gestion storage vide (premier chargement de la page)
 document.addEventListener('DOMContentLoaded', function() {
-    if (!localStorage.getItem('sRadioAchat') && !localStorage.getItem('sRadioVente')) {
+    if (!sessionStorage.getItem('sRadioAchat') && !sessionStorage.getItem('sRadioVente')) {
         radioBtnAchat.checked = true;
         desactiveVentes();
     }
@@ -111,8 +111,8 @@ function desactiveVentes (){
     checkboxEncheresOuvertes.disabled = false;
     checkboxMesEncheresEnCours.disabled = false;
     checkboxEncheresRemportees.disabled = false;
-    localStorage.removeItem("sVentes");
-    localStorage.removeItem("sRadioVente")
+    sessionStorage.removeItem("sVentes");
+    sessionStorage.removeItem("sRadioVente")
 }
 
 function desactiveAchat (){
@@ -126,7 +126,7 @@ function desactiveAchat (){
     checkboxVentesEnCours.disabled = false;
     checkboxVentesNonDebutees.disabled = false;
     checkboxVentesTerminees.disabled = false;
-    localStorage.removeItem("sEncheres");
-    localStorage.removeItem("sRadioAchat");
+    sessionStorage.removeItem("sEncheres");
+    sessionStorage.removeItem("sRadioAchat");
 }
 

@@ -13,13 +13,13 @@ document.addEventListener("DOMContentLoaded", function(){
         radioBtnAchat.addEventListener("click", function(){
             sessionStorage.sRadioAchat ? // verification qu'un localStorage existe
                 sessionStorage.sRadioAchat = sessionStorage.sRadioAchat.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? sessionStorage.sRadioAchat+this.id+"," // n'existe pas : ajout de l'id au localStorage
+                    ? sessionStorage.sRadioAchat+this.id+"," // n'existe pas : ajout de l'id au sessionStorage
                     : sessionStorage.sRadioAchat+this.id+","  :
                 sessionStorage.sRadioAchat = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
     if(sessionStorage.sRadioAchat){ // verification que le localStorage existe
       // existe, parcourir les checkbox
-            radioBtnAchat.checked = sessionStorage.sRadioAchat.indexOf(radioBtnAchat.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+            radioBtnAchat.checked = sessionStorage.sRadioAchat.indexOf(radioBtnAchat.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans sessionStorage
 
     }
 });
@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", function(){
 document.addEventListener("DOMContentLoaded", function(){
     radioBtnvente.addEventListener("click", function(){
             localStorage.sRadioVente ? // verification qu'un localStorage existe
-                localStorage.sRadioVente = sessionStorage.sRadioVente.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? sessionStorage.sRadioVente+this.id+"," // n'existe pas : ajout de l'id au localStorage
+                localStorage.sRadioVente = sessionStorage.sRadioVente.indexOf(this.id+",") == -1 // vérification que le sessionStorage contient l'id
+                    ? sessionStorage.sRadioVente+this.id+"," // n'existe pas : ajout de l'id au sessionStorage
                     : sessionStorage.sRadioVente+this.id+"," :
                 sessionStorage.sRadioVente = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
     if(sessionStorage.sRadioVente){ // verification que le localStorage existe
       // existe, parcourir les checkbox
-        radioBtnvente.checked = sessionStorage.sRadioVente.indexOf(radioBtnvente.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+        radioBtnvente.checked = sessionStorage.sRadioVente.indexOf(radioBtnvente.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans sessionStorage
 
     }
 });
@@ -45,17 +45,17 @@ document.addEventListener("DOMContentLoaded", function(){
     let checkboxEncheres = document.querySelectorAll("#encheresOuvertes, #mesEncheresEnCours, #encheresRemportees");
     for(let item of checkboxEncheres){
         item.addEventListener("click", function(){
-            sessionStorage.sEncheres ? // verification qu'un localStorage existe
-                sessionStorage.sEncheres = sessionStorage.sEncheres.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? sessionStorage.sEncheres+this.id+"," // n'existe pas : ajout de l'id au localStorage
-                    : sessionStorage.sEncheres.replace(this.id+",","") : // existe, supprimer l'id du localStorage
+            sessionStorage.sEncheres ? // verification qu'un sessionStorage existe
+                sessionStorage.sEncheres = sessionStorage.sEncheres.indexOf(this.id+",") == -1 // vérification que le sessionStorage contient l'id
+                    ? sessionStorage.sEncheres+this.id+"," // n'existe pas : ajout de l'id au sessionStorage
+                    : sessionStorage.sEncheres.replace(this.id+",","") : // existe, supprimer l'id du sessionStorage
                 sessionStorage.sEncheres = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
     }
 
-    if(sessionStorage.sEncheres){ // verification que le localStorage existe
+    if(sessionStorage.sEncheres){ // verification que le sessionStorage existe
         for(let item of checkboxEncheres){ // existe, parcourir les checkbox
-            item.checked = sessionStorage.sEncheres.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+            item.checked = sessionStorage.sEncheres.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans sessionStorage
         }
     }
 });
@@ -66,16 +66,16 @@ document.addEventListener("DOMContentLoaded", function(){
     for(let item of checkboxVentes){
         item.addEventListener("click", function(){
             sessionStorage.sVentes ? // verification qu'un localStorage existe
-                sessionStorage.sVentes = sessionStorage.sVentes.indexOf(this.id+",") == -1 // vérification que le localStorage contient l'id
-                    ? sessionStorage.sVentes+this.id+"," // n'existe pas : ajout de l'id au localStorage
-                    : sessionStorage.sVentes.replace(this.id+",","") : // existe, supprimer l'id du localStorage
+                sessionStorage.sVentes = sessionStorage.sVentes.indexOf(this.id+",") == -1 // vérification que le sessionStorage contient l'id
+                    ? sessionStorage.sVentes+this.id+"," // n'existe pas : ajout de l'id au sessionStorage
+                    : sessionStorage.sVentes.replace(this.id+",","") : // existe, supprimer l'id du sessionStorage
                 sessionStorage.sVentes = this.id+",";  // n'existe pas. on la crée avec l'id de la case à cocher
         });
     }
 
-    if(sessionStorage.sVentes){ // verification que le localStorage existe
+    if(sessionStorage.sVentes){ // verification que le sessionStorage existe
         for(let item of checkboxVentes){ // existe, parcourir les checkbox
-            item.checked = sessionStorage.sVentes.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans localStorage
+            item.checked = sessionStorage.sVentes.indexOf(item.id+",") != -1 ? true : false; //mettre true sur les ids qui existent dans sessionStorage
         }
     }
 });
